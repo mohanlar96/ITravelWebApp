@@ -156,7 +156,7 @@
 <!-- Slick Slider JS -->
 <script src="js/plugins/slick.min.js"></script>
 <!-- nice select JS -->
-<script src="js/plugins/nice-select.min.js"></script>
+f<script src="js/plugins/nice-select.min.js"></script>
 <!-- audio video player JS -->
 <script src="js/plugins/plyr.min.js"></script>
 <!-- perfect scrollbar js -->
