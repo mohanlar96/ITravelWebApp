@@ -1,6 +1,6 @@
 <Context>
 
-  <Resource name="jdbc/ITravelWebApp"
+  <Resource name="jdbc/travelDb"
   			auth="Container" type="javax.sql.DataSource"
                maxActive="20" maxIdle="5" maxWait="10000"
                username="webstudent" password="webstudent" 

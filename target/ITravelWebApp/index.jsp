@@ -2,7 +2,7 @@
 <html class="no-js" lang="en">
 
 
-<!-- Mirrored from demo.hasthemes.com/adda-preview/adda/index.jsp by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 10 Nov 2020 15:36:19 GMT -->
+<!-- Mirrored from demo.hasthemes.com/adda-preview/adda/home.jsp by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 10 Nov 2020 15:36:19 GMT -->
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -49,7 +49,7 @@
                         <div class="col-lg-6">
                             <div class="timeline-logo-area d-flex align-items-center">
                                 <div class="timeline-logo">
-                                    <a href="index.jsp">
+                                    <a href="home.jsp">
                                         <img src="images/logo/logo.png" alt="timeline logo">
                                     </a>
                                 </div>
@@ -156,7 +156,7 @@
 <!-- Slick Slider JS -->
 <script src="js/plugins/slick.min.js"></script>
 <!-- nice select JS -->
-<script src="js/plugins/nice-select.min.js"></script>
+f<script src="js/plugins/nice-select.min.js"></script>
 <!-- audio video player JS -->
 <script src="js/plugins/plyr.min.js"></script>
 <!-- perfect scrollbar js -->
@@ -173,5 +173,5 @@
 </body>
 
 
-<!-- Mirrored from demo.hasthemes.com/adda-preview/adda/index.jsp by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 10 Nov 2020 15:36:19 GMT -->
+<!-- Mirrored from demo.hasthemes.com/adda-preview/adda/home.jsp by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 10 Nov 2020 15:36:19 GMT -->
 </html>
