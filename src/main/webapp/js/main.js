@@ -91,9 +91,29 @@
 	$(".profile-active").on('click', function(){
 		$(".chat-output-box").addClass('show');
 	})
-	$(".search-field").on('click', function(){
-		$(".friend-search-list").addClass('show');
+	$(".show-your-followers").on('click', function(){
+		$("#follower-list").addClass('show');
 	})
+	$(".show-your-following").on('click', function(){
+		$("#following-list").addClass('show');
+	})
+
+	$(".post-comment").on('click',function(){
+		$(this).parents(".post-content").siblings('.liked-box').slideUp();
+		$(this).parents(".post-content").siblings('.commant-box').slideToggle();
+	});
+	$("button.post-meta-like").on("click",function(){
+		$(this).parents(".post-content").siblings('.commant-box').slideUp();
+		$(this).parents(".post-content").siblings('.liked-box').slideToggle();
+
+
+	});
+	$(".post h4.widget-title").on("click",function(){
+		$(this).parent().slideUp();
+
+	});
+
+
 	$(".close-btn").on('click', function(){
 		var $this = $(this),
 			$target = $this.data('close');
