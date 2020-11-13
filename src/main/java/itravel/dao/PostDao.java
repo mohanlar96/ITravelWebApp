@@ -37,6 +37,7 @@ public class PostDao {
 
                 Post tempPost = new Post(
                         postID,
+                        row.getString("description"),
                         row.getString("datetime"),
                         new Location(row.getString("latitude"), row.getString("longitude")),
                         row.getString("departureAddress"), row.getString("destinationAddress"),
@@ -56,7 +57,6 @@ public class PostDao {
 
 
             }
-            System.out.println(posts);
             return posts;
         } finally {
             // close JDBC objects
@@ -111,7 +111,6 @@ public class PostDao {
                 postedComment.add(comment);
             }
         } catch (SQLException throwables) {
-            System.out.println(throwables);
             throwables.printStackTrace();
         }
 
@@ -139,7 +138,6 @@ public class PostDao {
                 postReactions.add(reaction);
             }
         } catch (SQLException throwables) {
-            System.out.println(throwables);
             throwables.printStackTrace();
         }
         return postReactions;

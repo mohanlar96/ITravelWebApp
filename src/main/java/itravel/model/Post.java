@@ -12,13 +12,15 @@ public class Post {
     private String desAddress;
     private User user; // email
     private Address address;//Country, City
+    private String description;
     private List<PostImage> images =new ArrayList<PostImage>();
     private List<Comment> comments =new ArrayList<Comment>();
     private List<PostReaction> reactions =new ArrayList<PostReaction>();
     private int like;
 
-   public Post(int postID, String postDate, Location loc, String depAddress, String desAddress,User user) {
+   public Post(int postID, String des,String postDate, Location loc, String depAddress, String desAddress,User user) {
         this.postID = postID;
+        this.description=des;
         this.postDate = postDate;
         this.location = loc;
         this.depAddress = depAddress;
@@ -92,6 +94,7 @@ public class Post {
     public String toString() {
         return "Post{" +
                 "postID=" + postID +
+                ",postDescription=" +description+
                 ", postDate=" + postDate +
                 ", location=" + location +
                 ", depAddress='" + depAddress + '\'' +
