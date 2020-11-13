@@ -64,7 +64,7 @@ public class DbUtil {
 
     }
 
-    private static void close(Connection myConn, Statement myStmt, ResultSet myRs) {
+    public static void close(Connection myConn, Statement myStmt, ResultSet myRs) {
         try {
             if (myRs!=null)     myRs.close();
 

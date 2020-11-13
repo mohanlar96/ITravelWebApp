@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8"%>
 <jsp:include page="layout/header.jsp" />
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <main>
     <div class="main-wrapper">
         <!-- BANNER START -->
@@ -13,13 +13,15 @@
             <div class="container">
                 <div class="row align-items-center">
                     <div class="col-lg-3 col-md-3">
+                        <c:forEach var="prof" items="${profiles}">
                         <div class="profile-picture-box">
                             <figure class="profile-picture">
                                 <a href="profile.jsp">
-                                    <img src="images/profile/profile-1.jpg" alt="profile picture">
+                                    <img src="${prof.profilePicture}" alt="profile picture" height="225" width="225"> <!--"images/profile/profile-1.jpg"-->
                                 </a>
                             </figure>
                         </div>
+                        </c:forEach>
                     </div>
                     <div class="col-lg-6 col-md-6 offset-lg-1">
                         <div class="profile-menu-wrapper">
@@ -51,17 +53,17 @@
                 <!-- LEFT ASIDE START -->
                 <div class="col-lg-3 order-2 order-lg-1">
                     <aside class="widget-area profile-sidebar">
+                        <c:forEach var="prof" items="${profiles}">
                         <!-- widget single item start -->
                         <div class="card widget-item">
-                            <h4 class="widget-title">HERE_NAME</h4>
+                            <h4 class="widget-title">${prof.fullName}</h4>
                             <div class="widget-body">
                                 <div class="about-author">
-                                    <p>HERE_BIOGRAPHY</p>
+                                    <p>${prof.biography}</p>
                                     <ul class="author-into-list">
-                                        <li><a href="#"><i class="bi bi-office-bag"></i>JOB</a></li>
-                                        <li><a href="#"><i class="bi bi-home"></i>HOME_ADDRESS__CITY__STATE</a></li>
-                                        <li><a href="#"><i class="bi bi-location-pointer"></i>PLACE_BIRTH__CITY2__STATE</a></li>
-                                        <li><a href="#"><i class="bi bi-heart-beat"></i>HOBBIES</a></li>
+                                        <li><a href="#"><i class="bi bi-office-bag"></i>${prof.job}</a></li>
+                                        <li><a href="#"><i class="bi bi-home"></i>${prof.cityBirth}</a></li>
+                                        <li><a href="#"><i class="bi bi-location-pointer"></i>${prof.cityBirth}</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -88,6 +90,7 @@
                                 </div>
                             </div>
                         </div>
+                        </c:forEach>
                     </aside>
                 </div>
                 <!-- LEFT ASIDE END -->
@@ -215,8 +218,8 @@
                             <div class="post-meta">
                                 <button class="post-meta-like">
                                     <i class="bi bi-heart-beat"></i>
-                                    <span>You and 207 people like this</span>
-                                    <strong>207</strong>
+                                    <span>You and xxx people like this</span>
+                                    <strong>xxx</strong>
                                 </button>
                                 <ul class="comment-share-meta">
                                     <li>
