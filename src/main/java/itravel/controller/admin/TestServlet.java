@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
-@WebServlet(value = "/TestServlet")
+@WebServlet(value = "/TestServletAdmin")
 public class TestServlet extends HttpServlet {
 
     private DbUtil myDbUtil;

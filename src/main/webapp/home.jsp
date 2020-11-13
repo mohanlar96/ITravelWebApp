@@ -211,8 +211,9 @@
                             <div class="post-thumb-gallery img-gallery">
                                 <div class="row no-gutters">
                                     <c:forEach var="img" items="${post.images}">
-                                        ${fn:length(post.images)} //accoring
-                                    <div class="col-4"> // if only one image //  if 2 image // if 3 //
+                                        ${fn:length(post.images)}
+<%--                                        // if only one image //  if 2 image // if 3 //--%>
+                                        <div class="col-4">
                                         <figure class="post-thumb img-popup">
                                             <a href="${img.url}">
                                                 <img src="${img.url}" alt="post image">
