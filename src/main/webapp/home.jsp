@@ -2,6 +2,8 @@
          pageEncoding="UTF-8"%>
 <jsp:include page="layout/header.jsp" />
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
+
 
 
 <main>
@@ -851,6 +853,8 @@
                     <!-- post status end -->
                     <!-- post status end -->
                     <!-- post status start -->
+                    <c:forEach var="post" items="${posts}">
+                    <!-- post status start -->
                     <div class="card post">
                         <!-- post title start -->
                         <div class="post-title d-flex align-items-center">
@@ -858,14 +862,14 @@
                             <div class="profile-thumb">
                                 <a href="#">
                                     <figure class="profile-thumb-middle">
-                                        <img src="images/profile/profile-small-37.jpg" alt="profile picture">
+                                        <img src="${post.user.profileurl}" alt="profile picture">
                                     </figure>
                                 </a>
                             </div>
                             <!-- profile picture end -->
                             <div class="posted-author">
-                                <h6 class="author"><a href="profile.html">Kate Palson</a></h6>
-                                <span class="post-time">35 min ago</span>
+                                <h6 class="author"><a href="profile.html">${post.user.firstName} ${post.user.lastName}</a></h6>
+                                <span class="post-time">${post.postDate}</span>
                             </div>
                             <div class="post-settings-bar">
                                 <span></span>
@@ -873,9 +877,7 @@
                                 <span></span>
                                 <div class="post-settings arrow-shape">
                                     <ul>
-                                        <li><button>copy link to ITravel</button></li>
                                         <li><button>edit post</button></li>
-                                        <li><button>embed ITravel</button></li>
                                     </ul>
                                 </div>
                             </div>
@@ -883,57 +885,58 @@
                         <!-- post title start -->
                         <div class="post-content">
                             <p class="post-desc">
-                                Many desktop publishing packages and web page editors now use Lorem Ipsum as their
-                                default model text, and a search for 'lorem ipsum' will uncover many web sites still
-                                in their infancy.
+                               ${post.description}
                             </p>
+                        <c:forEach var="img" items="${post.images}">
                             <div class="post-thumb-gallery img-gallery">
                                 <div class="row no-gutters">
-                                    <div class="col-8">
+                                   <div class="col-8">
                                         <figure class="post-thumb">
-                                            <a class="gallery-selector" href="images/post/post-large-2.jpg">
-                                                <img src="images/post/post-2.jpg" alt="post image">
+                                            <a class="gallery-selector" href="${img.url}">
+                                                <img src="${img.url}" alt="post image">
                                             </a>
                                         </figure>
                                     </div>
-                                    <div class="col-4">
-                                        <div class="row">
-                                            <div class="col-12">
-                                                <figure class="post-thumb">
-                                                    <a class="gallery-selector" href="images/post/post-large-3.jpg">
-                                                        <img src="images/post/post-3.jpg" alt="post image">
-                                                    </a>
-                                                </figure>
-                                            </div>
-                                            <div class="col-12">
-                                                <figure class="post-thumb">
-                                                    <a class="gallery-selector" href="images/post/post-large-4.jpg">
-                                                        <img src="images/post/post-4.jpg" alt="post image">
-                                                    </a>
-                                                </figure>
-                                            </div>
-                                            <div class="col-12">
-                                                <figure class="post-thumb">
-                                                    <a class="gallery-selector" href="images/post/post-large-5.jpg">
-                                                        <img src="images/post/post-5.jpg" alt="post image">
-                                                    </a>
-                                                </figure>
-                                            </div>
-                                        </div>
-                                    </div>
+<%--                                    <div class="col-4">--%>
+<%--                                        <div class="row">--%>
+<%--                                            <div class="col-12">--%>
+<%--                                                <figure class="post-thumb">--%>
+<%--                                                    <a class="gallery-selector" href="images/post/post-large-3.jpg">--%>
+<%--                                                        <img src="images/post/post-3.jpg" alt="post image">--%>
+<%--                                                    </a>--%>
+<%--                                                </figure>--%>
+<%--                                            </div>--%>
+<%--                                            <div class="col-12">--%>
+<%--                                                <figure class="post-thumb">--%>
+<%--                                                    <a class="gallery-selector" href="images/post/post-large-4.jpg">--%>
+<%--                                                        <img src="images/post/post-4.jpg" alt="post image">--%>
+<%--                                                    </a>--%>
+<%--                                                </figure>--%>
+<%--                                            </div>--%>
+<%--                                            <div class="col-12">--%>
+<%--                                                <figure class="post-thumb">--%>
+<%--                                                    <a class="gallery-selector" href="images/post/post-large-5.jpg">--%>
+<%--                                                        <img src="images/post/post-5.jpg" alt="post image">--%>
+<%--                                                    </a>--%>
+<%--                                                </figure>--%>
+<%--                                            </div>--%>
+<%--                                        </div>--%>
+<%--                                    </div>--%>
                                 </div>
                             </div>
-                            <div class="post-meta">
+                        </c:forEach>
+
+                        <div class="post-meta">
                                 <button class="post-meta-like">
                                     <i class="bi bi-heart-beat"></i>
-                                    <span>You and 70 people like this</span>
-                                    <strong>70</strong>
+                                    <span>${fn:length(post.reactions)} people like this</span>
+                                    <strong>${fn:length(post.reactions)}</strong>
                                 </button>
                                 <ul class="comment-share-meta">
                                     <li>
                                         <button class="post-comment">
                                             <i class="bi bi-chat-bubble"></i>
-                                            <span>28</span>
+                                            <span>${fn:length(post.comments)}</span>
                                         </button>
                                     </li>
 
@@ -944,126 +947,23 @@
                         <div class="commant-box hide frnd-search-inner custom-scroll ps ps--active-y">
                             <h4 class="widget-title"> Comments </h4>
                             <ul>
+                                <c:forEach var="comment" items="${post.comments}">
                                 <li class="d-flex align-items-center profile-active">
                                     <!-- profile picture end -->
                                     <div class="profile-thumb ">
                                         <a href="#">
                                             <figure class="profile-thumb-small">
-                                                <img src="images/profile/profile-small-1.jpg" alt="profile picture">
+                                                <img src="${comment.user.profileurl}" alt="profile picture">
                                             </figure>
                                         </a>
                                     </div>
                                     <!-- profile picture end -->
                                     <div class="posted-author">
-                                        <h6 class="author">Jon Wilime</h6>
-                                        <p>What a beautiful pictures</p>
+                                        <h6 class="author">${comment.commentingUSer.firstName} ${comment.commentingUSer.lastName}</h6>
+                                        <p>${comment.commentContent}</p>
                                     </div>
                                 </li>
-                                <li class="d-flex align-items-center profile-active">
-                                    <!-- profile picture end -->
-                                    <div class="profile-thumb ">
-                                        <a href="#">
-                                            <figure class="profile-thumb-small">
-                                                <img src="images/profile/profile-small-2.jpg" alt="profile picture">
-                                            </figure>
-                                        </a>
-                                    </div>
-                                    <!-- profile picture end -->
-                                    <div class="posted-author">
-                                        <h6 class="author"><a href="profile.html">Jon Wileyam</a></h6>
-                                        <button class="add-frnd">What the hack!</button>
-                                    </div>
-                                </li>
-                                <li class="d-flex align-items-center profile-active">
-                                    <!-- profile picture end -->
-                                    <div class="profile-thumb ">
-                                        <a href="#">
-                                            <figure class="profile-thumb-small">
-                                                <img src="images/profile/profile-small-3.jpg" alt="profile picture">
-                                            </figure>
-                                        </a>
-                                    </div>
-                                    <!-- profile picture end -->
-                                    <div class="posted-author">
-                                        <h6 class="author"><a href="profile.html">Mili Raoulin</a></h6>
-                                        <button class="add-frnd">Amazing places and pictures</button>
-                                    </div>
-                                </li>
-                                <li class="d-flex align-items-center profile-active">
-                                    <!-- profile picture end -->
-                                    <div class="profile-thumb ">
-                                        <a href="#">
-                                            <figure class="profile-thumb-small">
-                                                <img src="images/profile/profile-small-4.jpg" alt="profile picture">
-                                            </figure>
-                                        </a>
-                                    </div>
-                                    <!-- profile picture end -->
-                                    <div class="posted-author">
-                                        <h6 class="author"><a href="profile.html">Jon Wilime</a></h6>
-                                        <button class="add-frnd">I want to go that place</button>
-                                    </div>
-                                </li>
-                                <li class="d-flex align-items-center profile-active">
-                                    <!-- profile picture end -->
-                                    <div class="profile-thumb ">
-                                        <a href="#">
-                                            <figure class="profile-thumb-small">
-                                                <img src="images/profile/profile-small-5.jpg" alt="profile picture">
-                                            </figure>
-                                        </a>
-                                    </div>
-                                    <!-- profile picture end -->
-                                    <div class="posted-author">
-                                        <h6 class="author"><a href="profile.html">Robart faul</a></h6>
-                                        <button class="add-frnd">Beautiful</button>
-                                    </div>
-                                </li>
-                                <li class="d-flex align-items-center profile-active">
-                                    <!-- profile picture end -->
-                                    <div class="profile-thumb ">
-                                        <a href="#">
-                                            <figure class="profile-thumb-small">
-                                                <img src="images/profile/profile-small-3.jpg" alt="profile picture">
-                                            </figure>
-                                        </a>
-                                    </div>
-                                    <!-- profile picture end -->
-                                    <div class="posted-author">
-                                        <h6 class="author"><a href="profile.html">Mili Raoulin</a></h6>
-                                        <button class="add-frnd">Cool </button>
-                                    </div>
-                                </li>
-                                <li class="d-flex align-items-center profile-active">
-                                    <!-- profile picture end -->
-                                    <div class="profile-thumb ">
-                                        <a href="#">
-                                            <figure class="profile-thumb-small">
-                                                <img src="images/profile/profile-small-4.jpg" alt="profile picture">
-                                            </figure>
-                                        </a>
-                                    </div>
-                                    <!-- profile picture end -->
-                                    <div class="posted-author">
-                                        <h6 class="author"><a href="profile.html">Jon Wilime</a></h6>
-                                        <button class="add-frnd">Wow amazing </button>
-                                    </div>
-                                </li>
-                                <li class="d-flex align-items-center profile-active">
-                                    <!-- profile picture end -->
-                                    <div class="profile-thumb ">
-                                        <a href="#">
-                                            <figure class="profile-thumb-small">
-                                                <img src="images/profile/profile-small-5.jpg" alt="profile picture">
-                                            </figure>
-                                        </a>
-                                    </div>
-                                    <!-- profile picture end -->
-                                    <div class="posted-author">
-                                        <h6 class="author"><a href="profile.html">Robart faul</a></h6>
-                                        <button class="add-frnd">Wow amazing view</button>
-                                    </div>
-                                </li>
+                                </c:forEach>
                             </ul>
                             <div class="ps__rail-x" style="left: 0px; bottom: -101px;">
                                 <div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div>
@@ -1077,118 +977,23 @@
                         <div class="liked-box frnd-search-inner custom-scroll ps ps--active-y">
                             <h4 class="widget-title"> Liked By </h4>
                             <ul>
+                                <c:forEach var="reaction" items="${post.reactions}">
+
                                 <li class="d-flex align-items-center profile-active">
                                     <!-- profile picture end -->
                                     <div class="profile-thumb ">
                                         <a href="#">
                                             <figure class="profile-thumb-small">
-                                                <img src="images/profile/profile-small-1.jpg" alt="profile picture">
+                                                <img src="${reaction.user.profileurl}" alt="profile picture">
                                             </figure>
                                         </a>
                                     </div>
                                     <!-- profile picture end -->
                                     <div class="posted-author">
-                                        <h6 class="author">Jon Wilime</h6>
+                                        <h6 class="author">${reaction.user.firstName}{reaction.user.lastName}</h6>
                                     </div>
                                 </li>
-                                <li class="d-flex align-items-center profile-active">
-                                    <!-- profile picture end -->
-                                    <div class="profile-thumb ">
-                                        <a href="#">
-                                            <figure class="profile-thumb-small">
-                                                <img src="images/profile/profile-small-2.jpg" alt="profile picture">
-                                            </figure>
-                                        </a>
-                                    </div>
-                                    <!-- profile picture end -->
-                                    <div class="posted-author">
-                                        <h6 class="author"><a href="profile.html">Jon Wileyam</a></h6>
-                                    </div>
-                                </li>
-                                <li class="d-flex align-items-center profile-active">
-                                    <!-- profile picture end -->
-                                    <div class="profile-thumb ">
-                                        <a href="#">
-                                            <figure class="profile-thumb-small">
-                                                <img src="images/profile/profile-small-3.jpg" alt="profile picture">
-                                            </figure>
-                                        </a>
-                                    </div>
-                                    <!-- profile picture end -->
-                                    <div class="posted-author">
-                                        <h6 class="author"><a href="profile.html">Mili Raoulin</a></h6>
-                                    </div>
-                                </li>
-                                <li class="d-flex align-items-center profile-active">
-                                    <!-- profile picture end -->
-                                    <div class="profile-thumb ">
-                                        <a href="#">
-                                            <figure class="profile-thumb-small">
-                                                <img src="images/profile/profile-small-4.jpg" alt="profile picture">
-                                            </figure>
-                                        </a>
-                                    </div>
-                                    <!-- profile picture end -->
-                                    <div class="posted-author">
-                                        <h6 class="author"><a href="profile.html">Jon Wilime</a></h6>
-                                    </div>
-                                </li>
-                                <li class="d-flex align-items-center profile-active">
-                                    <!-- profile picture end -->
-                                    <div class="profile-thumb ">
-                                        <a href="#">
-                                            <figure class="profile-thumb-small">
-                                                <img src="images/profile/profile-small-5.jpg" alt="profile picture">
-                                            </figure>
-                                        </a>
-                                    </div>
-                                    <!-- profile picture end -->
-                                    <div class="posted-author">
-                                        <h6 class="author"><a href="profile.html">Robart faul</a></h6>
-                                    </div>
-                                </li>
-                                <li class="d-flex align-items-center profile-active">
-                                    <!-- profile picture end -->
-                                    <div class="profile-thumb ">
-                                        <a href="#">
-                                            <figure class="profile-thumb-small">
-                                                <img src="images/profile/profile-small-3.jpg" alt="profile picture">
-                                            </figure>
-                                        </a>
-                                    </div>
-                                    <!-- profile picture end -->
-                                    <div class="posted-author">
-                                        <h6 class="author"><a href="profile.html">Mili Raoulin</a></h6>
-                                    </div>
-                                </li>
-                                <li class="d-flex align-items-center profile-active">
-                                    <!-- profile picture end -->
-                                    <div class="profile-thumb ">
-                                        <a href="#">
-                                            <figure class="profile-thumb-small">
-                                                <img src="images/profile/profile-small-4.jpg" alt="profile picture">
-                                            </figure>
-                                        </a>
-                                    </div>
-                                    <!-- profile picture end -->
-                                    <div class="posted-author">
-                                        <h6 class="author"><a href="profile.html">Jon Wilime</a></h6>
-                                    </div>
-                                </li>
-                                <li class="d-flex align-items-center profile-active">
-                                    <!-- profile picture end -->
-                                    <div class="profile-thumb ">
-                                        <a href="#">
-                                            <figure class="profile-thumb-small">
-                                                <img src="images/profile/profile-small-5.jpg" alt="profile picture">
-                                            </figure>
-                                        </a>
-                                    </div>
-                                    <!-- profile picture end -->
-                                    <div class="posted-author">
-                                        <h6 class="author"><a href="profile.html">Robart faul</a></h6>
-                                    </div>
-                                </li>
+                                </c:forEach>
                             </ul>
                             <div class="ps__rail-x" style="left: 0px; bottom: -101px;">
                                 <div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div>
@@ -1223,6 +1028,7 @@
                         <!-- Commant Box End -->
                     </div>
                     <!-- post status end -->
+                    </c:forEach>
                 </div>
                 <div class="col-lg-3 order-3">
                     <aside class="widget-area">

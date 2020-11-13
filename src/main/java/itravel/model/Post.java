@@ -16,7 +16,6 @@ public class Post {
     private List<PostImage> images =new ArrayList<PostImage>();
     private List<Comment> comments =new ArrayList<Comment>();
     private List<PostReaction> reactions =new ArrayList<PostReaction>();
-    private int like;
 
    public Post(int postID, String des,String postDate, Location loc, String depAddress, String desAddress,User user) {
         this.postID = postID;
@@ -90,11 +89,43 @@ public class Post {
         this.postDate = postDate;
     }
 
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+
+    public String getDepAddress() {
+        return depAddress;
+    }
+
+    public void setDepAddress(String depAddress) {
+        this.depAddress = depAddress;
+    }
+
+    public String getDesAddress() {
+        return desAddress;
+    }
+
+    public void setDesAddress(String desAddress) {
+        this.desAddress = desAddress;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     @Override
     public String toString() {
         return "Post{" +
-                "postID=" + postID +
-                ",postDescription=" +description+
+                " postID=" + postID +
+                ",description=" +description+
                 ", postDate=" + postDate +
                 ", location=" + location +
                 ", depAddress='" + depAddress + '\'' +
@@ -107,7 +138,4 @@ public class Post {
                 '}';
     }
 
-    public void setTotalLike(int like) {
-       this.like=like;
-    }
 }

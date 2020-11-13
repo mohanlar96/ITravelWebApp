@@ -4,16 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class User {
-    private String FirstName;
-    private String LastName;
-    private String Gender;
-    private Address Address;
-    private String BirthYear;
-    private String Email;
-    private String Password;
+    private String firstName;
+    private String lastName;
+    private String gender;
+    private Address address;
+    private String birthYear;
+    private String email;
+    private String password;
     private List<User> followers;
     private List<User> followees;
-    private  String profileurl;
+    private String profileurl;
 
 
     public User() {
@@ -21,66 +21,66 @@ public class User {
         followees = new ArrayList<>();
     }
     public User(String firstName,String lastName ,String profileurl){ //this is for profile url
-        this.FirstName=firstName;
-        this.LastName=lastName;
+        this.firstName =firstName;
+        this.lastName =lastName;
         this.profileurl=profileurl;
     }
 
     public String getFirstName() {
-        return FirstName;
+        return firstName;
     }
 
     public void setFirstName(String firstName) {
-        FirstName = firstName;
+        this.firstName = firstName;
     }
 
     public String getLastName() {
-        return LastName;
+        return lastName;
     }
 
     public void setLastName(String lastName) {
-        LastName = lastName;
+        this.lastName = lastName;
     }
 
     public String getGender() {
-        return Gender;
+        return gender;
     }
 
     public void setGender(String gender) {
-        Gender = gender;
+        this.gender = gender;
     }
 
     public Address getAddress() {
-        return Address;
+        return address;
     }
 
     public void setAddress(Address address) {
-        Address = address;
+        this.address = address;
     }
 
     public String getBirthYear() {
-        return BirthYear;
+        return birthYear;
     }
 
     public void setBirthYear(String birthYear) {
-        BirthYear = birthYear;
+        this.birthYear = birthYear;
     }
 
     public String getEmail() {
-        return Email;
+        return email;
     }
 
     public void setEmail(String email) {
-        Email = email;
+        this.email = email;
     }
 
     public String getPassword() {
-        return Password;
+        return password;
     }
 
     public void setPassword(String password) {
         MD5 md5 = new MD5();
-        Password = md5.getMd5(password);
+        this.password = md5.getMd5(password);
     }
 
     public List<User> getFollowers() {
@@ -99,16 +99,25 @@ public class User {
         this.followees.add(followee);
     }
 
+    public String getProfileurl() {
+        return profileurl;
+    }
+
+    public void setProfileurl(String profileurl) {
+        this.profileurl = profileurl;
+    }
+
     @Override
     public String toString() {
         return "User{" +
-                "FirstName='" + FirstName + '\'' +
-                ", LastName='" + LastName + '\'' +
-                ", Gender='" + Gender + '\'' +
-                ", Address=" + Address +
-                ", BirthYear='" + BirthYear + '\'' +
-                ", Email='" + Email + '\'' +
-                ", Password='" + Password + '\'' +
+                "FirstName='" + firstName + '\'' +
+                ", LastName='" + lastName + '\'' +
+                ", profileurl='" + profileurl + '\'' +
+                ", Gender='" + gender + '\'' +
+                ", Address=" + address +
+                ", BirthYear='" + birthYear + '\'' +
+                ", Email='" + email + '\'' +
+                ", Password='" + password + '\'' +
                 ", followers=" + followers +
                 ", followees=" + followees +
                 '}';
