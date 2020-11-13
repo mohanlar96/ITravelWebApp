@@ -15,6 +15,7 @@ import javax.sql.DataSource;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +54,6 @@ public class ProfileServlet extends HttpServlet {
             request.setAttribute("profiles", profiles);
 
             // send to JSP page (view)
-            System.out.println("Here now: "+profiles.get(0).getFullName());
             RequestDispatcher dispatcher = request.getRequestDispatcher("/profile.jsp");
             dispatcher.forward(request, response);
 
@@ -70,16 +70,22 @@ public class ProfileServlet extends HttpServlet {
         Statement info = null;
         ResultSet myRs = null;
 
+        Statement info2 = null;
+        ResultSet rsImgs = null;
+
         try {
             // get a connection
             myConn = DbUtil.connectDb();
 
             // create sql statement
-            String sql = "SELECT user.id, CONCAT(person.fname, ' ', person.lname) AS name, user.biography, person.job, person.cityBirth, image.link FROM person INNER JOIN user ON person.id=user.Person_id INNER JOIN user_image ON user.id=user_image.User_id INNER JOIN image ON user_image.Image_id=image.id WHERE user.id="+id+" AND user_image.sizeimg='L'";
+            String sql = "SELECT user.id, CONCAT(person.fname, ' ', person.lname) AS name, user.biography, person.job, person.cityBirth FROM person INNER JOIN user ON person.id=user.Person_id WHERE user.id="+id;
+            String getImgs = "SELECT image.link, user_image.sizeimg FROM image INNER JOIN user_image ON image.id=user_image.Image_id WHERE user_image.User_id="+id;
             info = myConn.createStatement();
+            info2 = myConn.createStatement();
 
             // execute query
             myRs = info.executeQuery(sql);
+            rsImgs = info2.executeQuery(getImgs);
 
             // process resultset
             while(myRs.next()) {
@@ -90,11 +96,20 @@ public class ProfileServlet extends HttpServlet {
                 profile.setBiography(myRs.getString("biography"));
                 profile.setJob(myRs.getString("job"));
                 profile.setCityBirth(myRs.getString("cityBirth"));
-                profile.setProfilePicture(myRs.getString("link"));
+                while(rsImgs.next()){
+                    if(rsImgs.getString("sizeimg").equals("S"))      profile.setProfPicSmall(rsImgs.getString("link"));
+                    else if(rsImgs.getString("sizeimg").equals("M")) profile.setProfPicMedium(rsImgs.getString("link"));
+                    else if(rsImgs.getString("sizeimg").equals("L")) profile.setProfPicLarge(rsImgs.getString("link"));
+                }
                 profiles.add(profile);
             }
         }
         finally {
+            try{
+                if (rsImgs!=null)     rsImgs.close();
+                if (info2!=null)     info2.close();
+            } catch(Exception exc){ exc.printStackTrace(); }
+
             // close JDBC objects
             DbUtil.close(myConn, info, myRs);
         }

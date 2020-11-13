@@ -6,7 +6,9 @@ public class Profile {
 	private String status;
 	private String Hobby;
 
-	private String profilePicture;
+	private String profPicSmall;
+	private String profPicMedium;
+	private String profPicLarge;
 	private String userId;
 	private String fullName;
 	private String biography;
@@ -32,9 +34,17 @@ public class Profile {
 		Hobby = hobby;
 	}
 
-	public String getProfilePicture()         { return profilePicture; }
-	public void setProfilePicture(String profilePicture) {
-		this.profilePicture = profilePicture;
+	public String getProfPicSmall()         { return profPicSmall; }
+	public void setProfPicSmall(String profPicSmall) {
+		this.profPicSmall = profPicSmall;
+	}
+	public String getProfPicMedium()         { return profPicMedium; }
+	public void setProfPicMedium(String profPicMedium) {
+		this.profPicSmall = profPicMedium;
+	}
+	public String getProfPicLarge()         { return profPicLarge; }
+	public void setProfPicLarge(String profPicLarge) {
+		this.profPicLarge = profPicLarge;
 	}
 	public String getUserId() 			       { return userId; }
 	public void setUserId(String userId)       { this.userId= userId; }

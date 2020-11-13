@@ -17,7 +17,7 @@
                         <div class="profile-picture-box">
                             <figure class="profile-picture">
                                 <a href="profile.jsp">
-                                    <img src="${prof.profilePicture}" alt="profile picture" height="225" width="225"> <!--"images/profile/profile-1.jpg"-->
+                                    <img src="${prof.profPicLarge}" alt="profile picture" height="225" width="225"> <!--"images/profile/profile-1.jpg"-->
                                 </a>
                             </figure>
                         </div>
@@ -100,13 +100,15 @@
                     <div class="card card-small">
                         <div class="share-box-inner">
                             <!-- profile picture end -->
+                            <c:forEach var="prof" items="${profiles}">
                             <div class="profile-thumb">
                                 <a href="#">
                                     <figure class="profile-thumb-middle">
-                                        <img src="images/profile/profile-small-37.jpg" alt="profile picture">
+                                        <img src="${prof.profPicSmall}" alt="profile picture">
                                     </figure>
                                 </a>
                             </div>
+                            </c:forEach>
                             <!-- profile picture end -->
 
                             <!-- share content box start -->
