@@ -2,13 +2,13 @@ package itravel.model;
 
 public class Comment {
     private int ID;
-    private User commentingUSer;
+    private User commentingUser;
     private String commentContent;
 
 
     public Comment(int ID, User commentingUSer, String commentContent) {
         this.ID = ID;
-        this.commentingUSer = commentingUSer;
+        this.commentingUser = commentingUSer;
         this.commentContent = commentContent;
     }
 
@@ -20,12 +20,12 @@ public class Comment {
         ID = iD;
     }
 
-    public User getCommentingUSer() {
-        return commentingUSer;
+    public User getCommentingUser() {
+        return commentingUser;
     }
 
-    public void setCommentingUSer(User commentingUSer) {
-        this.commentingUSer = commentingUSer;
+    public void setCommentingUser(User commentingUser) {
+        this.commentingUser = commentingUser;
     }
 
     public String getCommentContent() {
@@ -40,7 +40,7 @@ public class Comment {
     public String toString() {
         return "Comment{" +
                 "ID='" + ID + '\'' +
-                ", commentingUSer=" + commentingUSer +
+                ", commentingUSer=" + commentingUser +
                 ", commentContent='" + commentContent + '\'' +
                 '}';
     }

@@ -43,7 +43,7 @@ public class TestServlet extends HttpServlet {
             System.out.println(e);
             e.printStackTrace();
         }
-        out.println((posts.get(0)).getImages());
+        out.println(posts);
 
 
 

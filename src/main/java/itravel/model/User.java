@@ -13,17 +13,17 @@ public class User {
     private String password;
     private List<User> followers;
     private List<User> followees;
-    private String profileurl;
+    private String profileUrl;
 
 
     public User() {
         followers = new ArrayList<>();
         followees = new ArrayList<>();
     }
-    public User(String firstName,String lastName ,String profileurl){ //this is for profile url
+    public User(String firstName,String lastName ,String profileUrl){ //this is for profile url
         this.firstName =firstName;
         this.lastName =lastName;
-        this.profileurl=profileurl;
+        this.profileUrl=profileUrl;
     }
 
     public String getFirstName() {
@@ -99,12 +99,12 @@ public class User {
         this.followees.add(followee);
     }
 
-    public String getProfileurl() {
-        return profileurl;
+    public String getProfileUrl() {
+        return profileUrl;
     }
 
-    public void setProfileurl(String profileurl) {
-        this.profileurl = profileurl;
+    public void setProfileUrl(String profileUrl) {
+        this.profileUrl = profileUrl;
     }
 
     @Override
@@ -112,7 +112,7 @@ public class User {
         return "User{" +
                 "FirstName='" + firstName + '\'' +
                 ", LastName='" + lastName + '\'' +
-                ", profileurl='" + profileurl + '\'' +
+                ", profileUrl='" + profileUrl + '\'' +
                 ", Gender='" + gender + '\'' +
                 ", Address=" + address +
                 ", BirthYear='" + birthYear + '\'' +

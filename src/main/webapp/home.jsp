@@ -862,7 +862,7 @@
                             <div class="profile-thumb">
                                 <a href="#">
                                     <figure class="profile-thumb-middle">
-                                        <img src="${post.user.profileurl}" alt="profile picture">
+                                        <img src="${post.user.profileUrl}" alt="profile picture">
                                     </figure>
                                 </a>
                             </div>
@@ -953,13 +953,13 @@
                                     <div class="profile-thumb ">
                                         <a href="#">
                                             <figure class="profile-thumb-small">
-                                                <img src="${comment.user.profileurl}" alt="profile picture">
+                                                <img src="${comment.commentingUser.profileUrl}" alt="profile picture">
                                             </figure>
                                         </a>
                                     </div>
                                     <!-- profile picture end -->
                                     <div class="posted-author">
-                                        <h6 class="author">${comment.commentingUSer.firstName} ${comment.commentingUSer.lastName}</h6>
+                                        <h6 class="author">${comment.commentingUser.firstName} ${comment.commentingUser.lastName}</h6>
                                         <p>${comment.commentContent}</p>
                                     </div>
                                 </li>
@@ -984,13 +984,13 @@
                                     <div class="profile-thumb ">
                                         <a href="#">
                                             <figure class="profile-thumb-small">
-                                                <img src="${reaction.user.profileurl}" alt="profile picture">
+                                                <img src="${reaction.user.profileUrl}" alt="profile picture">
                                             </figure>
                                         </a>
                                     </div>
                                     <!-- profile picture end -->
                                     <div class="posted-author">
-                                        <h6 class="author">${reaction.user.firstName}{reaction.user.lastName}</h6>
+                                        <h6 class="author">${reaction.user.firstName} {reaction.user.firstName}</h6>
                                     </div>
                                 </li>
                                 </c:forEach>
