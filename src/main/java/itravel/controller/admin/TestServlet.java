@@ -15,7 +15,7 @@ import java.util.List;
 
 @WebServlet(value = "/TestServletAdmin")
 public class TestServlet extends HttpServlet {
-
+    // THis is just test
     private DbUtil myDbUtil;
 
     @Resource(name="jdbc/travelDb")
