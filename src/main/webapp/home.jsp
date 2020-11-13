@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8"%>
 <jsp:include page="layout/header.jsp" />
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 
 <main>
     <div class="main-wrapper pt-80">
@@ -183,7 +185,7 @@
                             </div>
                             <!-- profile picture end -->
                             <div class="posted-author">
-                                <h6 class="author"><a href="profile.html">merry watson</a></h6>
+                                <h6 class="author"><a href="profile.html">hello heoel hello  LJ</a></h6>
                                 <span class="post-time">20 min ago</span>
                             </div>
                             <div class="post-settings-bar">
