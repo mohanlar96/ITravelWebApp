@@ -27,3 +27,4 @@
         </div>
     </div>
 </c:if>
+<script src="/js/like_comment_delete_post.js"></script>
