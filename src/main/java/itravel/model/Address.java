@@ -7,8 +7,11 @@ public class Address {
 		return Country;
 	}
 
-	public void setCountry(String country) {
+	public Address setCountry(String country) {
 		Country = country;
+
+
+		return new Address();
 	}
 
 	public String getState() {
