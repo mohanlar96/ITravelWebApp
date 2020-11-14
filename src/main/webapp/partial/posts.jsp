@@ -37,11 +37,14 @@
                     ${post.description}
             </p>
             <c:set var="images" value="${post.images}" scope="request"/>
-            <c:import url="partial/image_gallary.jsp" />
+            <c:import url="partial/image_gallery.jsp" />
 
             <div class="post-meta">
-                <button class="post-meta-like">
-                    <i class="bi bi-heart-beat"></i>
+                <button class="post-meta-like ">
+                    <button class="like-button" style="margin-left: 0; padding: 0 10px;">
+                        <img class="heart" src="/images/icons/heart.png" alt="">
+                        <img class="heart-color" src="/images/icons/heart-color.png" alt="" style="margin-left: 12px;">
+                    </button>
                     <span>${fn:length(post.reactions)} people like this</span>
                     <strong>${fn:length(post.reactions)}</strong>
                 </button>
@@ -149,3 +152,4 @@
     </div>
     <!-- post status end -->
 </c:forEach>
+<script src="/js/like_comment_delete_post.js"></script>
