@@ -2929,19 +2929,20 @@ textarea:focus {
   }
 }
 
-.friend-list-view:hover {
+.friend-list-view:hover  {
   background-color: #dc4734;
 }
 
-.friend-list-view:hover .author a {
+.friend-list-view:hover .author a  {
   color: #fff;
 }
 
-.friend-list-view:hover .add-frnd {
+.friend-list-view:hover  {
   color: #fff;
 }
 
-.friend-list-view .add-frnd {
+
+.friend-list-view  {
   font-size: 12px;
   font-weight: 400;
   line-height: 1.8;
@@ -3251,7 +3252,7 @@ textarea:focus {
   margin-bottom: 0;
 }
 
-.friend-search-list ul li .add-frnd {
+.friend-search-list ul li  {
   display: block;
   font-size: 12px;
   padding-top: 5px;
@@ -3259,9 +3260,11 @@ textarea:focus {
   text-transform: capitalize;
 }
 
-.friend-search-list ul li .add-frnd:hover {
+.friend-search-list ul li  {
   color: #dc4734;
 }
+
+
 .commant-box,.liked-box{
   display: none;
 }
@@ -3525,6 +3528,24 @@ textarea:focus {
 
 .mob-btn {
   width: 50px;
+}
+
+
+.add-frnd{
+  border: solid 1px #dc4734;
+  border-radius: 20px;
+  width:70px;
+  width:75px;
+  color: #dc4734;
+}
+
+.add-frnd:hover{
+  color: #dc4734;
+  border: solid 1px #dc4734;
+  border-radius: 20px;
+  width:72px;
+  background-color:#fff ;
+
 }
 
 /*------- mobile footer area end -------*/
