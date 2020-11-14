@@ -11,13 +11,13 @@
             <div class="profile-thumb">
                 <a href="#">
                     <figure class="profile-thumb-middle">
-                        <img src="${post.user.profileUrl}" alt="profile picture">
+                        <img src="${post.avator.profileUrl}" alt="profile picture">
                     </figure>
                 </a>
             </div>
             <!-- profile picture end -->
             <div class="posted-author">
-                <h6 class="author"><a href="profile.html">${post.user.firstName} ${post.user.lastName}</a></h6>
+                <h6 class="author"><a href="profile.html">${post.avator.firstName} ${post.avator.lastName}</a></h6>
                 <span class="post-time">${post.postDate}</span>
             </div>
             <div class="post-settings-bar">
@@ -71,13 +71,13 @@
                             <div class="profile-thumb ">
                                 <a href="#">
                                     <figure class="profile-thumb-small">
-                                        <img src="${comment.commentingUser.profileUrl}" alt="profile picture">
+                                        <img src="${comment.avator.profileUrl}" alt="profile picture">
                                     </figure>
                                 </a>
                             </div>
                             <!-- profile picture end -->
                             <div class="posted-author">
-                                <h6 class="author">${comment.commentingUser.firstName} ${comment.commentingUser.lastName}</h6>
+                                <h6 class="author">${comment.avator.firstName} ${comment.avator.lastName}</h6>
                                 <p>${comment.commentContent}</p>
                             </div>
                         </li>
@@ -105,13 +105,13 @@
                             <div class="profile-thumb ">
                                 <a href="#">
                                     <figure class="profile-thumb-small">
-                                        <img src="${reaction.user.profileUrl}" alt="profile picture">
+                                        <img src="${reaction.avator.profileUrl}" alt="profile picture">
                                     </figure>
                                 </a>
                             </div>
                             <!-- profile picture end -->
                             <div class="posted-author">
-                                <h6 class="author">${reaction.user.firstName} ${reaction.user.lastName}</h6>
+                                <h6 class="author">${reaction.avator.firstName} ${reaction.avator.lastName}</h6>
                             </div>
                         </li>
                     </c:forEach>
