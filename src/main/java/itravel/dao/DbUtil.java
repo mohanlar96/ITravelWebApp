@@ -1,13 +1,11 @@
 package itravel.dao;
-
 import itravel.model.Student;
-import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class DbUtil {
-    private static final String DB_URL = "jdbc:mysql://localhost:3306/iTravelDb?useSSL=false&useTimezone=true&serverTimezone=UTC";
+    private static final String DB_URL = "jdbc:mysql://localhost:3306/itraveldb?useSSL=false&useTimezone=true&serverTimezone=UTC";
     private static final String USERNAME = "fullstackuser";
     private static final String PASSWORD = "fullstackuser";
 
@@ -22,64 +20,18 @@ public class DbUtil {
         return connObj;
     }
 
-    // example
-    public static List<Student> getStudents() throws Exception {
-        List<Student> students = new ArrayList<>();
 
-        Connection myConn = null;
-        Statement myStmt = null;
-        ResultSet myRs = null;
+    public static void close(Connection myConn, Statement myStmt, ResultSet myRs) {
 
         try {
-            // get a connection
-            myConn = connectDb();
+            if (myRs!=null)     myRs.close();
 
-            // create sql statement
-            String sql = "select * from student order by last_name";
-            myStmt = myConn.createStatement();
+            if (myStmt != null) myStmt.close();
 
-            // execute query
-            myRs = myStmt.executeQuery(sql);
+            if (myConn != null) myConn.close(); // doesn't really close it .. just put back in the connection pool
 
-            // process resultset
-            while(myRs.next()) {
-                // retrieve data from result set row
-                int id = myRs.getInt("id");
-                String firstName = myRs.getString("first_name");
-                String lastName = myRs.getString("last_name");
-                String email = myRs.getString("email");
-
-                // create new student object
-                Student tempStudent = new Student(id, firstName, lastName, email);
-
-                // add it to the list of students
-                students.add(tempStudent);
-            }
-            return students;
-        }
-        finally {
-            // close JDBC objects
-            close(myConn, myStmt, myRs);
-        }
-
-    }
-
-    private static void close(Connection myConn, Statement myStmt, ResultSet myRs) {
-        try {
-            if (myRs!=null) {
-                myRs.close();
-            }
-
-            if (myStmt != null) {
-                myStmt.close();
-            }
-
-            if (myConn != null) {
-                myConn.close(); // doesn't really close it .. just put back in the connection pool
-            }
         } catch(Exception exc) {
             exc.printStackTrace();
         }
-
     }
 }

@@ -4,92 +4,122 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class User {
-	private String FirstName;
-	private String LastName;
-	private String Gender;
-	private Address Address;
-	private String BirthYear;
-	private String Email;
-	private String Password;
-	private List<User> followers;
-	private List<User> followees;
+    private String firstName;
+    private String lastName;
+    private String gender;
+    private Address address;
+    private String birthYear;
+    private String email;
+    private String password;
+    private List<User> followers;
+    private List<User> followees;
+    private String profileUrl;
 
-	public User() {
-		followers = new ArrayList<>();
-		followees = new ArrayList<>();
-	}
 
-	public String getFirstName() {
-		return FirstName;
-	}
+    public User() {
+        followers = new ArrayList<>();
+        followees = new ArrayList<>();
+    }
+    public User(String firstName,String lastName ,String profileUrl){ //this is for profile url
+        this.firstName =firstName;
+        this.lastName =lastName;
+        this.profileUrl=profileUrl;
+    }
 
-	public void setFirstName(String firstName) {
-		FirstName = firstName;
-	}
+    public String getFirstName() {
+        return firstName;
+    }
 
-	public String getLastName() {
-		return LastName;
-	}
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
 
-	public void setLastName(String lastName) {
-		LastName = lastName;
-	}
+    public String getLastName() {
+        return lastName;
+    }
 
-	public String getGender() {
-		return Gender;
-	}
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
 
-	public void setGender(String gender) {
-		Gender = gender;
-	}
+    public String getGender() {
+        return gender;
+    }
 
-	public Address getAddress() {
-		return Address;
-	}
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
 
-	public void setAddress(Address address) {
-		Address = address;
-	}
+    public Address getAddress() {
+        return address;
+    }
 
-	public String getBirthYear() {
-		return BirthYear;
-	}
+    public void setAddress(Address address) {
+        this.address = address;
+    }
 
-	public void setBirthYear(String birthYear) {
-		BirthYear = birthYear;
-	}
+    public String getBirthYear() {
+        return birthYear;
+    }
 
-	public String getEmail() {
-		return Email;
-	}
+    public void setBirthYear(String birthYear) {
+        this.birthYear = birthYear;
+    }
 
-	public void setEmail(String email) {
-		Email = email;
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	public String getPassword() {
-		return Password;
-	}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	public void setPassword(String password) {
-		MD5 md5 = new MD5();
-		Password = md5.getMd5(password);
-	}
+    public String getPassword() {
+        return password;
+    }
 
-	public List<User> getFollowers() {
-		return followers;
-	}
+    public void setPassword(String password) {
+        MD5 md5 = new MD5();
+        this.password = md5.getMd5(password);
+    }
 
-	public void addFollowers(User follower) {
-		this.followers.add(follower);
-	}
+    public List<User> getFollowers() {
+        return followers;
+    }
 
-	public List<User> getFollowees() {
-		return followees;
-	}
+    public void addFollowers(User follower) {
+        this.followers.add(follower);
+    }
 
-	public void addFollowees(User followee) {
-		this.followees.add(followee);
-	}
+    public List<User> getFollowees() {
+        return followees;
+    }
 
+    public void addFollowees(User followee) {
+        this.followees.add(followee);
+    }
+
+    public String getProfileUrl() {
+        return profileUrl;
+    }
+
+    public void setProfileUrl(String profileUrl) {
+        this.profileUrl = profileUrl;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "FirstName='" + firstName + '\'' +
+                ", LastName='" + lastName + '\'' +
+                ", profileUrl='" + profileUrl + '\'' +
+                ", Gender='" + gender + '\'' +
+                ", Address=" + address +
+                ", BirthYear='" + birthYear + '\'' +
+                ", Email='" + email + '\'' +
+                ", Password='" + password + '\'' +
+                ", followers=" + followers +
+                ", followees=" + followees +
+                '}';
+    }
 }
