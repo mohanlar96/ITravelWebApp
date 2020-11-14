@@ -212,7 +212,6 @@
                                 <div class="row no-gutters">
                                     <c:forEach var="img" items="${post.images}">
                                         ${fn:length(post.images)}
-<%--                                        //accoring--%>
 <%--                                        // if only one image //  if 2 image // if 3 //--%>
                                     <div class="col-4">
                                         <figure class="post-thumb img-popup">

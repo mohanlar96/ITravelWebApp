@@ -13,9 +13,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
-@WebServlet(value = "/TestServlet")
+@WebServlet(value = "/TestServletAdmin")
 public class TestServlet extends HttpServlet {
-
+    // THis is just test
     private DbUtil myDbUtil;
 
     @Resource(name="jdbc/travelDb")
