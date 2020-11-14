@@ -1,3 +1,10 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: Santiago
+  Date: 13/11/2020
+  Time: 14:34
+  To change this template use File | Settings | File Templates.
+--%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8"%>
 <jsp:include page="layout/header.jsp" />
@@ -5,7 +12,7 @@
 <main>
     <div class="main-wrapper">
         <!-- BANNER START -->
-        <div class="profile-banner-large bg-img" data-bg="${prof.banner}">
+        <div class="profile-banner-large bg-img" data-bg="${prof.profPicMedium}">
         </div>
         <!-- BANNER END -->
         <!-- OPTIONS BAR START -->
@@ -13,13 +20,13 @@
             <div class="container">
                 <div class="row align-items-center">
                     <div class="col-lg-3 col-md-3">
-                        <div class="profile-picture-box">
-                            <figure class="profile-picture">
-                                <a href="profile.jsp">
-                                    <img src="${prof.profPicLarge}" alt="profile picture" height="225" width="225"> <!--"images/profile/profile-1.jpg"-->
-                                </a>
-                            </figure>
-                        </div>
+                            <div class="profile-picture-box">
+                                <figure class="profile-picture">
+                                    <a href="profile.jsp">
+                                        <img src="${prof.profPicLarge}" alt="profile picture" height="225" width="225"> <!--"images/profile/profile-1.jpg"-->
+                                    </a>
+                                </figure>
+                            </div>
                     </div>
                     <div class="col-lg-6 col-md-6 offset-lg-1">
                         <div class="profile-menu-wrapper">
@@ -29,7 +36,8 @@
                                         <li><a href="profile.jsp">timeline</a></li>
                                         <li><a href="about.jsp">about</a></li>
                                         <li><a href="photos.jsp">photos</a></li>
-                                        <li><a id="main-menu-people" href="<%=request.getContextPath()%>/allpeople">People</a></li>                                        <!-- <li class="d-inline-block d-md-none"><a href="profile.jsp">edit profile</a></li> -->
+                                        <li><a href="friends.jsp">friends</a></li>
+                                        <!-- <li class="d-inline-block d-md-none"><a href="profile.jsp">edit profile</a></li> -->
                                     </ul>
                                 </nav>
                             </div>
@@ -50,42 +58,42 @@
                 <!-- LEFT ASIDE START -->
                 <div class="col-lg-3 order-2 order-lg-1">
                     <aside class="widget-area profile-sidebar">
-                        <!-- widget single item start -->
-                        <div class="card widget-item">
-                            <h4 class="widget-title">${prof.fullName}</h4>
-                            <div class="widget-body">
-                                <div class="about-author">
-                                    <p>${prof.biography}</p>
-                                    <ul class="author-into-list">
-                                        <li><a href="#"><i class="bi bi-office-bag"></i>${prof.job}</a></li>
-                                        <li><a href="#"><i class="bi bi-home"></i>${prof.cityBirth}</a></li>
-                                        <li><a href="#"><i class="bi bi-location-pointer"></i>${prof.cityBirth}</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- widget single item end -->
-                        <!-- widget single item start -->
-                        <div class="card widget-item">
-                            <h4 class="widget-title">LAST IMAGES</h4>
-                            <div class="widget-body">
-                                <div class="sweet-galley img-gallery">
-                                    <div class="row row-5">
-                                        <%for(int i=0; i<9; i++){%>
-                                        <div class="col-4">
-                                            <div class="gallery-tem">
-                                                <figure class="post-thumb">
-                                                    <a class="gallery-selector" href="images/gallery/gallery-2.jpg">
-                                                        <img src="images/gallery/gallery-2.jpg" alt="sweet memory">
-                                                    </a>
-                                                </figure>
-                                            </div>
-                                        </div>
-                                        <%}%>
+                            <!-- widget single item start -->
+                            <div class="card widget-item">
+                                <h4 class="widget-title">${prof.fullName}</h4>
+                                <div class="widget-body">
+                                    <div class="about-author">
+                                        <p>${prof.biography}</p>
+                                        <ul class="author-into-list">
+                                            <li><a href="#"><i class="bi bi-office-bag"></i>${prof.job}</a></li>
+                                            <li><a href="#"><i class="bi bi-home"></i>${prof.cityBirth}</a></li>
+                                            <li><a href="#"><i class="bi bi-location-pointer"></i>${prof.cityBirth}</a></li>
+                                        </ul>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                            <!-- widget single item end -->
+                            <!-- widget single item start -->
+                            <div class="card widget-item">
+                                <h4 class="widget-title">LAST IMAGES</h4>
+                                <div class="widget-body">
+                                    <div class="sweet-galley img-gallery">
+                                        <div class="row row-5">
+                                            <%for(int i=0; i<9; i++){%>
+                                            <div class="col-4">
+                                                <div class="gallery-tem">
+                                                    <figure class="post-thumb">
+                                                        <a class="gallery-selector" href="images/gallery/gallery-2.jpg">
+                                                            <img src="images/gallery/gallery-2.jpg" alt="sweet memory">
+                                                        </a>
+                                                    </figure>
+                                                </div>
+                                            </div>
+                                            <%}%>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                     </aside>
                 </div>
                 <!-- LEFT ASIDE END -->
@@ -95,13 +103,13 @@
                     <div class="card card-small">
                         <div class="share-box-inner">
                             <!-- profile picture end -->
-                            <div class="profile-thumb">
-                                <a href="#">
-                                    <figure class="profile-thumb-middle">
-                                        <img src="${prof.profPicSmall}" alt="profile picture">
-                                    </figure>
-                                </a>
-                            </div>
+                                <div class="profile-thumb">
+                                    <a href="#">
+                                        <figure class="profile-thumb-middle">
+                                            <img src="${prof.profPicSmall}" alt="profile picture">
+                                        </figure>
+                                    </a>
+                                </div>
                             <!-- profile picture end -->
 
                             <!-- share content box start -->
