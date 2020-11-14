@@ -7,8 +7,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.io.PrintWriter;
 
-@WebServlet("/admin/login")
+@WebServlet({"/admin/login"})
 public class AdminLoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -29,5 +30,12 @@ public class AdminLoginServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         System.out.println("admin get request");
         request.getRequestDispatcher("adminLogin.jsp").forward(request, response);
+
+
+        //redirect
+//        response.setContentType("text/html");
+//        PrintWriter pw=response.getWriter();
+//        response.sendRedirect("http://localhost:8080/admin/adminLogin.jsp");
+//        pw.close();
     }
 }

@@ -57,7 +57,7 @@
                             <!-- Menu Footer-->
                             <li class="user-footer">
                                 <div class="pull-right">
-                                    <a href="/admin/logout" class="btn btn-default btn-flat">Sign out</a>
+                                    <a href="logout" class="btn btn-default btn-flat">Sign out</a>
                                 </div>
                             </li>
                         </ul>
@@ -149,19 +149,19 @@
                                             <%--                        <c:set var = "currPage" scope="session" value="${PAGE}"/>--%>
                                             <%--                        <c:set var = "totalPage" scope="session" value="${TOTAL_LENGTH}"/>--%>
                                             <li class="page-item"><a class="page-link" <c:if
-                                                    test="${PAGE>1}"> href="TestServlet?cmdWordServlet=LIST&page=${PAGE-1}"
+                                                    test="${PAGE>1}"> href="controlWords?cmdWordServlet=LIST&page=${PAGE-1}"
                                             </c:if> >Previous</a></li>
                                             <c:forEach var="i" begin="1" end="${TOTAL_LENGTH}">
                                                 <%--                        Item <c:out value = "${i}"/><p>--%>
                                                 <li class="page-item"><a class="page-link"
-                                                                         href="TestServlet?cmdWordServlet=LIST&page=${i}">${i}</a>
+                                                                         href="controlWords?cmdWordServlet=LIST&page=${i}">${i}</a>
                                                 </li>
                                             </c:forEach>
                                             <%--                        <li class="page-item"><a class="page-link" href="#">1</a></li>--%>
                                             <%--                        <li class="page-item"><a class="page-link" href="#">2</a></li>--%>
                                             <%--                        <li class="page-item"><a class="page-link" href="#">3</a></li>--%>
                                             <li class="page-item"><a class="page-link" <c:if
-                                                    test="${PAGE<TOTAL_LENGTH}"> href="TestServlet?cmdWordServlet=LIST&page=${PAGE+1}"
+                                                    test="${PAGE<TOTAL_LENGTH}"> href="controlWords?cmdWordServlet=LIST&page=${PAGE+1}"
                                             </c:if>>Next</a></li>
                                         </ul>
                                     </nav>

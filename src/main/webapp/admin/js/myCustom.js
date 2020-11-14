@@ -46,25 +46,26 @@ $(document).ready(function () {
     //******************************Ajax call to Servlet START*******************************
     // Add new Word dialogue modal
     $('#saveModalButton1').on('click', function () {
-        $.get("TestServlet", {cmdWordServlet: "ADD", newWord: $('#addModalVarWord').val()},function(data){
+        $.get("controlWords", {cmdWordServlet: "ADD", newWord: $('#addModalVarWord').val()},function(data){
             alert("Result: " + data);
         });
     });
 
     // edit Word dialogue modal
     $('#editModalButton2').on('click', function () {
-        $.get("TestServlet", {cmdWordServlet: "UPDATE", newWord: $('#editWord2').val(), currId: $('#showWordId2').val()},function(data){
+        console.log("edit word");
+        $.get("controlWords", {cmdWordServlet: "UPDATE", newWord: $('#editWord2').val(), currId: $('#showWordId2').val()},function(data){
             alert("Result: " + data);
-            window.location.replace("TestServlet");
+            window.location.replace("controlWords");
         });
     });
 
-    // edit Word dialogue modal
+    // delete Word dialogue modal
     $('#deleteModalButton3').on('click', function () {
         console.log("new update word request");
-        $.get("TestServlet", {cmdWordServlet: "DELETE", newWord: $('#deleteWord3').val(), currId: $('#showWordId3').val()},function(data){
+        $.get("controlWords", {cmdWordServlet: "DELETE", newWord: $('#deleteWord3').val(), currId: $('#showWordId3').val()},function(data){
             alert("Result: " + data);
-            window.location.replace("TestServlet");
+            window.location.replace("controlWords");
         });
     });
 //******************************Ajax call to Servlet END*******************************

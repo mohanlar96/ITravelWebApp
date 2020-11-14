@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DbUtil {
-    private static final String DB_URL = "jdbc:mysql://localhost:3306/iTravelDb?useSSL=false&useTimezone=true&serverTimezone=UTC";
+    private static final String DB_URL = "jdbc:mysql://localhost:3306/itraveldb?useSSL=false&useTimezone=true&serverTimezone=UTC";
     private static final String USERNAME = "fullstackuser";
     private static final String PASSWORD = "fullstackuser";
 
