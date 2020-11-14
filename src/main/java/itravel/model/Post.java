@@ -1,12 +1,13 @@
 package itravel.model;
 
-import java.time.LocalDate;
+
+import java.util.Date;
 
 public class Post {
 private String postID;
 private User postingUser; // email
 private Address location;//Country, City
-private LocalDate postDate;
+private Date postDate;
 public String getPostID() {
 	return postID;
 }
@@ -25,10 +26,10 @@ public Address getLocation() {
 public void setLocation(Address location) {
 	this.location = location;
 }
-public LocalDate getPostDate() {
+public Date getPostDate() {
 	return postDate;
 }
-public void setPostDate(LocalDate postDate) {
+public void setPostDate(Date postDate) {
 	this.postDate = postDate;
 }
 
