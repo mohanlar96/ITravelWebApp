@@ -2185,18 +2185,18 @@ textarea:focus {
   display: flex;
 }
 
-.unorder-list .like-button {
+.like-button {
   font-size: 20px;
   margin-left: auto;
   position: relative;
 }
 
-.unorder-list .like-button .heart-color {
+.like-button .heart-color {
   top: 50%;
   left: 0;
   position: absolute;
   opacity: 1;
-  visibility: hidden;
+  display: none;
   -webkit-transform: translateY(-50%);
       -ms-transform: translateY(-50%);
           transform: translateY(-50%);
@@ -2204,16 +2204,19 @@ textarea:focus {
   -o-transition: 0.4s;
   transition: 0.4s;
 }
-
-.unorder-list .like-button:hover .heart, .unorder-list .like-button.active .heart {
-  opacity: 0;
-  visibility: hidden;
+.liked{
+  display: inline-block!important;
 }
 
-.unorder-list .like-button:hover .heart-color, .unorder-list .like-button.active .heart-color {
-  opacity: 1;
-  visibility: visible;
-}
+/*.like-button:hover .heart, .like-button.active .heart {*/
+/*  opacity: 0;*/
+/*  visibility: hidden;*/
+/*}*/
+
+/*.like-button:hover .heart-color, .like-button.active .heart-color {*/
+/*  opacity: 1;*/
+/*  visibility: visible;*/
+/*}*/
 
 /*------- like page list wrapper end -------*/
 .sweet-galley {
