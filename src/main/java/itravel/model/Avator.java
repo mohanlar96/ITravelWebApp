@@ -15,11 +15,6 @@ public class Avator {
         this.lastName =lastName;
         this.profileUrl=profileUrl;
     }
-    public Avator(String firstName, String lastName,String profileUrl){
-        this.firstName =firstName;
-        this.lastName =lastName;
-        this.profileUrl=profileUrl;
-    }
 
     public int getId() {
         return id;
