@@ -1,5 +1,4 @@
 package itravel.controller.user;
-
 import itravel.dao.LoginDao;
 import itravel.model.User;
 
@@ -18,6 +17,7 @@ public class LoginServlet extends HttpServlet {
    String pword =request.getParameter("password");
         LoginDao c = new LoginDao();
       boolean s = c.isValidUserAccount(uname,pword);
+
 
              if(s) {
 

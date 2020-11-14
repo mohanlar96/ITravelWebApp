@@ -3,9 +3,6 @@ package itravel.controller.user;
 import itravel.dao.UserDao;
 import itravel.model.Address;
 import itravel.model.User;
-
-
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,7 +14,6 @@ import java.io.IOException;
 @WebServlet("/register")
 public class UserServlet extends HttpServlet {
     private UserDao userDao = new UserDao();
-    private static final long serialVersionuid = 1l;
 
 
     public void doPost(HttpServletRequest req, HttpServletResponse response) throws ServletException, IOException {
