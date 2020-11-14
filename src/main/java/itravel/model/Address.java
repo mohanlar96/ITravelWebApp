@@ -1,46 +1,39 @@
 package itravel.model;
 
 public class Address {
-	private String Country, State, City, Street, ZipCode;	
+	private String state, city, street1, street2, zipCode;
 
-	public String getCountry() {
-		return Country;
-	}
-
-	public void setCountry(String country) {
-		Country = country;
-	}
-
-	public String getState() {
-		return State;
-	}
-
+	public String getState() { return state; }
 	public void setState(String state) {
-		State = state;
+		this.state = state;
 	}
 
 	public String getCity() {
-		return City;
+		return city;
 	}
-
 	public void setCity(String city) {
-		City = city;
+		this.city = city;
 	}
 
-	public String getStreet() {
-		return Street;
+	public String getStreet1() {
+		return street1;
+	}
+	public void setStreet1(String street1) {
+		this.street1 = street1;
 	}
 
-	public void setStreet(String street) {
-		Street = street;
+	public String getStreet2() {
+		return street2;
+	}
+	public void setStreet2(String street2) {
+		this.street2 = street2;
 	}
 
 	public String getZipCode() {
-		return ZipCode;
+		return zipCode;
 	}
-
 	public void setZipCode(String zipCode) {
-		ZipCode = zipCode;
+		this.zipCode = zipCode;
 	}
 	
 	

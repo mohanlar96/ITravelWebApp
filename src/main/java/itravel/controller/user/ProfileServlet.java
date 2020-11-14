@@ -1,8 +1,7 @@
-package itravel.controller;
+package itravel.controller.user;
 
 import itravel.dao.DbUtil;
 import itravel.model.Profile;
-import itravel.model.Student;
 
 import javax.annotation.Resource;
 import javax.servlet.RequestDispatcher;
@@ -20,7 +19,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-@WebServlet(value = "/ProfileServlet")
+@WebServlet(value = "/profile")
 public class ProfileServlet extends HttpServlet {
 
     private DbUtil myDbUtil;
@@ -47,14 +46,18 @@ public class ProfileServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException{
         String userid = request.getParameter("id");
         try {
-            // get whatever from db util
-            List<Profile> profiles = getProfiles(userid);
+            String filepath = "aaaaaaaaa";
+            if(userid != null && userid.length()>0 && userid.chars().mapToObj(c -> (char) c).allMatch(Character::isDigit)){
+                // get whatever from db util
+                Profile profile = getProfile(userid);
 
-            // add students to the request
-            request.setAttribute("profiles", profiles);
-
+                // add students to the request
+                request.setAttribute("prof", profile);
+                System.out.println("Id is: " + profile.getUserId());
+                if (profile.getUserId() != null) filepath = "/profile.jsp";
+            }
             // send to JSP page (view)
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/profile.jsp");
+            RequestDispatcher dispatcher = request.getRequestDispatcher(filepath);
             dispatcher.forward(request, response);
 
         } catch (Exception exc) {
@@ -63,8 +66,8 @@ public class ProfileServlet extends HttpServlet {
     }
 
     // example
-    public static List<Profile> getProfiles(String id) throws Exception {
-        List<Profile> profiles = new ArrayList<>();
+    public static Profile getProfile(String id) throws Exception {
+        Profile profile = new Profile();
 
         Connection myConn = null;
         Statement info = null;
@@ -89,7 +92,6 @@ public class ProfileServlet extends HttpServlet {
 
             // process resultset
             while(myRs.next()) {
-                Profile profile = new Profile();
                 // retrieve data from result set row
                 profile.setUserId(String.valueOf(myRs.getInt("id")));
                 profile.setFullName(myRs.getString("name"));
@@ -97,11 +99,21 @@ public class ProfileServlet extends HttpServlet {
                 profile.setJob(myRs.getString("job"));
                 profile.setCityBirth(myRs.getString("cityBirth"));
                 while(rsImgs.next()){
-                    if(rsImgs.getString("sizeimg").equals("S"))      profile.setProfPicSmall(rsImgs.getString("link"));
-                    else if(rsImgs.getString("sizeimg").equals("M")) profile.setProfPicMedium(rsImgs.getString("link"));
-                    else if(rsImgs.getString("sizeimg").equals("L")) profile.setProfPicLarge(rsImgs.getString("link"));
+                    switch (rsImgs.getString("sizeimg")) {
+                        case "S":
+                            profile.setProfPicSmall(rsImgs.getString("link"));
+                            break;
+                        case "M":
+                            profile.setProfPicMedium(rsImgs.getString("link"));
+                            break;
+                        case "L":
+                            profile.setProfPicLarge(rsImgs.getString("link"));
+                            break;
+                        case "B":
+                            profile.setBanner(rsImgs.getString("link"));
+                            break;
+                    }
                 }
-                profiles.add(profile);
             }
         }
         finally {
@@ -113,6 +125,6 @@ public class ProfileServlet extends HttpServlet {
             // close JDBC objects
             DbUtil.close(myConn, info, myRs);
         }
-        return profiles;
+        return profile;
     }
 }
