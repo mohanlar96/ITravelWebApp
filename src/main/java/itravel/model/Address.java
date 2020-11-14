@@ -1,48 +1,57 @@
 package itravel.model;
 
 public class Address {
-	private String Country, State, City, Street, ZipCode;	
 
-	public String getCountry() {
-		return Country;
-	}
+    private String state, city, street1, street2, zipCode;
 
-	public void setCountry(String country) {
-		Country = country;
-	}
+    public String getState() {
+        return state;
+    }
 
-	public String getState() {
-		return State;
-	}
+    public void setState(String state) {
+        this.state = state;
+    }
 
-	public void setState(String state) {
-		State = state;
-	}
+    public String getCity() {
+        return city;
+    }
 
-	public String getCity() {
-		return City;
-	}
+    public void setCity(String city) {
+        this.city = city;
+    }
 
-	public void setCity(String city) {
-		City = city;
-	}
+    public String getStreet1() {
+        return street1;
+    }
 
-	public String getStreet() {
-		return Street;
-	}
+    public void setStreet1(String street1) {
+        this.street1 = street1;
+    }
 
-	public void setStreet(String street) {
-		Street = street;
-	}
+    public String getStreet2() {
+        return street2;
+    }
 
-	public String getZipCode() {
-		return ZipCode;
-	}
+    public void setStreet2(String street2) {
+        this.street2 = street2;
+    }
 
-	public void setZipCode(String zipCode) {
-		ZipCode = zipCode;
-	}
-	
-	
+    public String getZipCode() {
+        return zipCode;
+    }
 
+    public void setZipCode(String zipCode) {
+        this.zipCode = zipCode;
+    }
+
+    @Override
+    public String toString() {
+        return "Address{" +
+                "state='" + state + '\'' +
+                ", city='" + city + '\'' +
+                ", street1='" + street1 + '\'' +
+                ", street2='" + street2 + '\'' +
+                ", zipCode='" + zipCode + '\'' +
+                '}';
+    }
 }
