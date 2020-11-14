@@ -13,6 +13,6 @@ public class AdminLogoutServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         System.out.println("***********logged out");
         req.getSession().invalidate();
-        resp.sendRedirect("/admin/login");
+        resp.sendRedirect("login");
     }
 }

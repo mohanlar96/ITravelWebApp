@@ -1,5 +1,8 @@
 package itravel.controller.admin;
 
+import itravel.model.BanWord;
+import itravel.dao.AdminWordDao;
+
 import javax.annotation.Resource;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -15,17 +18,18 @@ import java.util.List;
 @WebServlet(value = "/admin/controlWords")
 public class ControlWordsServlet extends HttpServlet {
 
-    private DbUtil myDbUtil;
+//    private DbUtil AdminWordDao;
 
-    @Resource(name="jdbc/travelDb")
-    private DataSource dataSource;
+
+//    @Resource(name="jdbc/travelDb")
+//    private DataSource dataSource;
 
     @Override
     public void init() throws ServletException {
         super.init();
         // create out student db util ... and pass in the conn pool / datasource
         try {
-            //myDbUtil = new DbUtil(dataSource);
+            //AdminWordDao = new DbUtil(dataSource);
 
         }
         catch (Exception exc) {
@@ -83,7 +87,7 @@ public class ControlWordsServlet extends HttpServlet {
         }
 
         // update the table record
-        myDbUtil.deleteWord(tempId);
+        AdminWordDao.deleteWord(tempId);
 
         // give response back to ajax call;
         PrintWriter out = response.getWriter();
@@ -104,7 +108,7 @@ public class ControlWordsServlet extends HttpServlet {
         BanWord tempWord = new BanWord(tempId,tempStr);
 
         // update the table record
-        myDbUtil.updateWord(tempWord);
+        AdminWordDao.updateWord(tempWord);
 
         // give response back to ajax call;
         PrintWriter out = response.getWriter();
@@ -132,7 +136,7 @@ public class ControlWordsServlet extends HttpServlet {
         System.out.println("it is ok");
 
         // add new record to the DB;
-        myDbUtil.addWord(tempWord);
+        AdminWordDao.addWord(tempWord);
 
         // give response back to ajax call;
         PrintWriter out = response.getWriter();
@@ -155,7 +159,7 @@ public class ControlWordsServlet extends HttpServlet {
         System.out.println("Page number is:"+selectedPageN);
 
         // get count of all words
-        int rowCnt = myDbUtil.getCntBanWords();
+        int rowCnt = AdminWordDao.getCntBanWords();
 
         // each page contains 10 words
         int totalPageN = ((rowCnt-1)/10)+1;
@@ -168,7 +172,7 @@ public class ControlWordsServlet extends HttpServlet {
         }
 
 
-        List<BanWord> theBanWords = myDbUtil.getBanWords(selectedPageN);
+        List<BanWord> theBanWords = AdminWordDao.getBanWords(selectedPageN);
         // add students to the request
         request.setAttribute("WORD_LIST", theBanWords);
         request.setAttribute("PAGE", selectedPageN);

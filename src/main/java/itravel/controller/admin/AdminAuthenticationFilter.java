@@ -8,7 +8,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 //@WebFilter(filterName = "AdminAuthenticationFilter")
-@WebFilter("/admin/*")
+@WebFilter({"/admin/*","/admin"})
 public class AdminAuthenticationFilter implements Filter {
 
     @Override
@@ -22,14 +22,16 @@ public class AdminAuthenticationFilter implements Filter {
         String action = req.getServletPath();
 
         //it shouldnot block css, jpg ...
-        if(action.matches(".*[css|jpg|png|gif|js].*")){
+        if (action.startsWith("/admin/css") || action.startsWith("/admin/js") || action.startsWith("/admin/img") || action.startsWith("/admin/bootstrap")) {
             filterChain.doFilter(servletRequest, servletResponse);
             return;
         }
-
         System.out.println("URL:"+action);
 
         if("/admin".equals(action) || "/admin/login".equals(action) || "/admin/adminLogin.jsp".equals(action)){
+            if (action.equals("/admin")){
+                servletRequest.getRequestDispatcher("/admin/login").forward(servletRequest, servletResponse);
+            }
             filterChain.doFilter(servletRequest, servletResponse);
         } else{
             System.out.println("checking value:");

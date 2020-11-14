@@ -1,68 +1,15 @@
-package itravel.controller.admin;
+package itravel.dao;
 
-import javax.sql.DataSource;
-import java.sql.*;
+import itravel.model.BanWord;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DbUtil {
-    private static final String DB_URL = "jdbc:mysql://localhost:3306/iTravelDb?useSSL=false&useTimezone=true&serverTimezone=UTC";
-    private static final String USERNAME = "fullstackuser";
-    private static final String PASSWORD = "fullstackuser";
-
-    public static Connection connectDb(){
-        Connection connObj = null;
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            connObj = DriverManager.getConnection(DB_URL, USERNAME, PASSWORD);
-        } catch (Exception exObj) {
-            exObj.printStackTrace();
-        }
-        return connObj;
-    }
-
-    // example
-    public static List<Student> getStudents() throws Exception {
-        List<Student> students = new ArrayList<>();
-
-        Connection myConn = null;
-        Statement myStmt = null;
-        ResultSet myRs = null;
-
-        try {
-            // get a connection
-            myConn = connectDb();
-
-            // create sql statement
-            String sql = "select * from student order by last_name";
-            myStmt = myConn.createStatement();
-
-            // execute query
-            myRs = myStmt.executeQuery(sql);
-
-            // process resultset
-            while(myRs.next()) {
-                // retrieve data from result set row
-                int id = myRs.getInt("id");
-                String firstName = myRs.getString("first_name");
-                String lastName = myRs.getString("last_name");
-                String email = myRs.getString("email");
-
-                // create new student object
-                Student tempStudent = new Student(id, firstName, lastName, email);
-
-                // add it to the list of students
-                students.add(tempStudent);
-            }
-            return students;
-        }
-        finally {
-            // close JDBC objects
-            close(myConn, myStmt, myRs);
-        }
-
-    }
-
+public class AdminWordDao {
     public static List<BanWord> getBanWords(int selectedPageN) throws Exception {
         List<BanWord> theBanWords = new ArrayList<>();
 
@@ -72,11 +19,11 @@ public class DbUtil {
 
         try {
             // get a connection
-            myConn = connectDb();
+            myConn = DbUtil.connectDb();
 
             int selectOffset = (selectedPageN-1)*10;
             // create sql statement
-            String sql = "select * from FilterWords limit 10 offset "+selectOffset;
+            String sql = "select * from filterwords limit 10 offset "+selectOffset;
             myStmt = myConn.createStatement();
 
             // execute query
@@ -99,7 +46,7 @@ public class DbUtil {
         }
         finally {
             // close JDBC objects
-            close(myConn, myStmt, myRs);
+            DbUtil.close(myConn, myStmt, myRs);
         }
 
     }
@@ -112,10 +59,10 @@ public class DbUtil {
 
         try {
             // get a connection
-            myConn = connectDb();
+            myConn = DbUtil.connectDb();
 
             // create sql statement
-            String sql = "select count(*) from FilterWords";
+            String sql = "select count(*) from filterwords";
             myStmt = myConn.createStatement();
 
             // execute query
@@ -129,7 +76,7 @@ public class DbUtil {
         }
         finally {
             // close JDBC objects
-            close(myConn, myStmt, myRs);
+            DbUtil.close(myConn, myStmt, myRs);
         }
 
     }
@@ -141,10 +88,10 @@ public class DbUtil {
 
         try {
             // get db connection
-            myConn = connectDb();
+            myConn = DbUtil.connectDb();
 
             // create SQL update statement
-            String sql = "update FilterWords "
+            String sql = "update filterwords "
                     + "set theWord=?"
                     + "where id=?";
 
@@ -160,7 +107,7 @@ public class DbUtil {
         }
         finally {
             // clean up JDBC objects
-            close(myConn, myStmt, null);
+            DbUtil.close(myConn, myStmt, null);
         }
     }
 
@@ -170,10 +117,10 @@ public class DbUtil {
 
         try {
             // get db connection
-            myConn = connectDb();
+            myConn = DbUtil.connectDb();
 
             // create sql for insert
-            String sql = "insert into FilterWords "
+            String sql = "insert into filterwords "
                     + "(theWord) "
                     + "values (?)";
 
@@ -189,7 +136,7 @@ public class DbUtil {
         }
         finally {
             // clean up JDBC objects
-            close(myConn, myStmt, null);
+            DbUtil.close(myConn, myStmt, null);
         }
     }
 
@@ -203,10 +150,10 @@ public class DbUtil {
             int studentId = Integer.parseInt(theWordId);
 
             // get connection to database
-            myConn = connectDb();
+            myConn = DbUtil.connectDb();
 
             // create sql to delete student
-            String sql = "delete from FilterWords where id=?";
+            String sql = "delete from filterwords where id=?";
 
             // prepare statement
             myStmt = myConn.prepareStatement(sql);
@@ -219,27 +166,7 @@ public class DbUtil {
         }
         finally {
             // clean up JDBC code
-            close(myConn, myStmt, null);
-        }
-    }
-
-
-
-    private static void close(Connection myConn, Statement myStmt, ResultSet myRs) {
-        try {
-            if (myRs!=null) {
-                myRs.close();
-            }
-
-            if (myStmt != null) {
-                myStmt.close();
-            }
-
-            if (myConn != null) {
-                myConn.close(); // doesn't really close it .. just put back in the connection pool
-            }
-        } catch(Exception exc) {
-            exc.printStackTrace();
+            DbUtil.close(myConn, myStmt, null);
         }
     }
 }
