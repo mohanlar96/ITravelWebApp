@@ -1,0 +1,7 @@
+
+/* show selected menu */
+ul.sidebar-menu>li>a.current{
+  background-color: #444;
+  color: #f7c08a;
+  border-left-color: #3c8dbc;
+}
