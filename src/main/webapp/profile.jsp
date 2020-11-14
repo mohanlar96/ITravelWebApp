@@ -29,8 +29,7 @@
                                         <li><a href="profile.jsp">timeline</a></li>
                                         <li><a href="about.jsp">about</a></li>
                                         <li><a href="photos.jsp">photos</a></li>
-                                        <li><a href="friends.jsp">friends</a></li>
-                                        <!-- <li class="d-inline-block d-md-none"><a href="profile.jsp">edit profile</a></li> -->
+                                        <li><a id="main-menu-people" href="<%=request.getContextPath()%>/allpeople">People</a></li>                                        <!-- <li class="d-inline-block d-md-none"><a href="profile.jsp">edit profile</a></li> -->
                                     </ul>
                                 </nav>
                             </div>
