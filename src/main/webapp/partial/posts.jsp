@@ -5,6 +5,8 @@
 <c:forEach var="post" items="${requestScope.posts}">
 
     <c:set var="isLiked" scope="application" value="${(post.reactions.stream().filter(x->x.getAvator().getId()==requestScope.avator.id).count()>=1)}"/>
+    <c:set var="isMyPost" scope="application" value="${(post.avator.id==requestScope.avator.id)}"/>
+
     <!-- post status start -->
     <div class="card post">
         <!-- post title start -->
@@ -22,17 +24,20 @@
                 <h6 class="author"><a href="profile?id=${post.avator.id}">${post.avator.firstName} ${post.avator.lastName}</a></h6>
                 <span class="post-time">${post.postDate}</span>
             </div>
-            <div class="post-settings-bar">
-                <span></span>
-                <span></span>
-                <span></span>
-                <div class="post-settings arrow-shape">
-                    <ul>
-                        <li><button class="edit-post" data-postID="${post.postID}">edit post</button></li>
-                        <li><button class="edit-post delete-post" data-postID="${post.postID}">edit post</button></li>
-                    </ul>
+            <c:if test="${isMyPost}">
+                <div class="post-settings-bar">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <div class="post-settings arrow-shape">
+                        <ul>
+                            <li><button class="edit-post" data-postID="${post.postID}">edit post</button></li>
+                            <li><button class="edit-post delete-post" data-postID="${post.postID}">delete post</button></li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
+            </c:if>
+
         </div>
         <!-- post title start -->
         <div class="post-content" data-postID="${post.postID}">
