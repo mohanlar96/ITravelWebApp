@@ -49,7 +49,7 @@ public class ProfileServlet extends HttpServlet {
 
                 // add students to the request
                 request.setAttribute("prof", profile);
-                System.out.println("Id is: " + profile.getUserId());
+               // System.out.println("Id is: " + profile.getUserId());
                 if (profile.getUserId() != null) filepath = "/profile.jsp";
             }
             // send to JSP page (view)

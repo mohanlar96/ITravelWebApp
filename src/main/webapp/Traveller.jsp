@@ -1,24 +1,29 @@
 <%@ page import="itravel.model.User" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.ArrayList" %>
-<%@ page import="itravel.model.PeopleFollow" %>
+<%@ page import="itravel.model.Traveller" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
 
 <jsp:include page="layout/header.jsp"/>
 
 <%--<script type="text/java" src="js/Ajax/myAjax.js"> </script>--%>
 <script>
-    function followUnfollow(id) {
-        // alert(id);
+    function followUnfollow(id,followStatus) {
+         //alert(id +" "+followStatus);
         $.ajax({
-            url: 'FollowUnfollowServlet',
-            data: {peopleID: id},
-            type: 'POST',
+            url: "FollowUnfollowServlet",
+            data: {
+                "travellerID":id,
+                "followingStatus":followStatus
+            },
+            type: "POST",
             dataType: "json",
             cache: false,
             success: function (data) {
-                $('#' + data).text(data);
+                $('#' + id).text(data);
             },
             error: function () {
                 alert('error');
@@ -121,40 +126,40 @@
                 <div class="col-12">
                     <div class="content-box friends-zone">
                         <div class="row mt--20 friends-list">
-                            <%
-                                ArrayList<PeopleFollow> people = new ArrayList<>();
-                                people = (ArrayList<PeopleFollow>) request.getAttribute("PeopleList");
-                                String buttonName;
-                                for (PeopleFollow p : people) {
-                                    if (p.getIsFollwing())
-                                        buttonName = "Following";
-                                    else
-                                        buttonName = "Follow";
+                            <c:forEach var="trvlr" items="${TravelersList}">
+                                <c:choose>
+                                    <c:when test="${trvlr.getIsFollwing()}">
+                                        <c:set var="buttonName" scope="session" value="Following"/>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <c:set var="buttonName" scope="session" value="Follow"/>
+                                    </c:otherwise>
+                                </c:choose>
 
-                            %>
-                            <div class="col-lg-3 col-sm-6 relative">
-                                <div class="friend-list-view">
-                                    <div class="profile-thumb">
-                                        <a href="#">
-                                            <figure class="profile-thumb-middle">
-                                                <img src="<%=p.getPicturePath().toString()%>" alt="profile picture">
-                                            </figure>
-                                        </a>
-                                    </div>
-                                    <div class="posted-author">
-                                        <h6 class="author"><a href="profile.jsp">
-                                            <%=p.getFirstName().toString() + " " + p.getLastName().toString()%>
-                                        </a></h6>
-                                    </div>
-                                    <div class="posted-author">
-                                        <input type="hidden" id="add-frnd-hidden" value="<%=p.getUserID()%>">
-                                        <button class="add-frnd" id="<%=p.getUserID()%>"
-                                                onclick="followUnfollow(<%=p.getUserID()%>)"><%=buttonName%>
-                                        </button>
+                                <div class="col-lg-3 col-sm-6 relative">
+                                    <div class="friend-list-view">
+                                        <div class="profile-thumb">
+                                            <a href="#">
+                                                <figure class="profile-thumb-middle">
+                                                    <img src="${trvlr.getPicturePath().toString()}" alt="profile picture">
+                                                </figure>
+                                            </a>
+                                        </div>
+                                        <div class="posted-author">
+                                            <h6 class="author"><a href="profile.jsp">
+                                                    ${trvlr.getFirstName().toString()} ${trvlr.getLastName().toString()}
+                                            </a></h6>
+                                        </div>
+                                        <div class="posted-author">
+                                            <input type="hidden" id="add-frnd-hidden" value="${trvlr.getUserID()}">
+                                            <button class="add-frnd" id="${trvlr.getUserID()}"
+                                                    onclick="followUnfollow(${trvlr.getUserID()},'${buttonName}')">${buttonName}
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <%}%>
+
+                            </c:forEach>
                             <%--                                    <div class="col-lg-3 col-sm-6 recently collage request">--%>
                             <%--                                        <div class="friend-list-view">--%>
                             <%--                                            <!-- profile picture end -->--%>
