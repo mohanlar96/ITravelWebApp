@@ -18,8 +18,8 @@ public class HomeDao {
         try {
             // create sql statement
             String sql = "" +
-                    "SELECT user.id, post.*, person.fname, person.lname, image.link " +
-                    "FROM post left JOIN user ON post.User_id=user.id " +
+                    "SELECT post.*, person.fname, person.lname, image.link " +
+                    "FROM post INNER JOIN user ON post.User_id=user.id " +
                     "INNER JOIN person ON user.Person_id=person.id " +
                     "INNER JOIN user_image ON user.id=user_image.User_id " +
                     "INNER JOIN image ON user_image.Image_id=image.id " +
@@ -35,7 +35,7 @@ public class HomeDao {
                 int postID=row.getInt("id");
 
 
-                Avator postAvator =new Avator(row.getInt("id"),row.getString("fname"),row.getString("lname"),row.getString("link"));
+                Avator postAvator =new Avator(row.getInt("User_id"),row.getString("fname"),row.getString("lname"),row.getString("link"));
 
                 Post tempPost = new Post(
                         postID,

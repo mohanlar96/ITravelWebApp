@@ -2213,11 +2213,16 @@ textarea:focus {
   margin-left: 0;
 }
 
+#map {
+  height: 100%;
+}
+#controls {
+  position: relative;
+  width: 480px;
+}
 
-/*.like-button:hover .heart, .like-button.active .heart {*/
-/*  opacity: 0;*/
-/*  visibility: hidden;*/
-/*}*/
+
+
 
 /*.like-button:hover .heart-color, .like-button.active .heart-color {*/
 /*  opacity: 1;*/

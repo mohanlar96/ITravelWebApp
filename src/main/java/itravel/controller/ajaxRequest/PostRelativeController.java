@@ -2,8 +2,8 @@ package itravel.controller.ajaxRequest;
 import itravel.dao.DbUtil;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Date;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -17,6 +17,7 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 @WebServlet(value = "/post/interact")
+@MultipartConfig
 public class PostRelativeController extends HttpServlet {
     Connection con=null;
     PreparedStatement state=null;
@@ -25,8 +26,8 @@ public class PostRelativeController extends HttpServlet {
     @Override
     public void init() throws ServletException {
         super.init();
-        con=DbUtil.connectDb();
     }
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
         switch (request.getParameter("functionRequest")) {
@@ -53,26 +54,20 @@ public class PostRelativeController extends HttpServlet {
 
     }
     private void toggleLike(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        con=DbUtil.connectDb();
         Integer userID = Integer.parseInt(request.getParameter("userID"));
         Integer postID = Integer.parseInt(request.getParameter("postID"));
         boolean isLiked= Boolean.valueOf(request.getParameter("isLiked"));
 
+        response.getWriter().println("Server=>"+userID +" "+postID+" "+isLiked);
+
         try{
-            if(isLiked){
-                String sql = "delete  from post_reaction WHERE Actor_id=? AND Post_id=?";
+            if(isLiked){ //if no false .. mea
+                String sql = "delete  from post_reaction WHERE Actor_id="+userID+" AND Post_id="+postID;
                 // prepare statement
                 state = con.prepareStatement(sql);
-                // set params
-                state.setInt(1, userID);
-                state.setInt(2, postID);
-                // execute SQL statement
-                state.execute();
-                DbUtil.close(con,state,null);
-
-                response.getWriter().println("Successfully Added Like!");
-
-
-
+                state.executeUpdate();
+                response.getWriter().println("Successfully disLike!");
             }else{
                 String sql = "insert  into post_reaction VALUES(?,1,?)";
                 // prepare statement
@@ -83,7 +78,7 @@ public class PostRelativeController extends HttpServlet {
                 // execute SQL statement
                 state.execute();
                 DbUtil.close(con,state,null);
-                response.getWriter().println("Successfully DisLike!");
+                response.getWriter().println("Successfully Like!");
 
             }
 
@@ -94,23 +89,24 @@ public class PostRelativeController extends HttpServlet {
 
     }
     private void commentPost(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        con=DbUtil.connectDb();
 
         String comment = request.getParameter("comment");
         Integer userID = Integer.parseInt(request.getParameter("userID"));
         Integer postID= Integer.parseInt(request.getParameter("postID"));
 
+        response.getWriter().println("Server=>"+userID +" "+postID+" "+comment);
 
         try{
-            String sql = "insert  into comment(description,Post_id,Actor_id) VALUES(?,?,?)";
+            String sql = "insert  into comment(description,Post_id,Actor_id) VALUES( ? , ? , ? )";
 
             // prepare statement
             state = con.prepareStatement(sql);
             // set params
             state.setString(1, comment);
             state.setInt(2, postID);
-            state.setInt(2, userID);
-            // execute SQL statement
-            state.execute();
+            state.setInt(3, userID);
+            state.executeUpdate();
             DbUtil.close(con,state,null);
             response.getWriter().println("Successfully Added the comment !");
         }catch (SQLException throwables) {
@@ -119,6 +115,8 @@ public class PostRelativeController extends HttpServlet {
 
     }
     private void post(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        con=DbUtil.connectDb();
+
         String description = request.getParameter("description");
         Double latitude=Double.valueOf(request.getParameter("latitude"));
         Double longitude=Double.valueOf(request.getParameter("longitude"));
@@ -126,12 +124,16 @@ public class PostRelativeController extends HttpServlet {
         String destinationAddress=request.getParameter("destinationAddress");
         Integer userID = Integer.parseInt(request.getParameter("userID"));
 
+        response.getWriter().println("Server=>"+userID +" "+description+"<br> "+latitude +" "+longitude+"  "+departureAddress+" "+destinationAddress );
+
+
         try{
-            String sql = "insert  into post(datetime,latitude,longitude,description,depatureAddress,destinationAddress,unhealthy,User_id) VALUES(?,?,?,?,?,?,?,?)";
+            String sql = "insert  into post(datetime,latitude,longitude,description,departureAddress,destinationAddress,unhealthy,User_id) VALUES( ? , ? , ? , ? , ? , ? , ? , ? )";
 
             // prepare statement
-            state = con.prepareStatement(sql);
-            java.sql.Date d=(java.sql.Date) new Date();
+            state = con.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
+            long time = new java.util.Date().getTime();
+            Date d= new Date(time);
             if(Boolean.valueOf(request.getParameter("isUpdatingPost"))){ 
                 //this is for updating the post 
                 //when user want to update the post .. I will delete the old post and will put with the same datetime
@@ -151,13 +153,13 @@ public class PostRelativeController extends HttpServlet {
             state.setInt(7,1);//unhealthy
             state.setInt(8,userID);
             // execute SQL statement
-            state.executeQuery();
-            row=state.getGeneratedKeys();
             int postID = 0;
-            if(row.next())
-            {
-                postID= row.getInt(1);
+            state.executeUpdate();
+            row= state.getGeneratedKeys();
+            while (row.next() ) {
+                 postID = row.getInt(1);
             }
+            response.getWriter().println("POST ID => "+postID);
 
 
             boolean isFileUploaded= ServletFileUpload.isMultipartContent(request);
@@ -193,6 +195,7 @@ public class PostRelativeController extends HttpServlet {
             try {
                 // Parse the request to get file items.
                 List fileItems = upload.parseRequest(request);
+                System.out.println(fileItems.toString());
 
                 // Process the uploaded file items
                 Iterator i = fileItems.iterator();
@@ -213,7 +216,7 @@ public class PostRelativeController extends HttpServlet {
                         } else {
                             dbFileURL= filePath + fileName.substring(fileName.lastIndexOf("\\")+1) ;
                         }
-
+                        response.getWriter().println("url =>" +dbFileURL);
 
                         fi.write( new File(dbFileURL) ) ;
                         //insert into db
@@ -235,7 +238,8 @@ public class PostRelativeController extends HttpServlet {
             }
 
             DbUtil.close(con,state,row);
-            response.getWriter().println("Successfully Added the post !");
+            response.getWriter().println("Successfully Added the post with images !");
+            response.sendRedirect("/");
         }catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -260,7 +264,6 @@ public class PostRelativeController extends HttpServlet {
             {
                 imgID= row.getInt(1);
             }
-            DbUtil.close(con,state,row);
             return imgID;
         }catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -277,6 +280,7 @@ public class PostRelativeController extends HttpServlet {
     }
 
     private void deletePost(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        con=DbUtil.connectDb();
 
         Integer postID = Integer.parseInt(request.getParameter("postID"));
 

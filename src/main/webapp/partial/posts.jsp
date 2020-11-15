@@ -13,7 +13,7 @@
         <div class="post-title d-flex align-items-center">
             <!-- profile picture end -->
             <div class="profile-thumb">
-                <a href="${post.avator.profileUrl}">
+                <a href="profile?id=${post.avator.id}">
                     <figure class="profile-thumb-middle">
                         <img src="${post.avator.profileUrl}" alt="profile picture">
                     </figure>
@@ -50,13 +50,13 @@
             <div class="post-meta">
                 <button class="post-meta-like">
                     <c:if test="${isLiked}">
-                        <button class="like-button" style="margin-left: 0; padding: 0 10px; float: left" data-isliked="true" >
+                        <button class="like-button click-on-like" i style="margin-left: 0; padding: 0 10px; float: left" data-isliked="true" >
                             <img class="heart" src="/images/icons/heart.png" alt="">
                             <img class="heart-color liked " src="/images/icons/heart-color.png" alt="" style="margin-left: 12px;">
                         </button>
                     </c:if>
                     <c:if test="${!isLiked}">
-                        <button class="like-button" style="margin-left: 0; padding: 0 10px; float: left" data-isliked="false" >
+                        <button class="like-button click-on-like"   style="margin-left: 0; padding: 0 10px; float: left" data-isliked="false" >
                             <img class="heart" src="/images/icons/heart.png" alt="">
                             <img class="heart-color " src="/images/icons/heart-color.png" alt="" style="margin-left: 12px;">
                         </button>
@@ -151,7 +151,7 @@
             <div class="share-box-inner">
                 <!-- profile picture end -->
                 <div class="profile-thumb">
-                    <a href="#">
+                    <a href="profile?id=${requestScope.avator.id}">
                         <figure class="profile-thumb-middle">
                             <img src="${requestScope.avator.avatorIcon}" alt="profile picture">
                         </figure>
@@ -163,7 +163,7 @@
                     <form class="share-text-box" method="post">
                         <textarea name="share" class="share-text-field txt-comment" placeholder="Write a comment" spellcheck="false"></textarea>
                         <grammarly-extension style="position: absolute; top: 0px; left: 0px; pointer-events: none; z-index: auto;" class="_1KJtL"></grammarly-extension>
-                        <button class="btn-share btn-comment" type="button">Comment</button>
+                        <button class="btn-share btn-comment" type="button" >Comment</button>
                     </form>
                 </div>
             </div>
