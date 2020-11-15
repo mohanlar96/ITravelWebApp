@@ -7,6 +7,7 @@
     <c:set var="isLiked" scope="application" value="${(post.reactions.stream().filter(x->x.getAvator().getId()==requestScope.avator.id).count()>=1)}"/>
     <c:set var="isMyPost" scope="application" value="${(post.avator.id==requestScope.avator.id)}"/>
 
+
     <!-- post status start -->
     <div class="card post" data-id="${post.postID}" data-userid="${requestScope.avator.id}" data-avatorurl="${requestScope.avator.profileUrl}" data-fullname="${requestScope.avator.firstName} ${requestScope.avator.lastName}" >
         <!-- post title start -->
@@ -118,7 +119,13 @@
                             </div>
                             <!-- profile picture end -->
                             <div class="posted-author">
-                                <h6 class="author">${comment.avator.firstName} ${comment.avator.lastName}</h6>
+                                <h6 class="author">${comment.avator.firstName} ${comment.avator.lastName}
+<%--                                    <c:if test="${comment.id==requestScope.avator.id}">--%>
+<%--                                         <button class="deletecomment" data-commentid="${comment.id}">--%>
+<%--                                               delete--%>
+<%--                                         </button>--%>
+<%--                                    </c:if>--%>
+                                </h6>
                                 <p>${comment.commentContent}</p>
                             </div>
                         </li>

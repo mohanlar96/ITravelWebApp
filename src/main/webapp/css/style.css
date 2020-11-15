@@ -2220,7 +2220,15 @@ textarea:focus {
   position: relative;
   width: 480px;
 }
+.deletecomment{
+  padding-left: 15px;
+  color: #d75348;
+  font-size: 13px !important;
+  font-weight: normal;
+  display: inline-block;
+  cursor: pointer;
 
+}
 
 
 
