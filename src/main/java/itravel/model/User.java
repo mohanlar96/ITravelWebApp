@@ -14,7 +14,8 @@ public class User {
     private List<User> followers;
     private List<User> followees;
     private String profileUrl;
-
+    private int isDeactivated;
+    private int id;
 
     public User() {
         followers = new ArrayList<>();
@@ -24,6 +25,14 @@ public class User {
         this.firstName =firstName;
         this.lastName =lastName;
         this.profileUrl=profileUrl;
+    }
+
+    public User(int id, String firstName, String lastName, String email, int isDeactivated) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.isDeactivated = isDeactivated;
     }
 
     public String getFirstName() {
@@ -105,6 +114,14 @@ public class User {
 
     public void setProfileUrl(String profileUrl) {
         this.profileUrl = profileUrl;
+    }
+
+    public int getIsDeactivated() {
+        return this.isDeactivated;
+    }
+
+    public int getId() {
+        return this.id;
     }
 
     @Override

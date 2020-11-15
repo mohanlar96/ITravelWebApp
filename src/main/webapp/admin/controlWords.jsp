@@ -1,7 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
-
 <head>
     <meta charset="UTF-8">
     <title>Admin | Control Words</title>
@@ -27,7 +26,7 @@
 <body class="skin-blue">
 <div class="wrapper">
     <header class="main-header">
-        <a href="TestServlet" class="logo"><b>Admin</b>Panel</a>
+        <a href="controlWords" class="logo"><b>Admin</b>Panel</a>
         <!-- Header Navbar: style can be found in header.less -->
         <nav class="navbar navbar-static-top" role="navigation">
             <!-- Sidebar toggle button-->
@@ -74,13 +73,13 @@
             <ul class="sidebar-menu">
                 <li class="header">MAIN NAVIGATION</li>
                 <li>
-                    <a href="activateUsers.jsp">
-                        <i class="fa fa-th"></i> <span>Deactivated Users</span> <span class="badge">5</span>
+                    <a href="deactivatedUsers">
+                        <i class="fa fa-th"></i> <span>Deactivated Users</span> <span class="badge" id="badgeDeactivatedUsers"></span>
                     </a>
                 </li>
                 <li>
                     <a href="bannedPosts.jsp">
-                        <i class="fa fa-th"></i> <span>Banned Posts</span> <span class="badge">2</span>
+                        <i class="fa fa-th"></i> <span>Banned Posts</span> <span class="badge" id="badgeBannedPost"></span>
                     </a>
                 </li>
                 <li>

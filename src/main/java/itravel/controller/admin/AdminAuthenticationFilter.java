@@ -15,6 +15,10 @@ public class AdminAuthenticationFilter implements Filter {
     // Admin user authentication filter, it will affect to all URL starting /admin/*, /admin
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+// if want to remove filter, uncomment next 2 lines
+        //        filterChain.doFilter(servletRequest, servletResponse);
+        //        return;
+
         HttpServletRequest req = (HttpServletRequest) servletRequest;
         HttpServletResponse resp = (HttpServletResponse) servletResponse;
 
@@ -25,7 +29,7 @@ public class AdminAuthenticationFilter implements Filter {
             filterChain.doFilter(servletRequest, servletResponse);
             return;
         }
-        System.out.println("URL:" + action);
+        //System.out.println("URL:" + action);
 
         // Read the session object
         Object isLoggedObj = req.getSession().getAttribute("isLoggedIn");
@@ -33,11 +37,12 @@ public class AdminAuthenticationFilter implements Filter {
         // if not null, check if it is logged in successfully
         if (isLoggedObj != null) {
             boolean isLoggedIn = (Boolean) isLoggedObj;
-            if (isLoggedIn) {//if logged in, dont show login page, go in to admin home page
+            if (isLoggedIn) {
+                //if logged in, dont show login page, go in to admin home page
                 if("/admin".equals(action) || "/admin/login".equals(action) || "/admin/adminLogin.jsp".equals(action)){
                     servletResponse.setContentType("text/html");
                     PrintWriter pw = servletResponse.getWriter();
-                    ((HttpServletResponse) servletResponse).sendRedirect("/admin/controlWords");
+                    ((HttpServletResponse) servletResponse).sendRedirect("/admin/deactivatedUsers");
                     pw.close();
                     return;
                 }
@@ -46,17 +51,22 @@ public class AdminAuthenticationFilter implements Filter {
                 return;
             }
         }
-        // if starts only /admin, redirect to admin/login
-        if (action.equals("/admin")) {
+        // if starts only /admin/login, let it go login page
+        if (action.equals("/admin/login")) {
             //if this happens, redirect to /admin/login
-            servletResponse.setContentType("text/html");
-            PrintWriter pw = servletResponse.getWriter();
-            ((HttpServletResponse) servletResponse).sendRedirect("admin/login");
-            pw.close();
+            filterChain.doFilter(servletRequest, servletResponse);
             return;
         }
-        // everything else, just serve.
-        filterChain.doFilter(servletRequest, servletResponse);
+
+        // everything else, just redirect to login page
+        servletResponse.setContentType("text/html");
+        PrintWriter pw = servletResponse.getWriter();
+        ((HttpServletResponse) servletResponse).sendRedirect("/admin/login");
+        pw.close();
+        return;
+
+
+
 
 
 //        // if never logged in, it will reach here.

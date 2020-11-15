@@ -16,12 +16,11 @@ public class AdminLoginServlet extends HttpServlet {
         try {
             String username = request.getParameter("username");
             String password = request.getParameter("password");
-            System.out.println("checking uname, password");
             if("admin".equals(username) && "123".equals(password)){
                 HttpSession session = request.getSession();
                 session.setAttribute("isLoggedIn", true);
                 session.setAttribute("username", username);
-                response.sendRedirect("controlWords"); //this page should be only acccessed after login
+                response.sendRedirect("deactivatedUsers"); //this page should be only acccessed after login
             }else{
                 response.sendRedirect("login?error=true");
             }
@@ -33,7 +32,7 @@ public class AdminLoginServlet extends HttpServlet {
     }
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        System.out.println("admin get request");
+        //System.out.println("admin get request");
         request.getRequestDispatcher("adminLogin.jsp").forward(request, response);
 
 

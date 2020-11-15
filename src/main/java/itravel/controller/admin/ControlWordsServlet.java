@@ -111,6 +111,7 @@ public class ControlWordsServlet extends HttpServlet {
         out.close();
     }
 
+    // get List of the banned words
     private void listBanWords(HttpServletRequest request, HttpServletResponse response) throws Exception{
         int selectedPageN;
         String tempStr = request.getParameter("page");

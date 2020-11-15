@@ -74,13 +74,13 @@
         <ul class="sidebar-menu">
           <li class="header">MAIN NAVIGATION</li>
           <li>
-            <a href="activateUsers.jsp">
-              <i class="fa fa-th"></i> <span>Deactivated Users</span> <span class="badge">5</span>
+            <a href="deactivatedUsers">
+              <i class="fa fa-th"></i> <span>Deactivated Users</span> <span class="badge" id="badgeDeactivatedUsers"></span>
             </a>
           </li>
           <li>
             <a href="bannedPosts.jsp" class="current">
-              <i class="fa fa-th"></i> <span>Banned Posts</span> <span class="badge">2</span>
+              <i class="fa fa-th"></i> <span>Banned Posts</span> <span class="badge" id="badgeBannedPost"></span>
             </a>
           </li>
           <li>

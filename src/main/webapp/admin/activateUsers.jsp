@@ -23,7 +23,7 @@
   <body class="skin-blue">
     <div class="wrapper">      
       <header class="main-header">
-        <a href="TestServlet" class="logo"><b>Admin</b>Panel</a>
+        <a href="controlWords" class="logo"><b>Admin</b>Panel</a>
         <!-- Header Navbar: style can be found in header.less -->
         <nav class="navbar navbar-static-top" role="navigation">
           <!-- Sidebar toggle button-->
@@ -70,13 +70,13 @@
           <ul class="sidebar-menu">
             <li class="header">MAIN NAVIGATION</li>                        
             <li>
-              <a href="activateUsers.jsp" class="current">
-                <i class="fa fa-th"></i> <span>Deactivated Users</span> <span class="badge">5</span>
+              <a href="deactivatedUsers" class="current">
+                <i class="fa fa-th"></i> <span>Deactivated Users</span> <span class="badge" id="badgeDeactivatedUsers">${TOTAL_USER_CNT}</span>
               </a>
             </li> 
             <li>
               <a href="bannedPosts.jsp">
-                <i class="fa fa-th"></i> <span>Banned Posts</span> <span class="badge">2</span>
+                <i class="fa fa-th"></i> <span>Banned Posts</span> <span class="badge" id="badgeBannedPost"></span>
               </a>
             </li>
             <li>
@@ -98,10 +98,11 @@
               <div class="box">
                 <div class="box-header">
                   <h3 class="box-title">List of deactivated users</h3>
-                </div><!-- /.box-header -->
+                </div>
+                <!-- /.box-header -->
                 <div class="box-body">
                   <div>
-                    <button type="button" class="btn btn-success">Activate</button>
+                    <button type="button" id="activateBtn" class="btn btn-success">Activate</button>
                   </div>
                   <table id="example2" class="table table-bordered table-hover">
                     <thead>
@@ -109,27 +110,53 @@
                         <th>#ID</th>
                         <th>First Name</th>
                         <th>Last Name</th>
-                        <th>User Name</th>
+                        <th>Email</th>
                         <th></th>
                       </tr>
                     </thead>
                     <tbody>
+                    <c:forEach var="tempUser" items="${USER_LIST}">
                       <tr>
-                        <td>1</td>
-                        <td>John</td>
-                        <td>Doe</td>
-                        <td>jdog</td>
+                        <td> ${tempUser.id} </td>
+                        <td> ${tempUser.firstName} </td>
+                        <td> ${tempUser.lastName} </td>
+                        <td> ${tempUser.email} </td>
                         <td><input type="checkbox" name="name1"></td>
                       </tr>
-                      <tr>
-                        <td>2</td>
-                        <td>Max</td>
-                        <td>Imum</td>
-                        <td>maxie</td>
-                        <td><input type="checkbox" name="name2"></td>
-                      </tr>                                         
+                    </c:forEach>
                     </tbody>
                   </table>
+                  <div class="row">
+                    <div class="col-xs-6">
+                      <div id="mytable_info">
+                        <p data-page="${PAGE}" data-totalpage="${TOTAL_LENGTH}"
+                           id="myPagination">${PAGE} of ${TOTAL_LENGTH}</p>
+                      </div>
+                    </div>
+                    <div class="col-xs-6">
+                      <nav aria-label="CustomPagination">
+                        <ul class="pagination">
+                          <%--                        <c:set var = "currPage" scope="session" value="${PAGE}"/>--%>
+                          <%--                        <c:set var = "totalPage" scope="session" value="${TOTAL_LENGTH}"/>--%>
+                          <li class="page-item"><a class="page-link" <c:if
+                                  test="${PAGE>1}"> href="deactivatedUsers?cmdUserServlet=LIST&page=${PAGE-1}"
+                          </c:if> >Previous</a></li>
+                          <c:forEach var="i" begin="1" end="${TOTAL_LENGTH}">
+                            <%--                        Item <c:out value = "${i}"/><p>--%>
+                            <li class="page-item"><a class="page-link"
+                                                     href="deactivatedUsers?cmdUserServlet=LIST&page=${i}">${i}</a>
+                            </li>
+                          </c:forEach>
+                          <%--                        <li class="page-item"><a class="page-link" href="#">1</a></li>--%>
+                          <%--                        <li class="page-item"><a class="page-link" href="#">2</a></li>--%>
+                          <%--                        <li class="page-item"><a class="page-link" href="#">3</a></li>--%>
+                          <li class="page-item"><a class="page-link" <c:if
+                                  test="${PAGE<TOTAL_LENGTH}"> href="deactivatedUsers?cmdUserServlet=LIST&page=${PAGE+1}"
+                          </c:if>>Next</a></li>
+                        </ul>
+                      </nav>
+                    </div>
+                  </div>
                 </div><!-- /.box-body -->
               </div><!-- /.box -->              
             </div><!-- /.col -->
@@ -173,6 +200,6 @@
         });
       });
     </script> --%>
-
+    <script src='js/myCustom2.js'></script>
   </body>
 </html>
