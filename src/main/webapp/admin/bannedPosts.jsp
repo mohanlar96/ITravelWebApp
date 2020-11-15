@@ -74,13 +74,13 @@
         <ul class="sidebar-menu">
           <li class="header">MAIN NAVIGATION</li>
           <li>
-            <a href="activateUsers.jsp">
-              <i class="fa fa-th"></i> <span>Deactivated Users</span> <span class="badge">5</span>
+            <a href="deactivatedUsers">
+              <i class="fa fa-th"></i> <span>Deactivated Users</span> <span class="badge" id="badgeDeactivatedUsers"></span>
             </a>
           </li>
           <li>
             <a href="bannedPosts.jsp" class="current">
-              <i class="fa fa-th"></i> <span>Banned Posts</span> <span class="badge">2</span>
+              <i class="fa fa-th"></i> <span>Banned Posts</span> <span class="badge" id="badgeBannedPost"></span>
             </a>
           </li>
           <li>
@@ -112,7 +112,7 @@
                     <tr>
                       <th>#ID</th>
                       <th>Post</th>
-                      <th>Found words</th>
+<%--                      <th>Found words</th>--%>
                       <th></th>
                     </tr>
                   </thead>
@@ -120,7 +120,7 @@
                     <tr>
                       <td>1</td>
                       <td>This is not ok.</td>
-                      <td>ok</td>
+<%--                      <td>ok</td>--%>
                       <td><input type="checkbox" name="name1"></td>
                     </tr>
                   </tbody>
