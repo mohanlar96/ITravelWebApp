@@ -112,7 +112,7 @@
                     <tr>
                       <th>#ID</th>
                       <th>Post</th>
-                      <th>Found words</th>
+<%--                      <th>Found words</th>--%>
                       <th></th>
                     </tr>
                   </thead>
@@ -120,7 +120,7 @@
                     <tr>
                       <td>1</td>
                       <td>This is not ok.</td>
-                      <td>ok</td>
+<%--                      <td>ok</td>--%>
                       <td><input type="checkbox" name="name1"></td>
                     </tr>
                   </tbody>

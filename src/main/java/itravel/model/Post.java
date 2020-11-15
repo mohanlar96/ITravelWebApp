@@ -16,8 +16,9 @@ public class Post {
     private List<PostImage> images =new ArrayList<PostImage>();
     private List<Comment> comments =new ArrayList<Comment>();
     private List<PostReaction> reactions =new ArrayList<PostReaction>();
+    private int unhealthy;
 
-   public Post(int postID, String des,String postDate, Location loc, String depAddress, String desAddress,User user) {
+    public Post(int postID, String des,String postDate, Location loc, String depAddress, String desAddress,User user) {
         this.postID = postID;
         this.description=des;
         this.postDate = postDate;

@@ -1,6 +1,6 @@
 package itravel.dao;
 
-import itravel.model.BanWord;
+import itravel.model.Post;
 import itravel.model.User;
 
 import java.sql.Connection;
@@ -10,10 +10,10 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AdminDeactivatedUserDao {
+public class AdminPostDao {
 
     // GET the count of users
-    public static int getCntUsers() throws Exception {
+    public static int getCntPosts() throws Exception {
         int rowCnt = 0;
         Connection myConn = null;
         Statement myStmt = null;
@@ -24,12 +24,12 @@ public class AdminDeactivatedUserDao {
             myConn = DbUtil.connectDb();
 
             // create sql statement
-            String sql = "select count(*) from user where isDeactivated=1";
+            String sql = "select count(*) from post where unhealthy=1";
             myStmt = myConn.createStatement();
 
             // execute query
             myRs = myStmt.executeQuery(sql);
-            // process resultset
+            // process result set
             while(myRs.next()) {
                 // retrieve data from result set row
                 rowCnt = myRs.getInt(1);
@@ -43,8 +43,7 @@ public class AdminDeactivatedUserDao {
 
     }
 
-    public static void updateDeactivateDUsers(String[] ids) throws Exception {
-
+    public static void updatePosts(String[] ids) throws Exception {
         Connection myConn = null;
         PreparedStatement myStmt = null;
 
@@ -54,8 +53,8 @@ public class AdminDeactivatedUserDao {
 
             for (String id : ids) {
                 // create SQL update statement
-                String sql = "update user "
-                        + "set isDeactivated=0 "
+                String sql = "update post "
+                        + "set unhealthy=0 "
                         + "where id=?";
 
                 // prepare statement
@@ -72,12 +71,10 @@ public class AdminDeactivatedUserDao {
             // clean up JDBC objects
             DbUtil.close(myConn, myStmt, null);
         }
-
     }
 
-    // GET List of Deactivated Users;
-    public static List<User> getDeactivatedUser(int selectedPageN) throws Exception{
-        List<User> theUsers = new ArrayList<>();
+    public static List<Post> getUnhealthyPosts(int selectedPageN) throws Exception {
+        List<Post> thePosts = new ArrayList<>();
 
         Connection myConn = null;
         Statement myStmt = null;
@@ -90,9 +87,10 @@ public class AdminDeactivatedUserDao {
             int selectOffset = (selectedPageN-1)*10;
             // create sql statement
             String sql = "select a.fname, a.lname, b.email, b.id " +
-                                "from person a INNER JOIN user b " +
-                                "ON a.id = b.Person_id where b.isDeactivated = 1 " +
-                                "limit 10 offset "+selectOffset;
+                    "from person a INNER JOIN user b " +
+                    "ON a.id = b.Person_id where b.isDeactivated = 1 " +
+                    "limit 10 offset "+selectOffset;
+
 
             myStmt = myConn.createStatement();
 
@@ -108,12 +106,12 @@ public class AdminDeactivatedUserDao {
                 String email = myRs.getString("email");
 
                 // create new user object
-                User theUser = new User(id, fName, lName, email, 0);
+                Post thePost = new Post(id, fName, lName, email, 0);
 
                 // add it to the list of students
-                theUsers.add(theUser);
+                thePosts.add(thePost);
             }
-            return theUsers;
+            return thePosts;
         }
         finally {
             // close JDBC objects
