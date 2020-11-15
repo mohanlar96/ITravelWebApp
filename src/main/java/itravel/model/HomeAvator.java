@@ -3,6 +3,7 @@ package itravel.model;
 public class HomeAvator  extends Avator{
     private String banner;
     private String biography;
+    private String avatorIcon;
 
     public HomeAvator(int id, String firstName, String lastName, String profileUrl) {
         super(id, firstName, lastName, profileUrl);
@@ -10,6 +11,14 @@ public class HomeAvator  extends Avator{
 
     public String getBanner() {
         return banner;
+    }
+
+    public String getAvatorIcon() {
+        return avatorIcon;
+    }
+
+    public void setAvatorIcon(String avatorIcon) {
+        this.avatorIcon = avatorIcon;
     }
 
     public void setBanner(String banner) {
@@ -29,6 +38,7 @@ public class HomeAvator  extends Avator{
         return "HomeAvator{" +
                 "banner='" + banner + '\'' +
                 ", biography='" + biography + '\'' +
+                ", avatorIcon='" + avatorIcon + '\'' +
                 "} " + super.toString();
     }
 }

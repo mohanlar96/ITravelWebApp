@@ -15,15 +15,15 @@
                         <div class="card card-profile widget-item p-0" id="userID" data-id="2">
                             <div class="profile-banner">
                                 <figure class="profile-banner-small">
-                                    <a href="profile.html">
-                                        <img src="${avator.profileUrl}" alt="">
-                                    </a>
-                                    <a href="profile.html" class="profile-thumb-2">
+                                    <a href="/profile?id${avator.id}">
                                         <img src="${avator.banner}" alt="">
+                                    </a>
+                                    <a href="/profile?id${avator.id}" class="profile-thumb-2">
+                                        <img src="${avator.profileUrl}" alt="">
                                     </a>
                                 </figure>
                                 <div class="profile-desc text-center">
-                                    <h6 class="author"><a href="profile.html">${avator.firstName} ${avator.lastName}</a></h6>
+                                    <h6 class="author"><a href="/profile?id${avator.id}">${avator.firstName} ${avator.lastName}</a></h6>
                                     <p>${avator.biography}</p>
                                 </div>
                             </div>
@@ -40,7 +40,7 @@
                             <div class="profile-thumb">
                                 <a href="#">
                                     <figure class="profile-thumb-middle">
-                                        <img src="images/profile/profile-small-37.jpg" alt="profile picture">
+                                        <img src="${avator.avatorIcon}" alt="profile picture">
                                     </figure>
                                 </a>
                             </div>
@@ -96,6 +96,7 @@
                     </div>
                     <!-- share box end -->
                     <c:set var="posts" value="${posts}" scope="request"/>
+                    <c:set var="avator" value="${avator}" scope="request"/>
                     <c:import url="partial/posts.jsp" />
 
                 </div>

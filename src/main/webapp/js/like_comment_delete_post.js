@@ -4,7 +4,7 @@ $(document).ready(function() {
     $("button.like-button").on('click',function(){
        const likeBtn= $(this);
        const postId=likeBtn.parents("post-content").data("postID");
-       const isLiked=
+       const isLiked=true;
 
         $.post('/post/interact',
             {   functionRequest:'LIKE',

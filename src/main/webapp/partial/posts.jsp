@@ -3,13 +3,15 @@
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
 <!-- post status start -->
 <c:forEach var="post" items="${requestScope.posts}">
+
+    <c:set var="isLiked" scope="application" value="${(post.reactions.stream().filter(x->x.getAvator().getId()==requestScope.avator.id).count()>=1)}"/>
     <!-- post status start -->
     <div class="card post">
         <!-- post title start -->
         <div class="post-title d-flex align-items-center">
             <!-- profile picture end -->
             <div class="profile-thumb">
-                <a href="#">
+                <a href="${post.avator.profileUrl}">
                     <figure class="profile-thumb-middle">
                         <img src="${post.avator.profileUrl}" alt="profile picture">
                     </figure>
@@ -17,7 +19,7 @@
             </div>
             <!-- profile picture end -->
             <div class="posted-author">
-                <h6 class="author"><a href="profile.html">${post.avator.firstName} ${post.avator.lastName}</a></h6>
+                <h6 class="author"><a href="profile?id=${post.avator.id}">${post.avator.firstName} ${post.avator.lastName}</a></h6>
                 <span class="post-time">${post.postDate}</span>
             </div>
             <div class="post-settings-bar">
@@ -26,7 +28,8 @@
                 <span></span>
                 <div class="post-settings arrow-shape">
                     <ul>
-                        <li><button>edit post</button></li>
+                        <li><button class="edit-post" data-postID="${post.postID}">edit post</button></li>
+                        <li><button class="edit-post delete-post" data-postID="${post.postID}">edit post</button></li>
                     </ul>
                 </div>
             </div>
@@ -40,13 +43,25 @@
             <c:import url="partial/image_gallery.jsp" />
 
             <div class="post-meta">
-                <button class="post-meta-like ">
-                    <button class="like-button" style="margin-left: 0; padding: 0 10px;" data-isLiked="true">
-                        <img class="heart" src="/images/icons/heart.png" alt="">
-                        <img class="heart-color" src="/images/icons/heart-color.png" alt="" style="margin-left: 12px;">
+                <button class="post-meta-like">
+                    <c:if test="${isLiked}">
+                        <button class="like-button" style="margin-left: 0; padding: 0 10px; float: left" data-isLiked="true" >
+                            <img class="heart" src="/images/icons/heart.png" alt="">
+                            <img class="heart-color liked " src="/images/icons/heart-color.png" alt="" style="margin-left: 12px;">
+                        </button>
+                    </c:if>
+                    <c:if test="${!isLiked}">
+                        <button class="like-button" style="margin-left: 0; padding: 0 10px; float: left" data-isLiked="false" >
+                            <img class="heart" src="/images/icons/heart.png" alt="">
+                            <img class="heart-color " src="/images/icons/heart-color.png" alt="" style="margin-left: 12px;">
+                        </button>
+                    </c:if>
+
+                    <button class="like-button show-liked-dialog">
+                        <span > <c:if test="${isLiked}">You and </c:if>${fn:length(post.reactions)} people like this</span>
+                        <strong  >${fn:length(post.reactions)}</strong>
                     </button>
-                    <span>${fn:length(post.reactions)} people like this</span>
-                    <strong>${fn:length(post.reactions)}</strong>
+
                 </button>
                 <ul class="comment-share-meta">
                     <li>
@@ -69,7 +84,7 @@
                         <li class="d-flex align-items-center profile-active">
                             <!-- profile picture end -->
                             <div class="profile-thumb ">
-                                <a href="#">
+                                <a href="/profile?id=${comment.avator.id}">
                                     <figure class="profile-thumb-small">
                                         <img src="${comment.avator.profileUrl}" alt="profile picture">
                                     </figure>
@@ -103,7 +118,7 @@
                         <li class="d-flex align-items-center profile-active">
                             <!-- profile picture end -->
                             <div class="profile-thumb ">
-                                <a href="#">
+                                <a href="/profile?id=${reaction.avator.id}">
                                     <figure class="profile-thumb-small">
                                         <img src="${reaction.avator.profileUrl}" alt="profile picture">
                                     </figure>
@@ -133,7 +148,7 @@
                 <div class="profile-thumb">
                     <a href="#">
                         <figure class="profile-thumb-middle">
-                            <img src="images/profile/profile-small-37.jpg" alt="profile picture">
+                            <img src="${requestScope.avator.avatorIcon}" alt="profile picture">
                         </figure>
                     </a>
                 </div>

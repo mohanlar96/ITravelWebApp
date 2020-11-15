@@ -197,6 +197,8 @@ public class HomeDao {
                 String imgSize=row.getString("sizeimg");
                 if(imgSize.contains("V")) avator.setBanner(row.getString("link"));
                 if(imgSize.contains("M")) avator.setProfileUrl(row.getString("link"));
+                if(imgSize.contains("S")) avator.setAvatorIcon(row.getString("link"));
+
 
             }
             DbUtil.close(con,ps,row);
