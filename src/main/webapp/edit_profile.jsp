@@ -88,7 +88,7 @@
                         $("#users").on('show.bs.modal', function(){
                             $("#email_m").val($("#email").text());
                             $("#usern_m").val($("#usern").text());
-                            $("#passw_m").val($("#passw").text());
+                            //$("#passw_m").val($("#passw").text());
                             $("#bio_m").val($("#bio").text());
                         });
                         $("#names").on('show.bs.modal', function(){
@@ -111,7 +111,7 @@
                     function xUsers(){
                         $("#email").text($("#email_m").val());
                         $("#usern").text($("#usern_m").val());
-                        $("#passw").text($("#passw_m").val());
+                        //$("#passw").text($("#passw_m").val());
                         $("#bio").text($("#bio_m").val());
                     }
                     function xNames(){
@@ -147,16 +147,16 @@
                                         <label class="refname">ACCOUNT INFORMATION</label>
                                     </div>
                                     <div id="email_s" class="share-text-field" aria-disabled="true">
-                                        <label class="refname">Email</label><span id="email" class="answer">ABC</span>
+                                        <label class="refname">Email</label><span id="email" class="answer">${prof.email}</span>
                                     </div>
                                     <div id="usern_s" class="share-text-field" aria-disabled="true">
-                                        <label class="refname">Username</label><span id="usern" class="answer">ABC</span>
+                                        <label class="refname">Username</label><span id="usern" class="answer">${prof.username}</span>
                                     </div>
-                                    <div id="passw_s" class="share-text-field" aria-disabled="true">
-                                        <label class="refname">Password</label><span id="passw" class="answer">ABC</span>
-                                    </div>
+                                    <!--<div id="passw_s" class="share-text-field" aria-disabled="true">
+                                        <label class="refname">Password</label><span id="passw" class="answer">{prof.password}</span>
+                                    </div>-->
                                     <div id="bio_s" class="share-text-field" aria-disabled="true">
-                                        <label class="refname">Biography</label><span id="bio" class="answer">ABC</span>
+                                        <label class="refname">Biography</label><span id="bio" class="answer">${prof.biography}</span>
                                     </div>
                                     <input class="btn-sec" type="submit" value="save"/>
                                 </form>
@@ -176,7 +176,7 @@
                                             <!-- UPDATING PART START -->
                                             <label for="email_m" class="refname">Email</label><input type="text" id="email_m" name="email_m" maxlength="50" required class="top-search-field lightred"/>
                                             <label for="usern_m" class="refname">Username</label><input type="text" id="usern_m" name="usern_m" maxlength="20" required class="top-search-field lightred"/>
-                                            <label for="passw_m" class="refname">Password</label><input type="text" id="passw_m" name="passw_m" maxlength="50" required class="top-search-field lightred"/>
+                                            <!--<label for="passw_m" class="refname">Password</label><input type="password" id="passw_m" name="passw_m" maxlength="50" required class="top-search-field lightred"/>-->
                                             <label for="bio_m" class="refname">Biography</label><textarea id="bio_m" name="bio_m" maxlength="200" placeholder="Describe yourself briefly..." rows="4" class="top-search-field lightred"></textarea>
                                             <!-- UPDATING PART END   -->
                                         </div>
@@ -202,25 +202,25 @@
                                         <label class="refname">PERSONAL INFORMATION</label>
                                     </div>
                                     <div id="fname_s" class="share-text-field" aria-disabled="true" data-toggle="modal" data-target="#names">
-                                        <label class="refname">First Name</label><span id="fname" class="answer">ABC</span>
+                                        <label class="refname">First Name</label><span id="fname" class="answer">${prof.firstName}</span>
                                     </div>
                                     <div id="mname_s" class="share-text-field" aria-disabled="true" data-toggle="modal" data-target="#names">
-                                        <label class="refname">Middle Name</label><span id="mname" class="answer">ABC</span>
+                                        <label class="refname">Middle Name</label><span id="mname" class="answer">${prof.midName}</span>
                                     </div>
                                     <div id="lname_s" class="share-text-field" aria-disabled="true" data-toggle="modal" data-target="#names">
-                                        <label class="refname">Last Name</label><span id="lname" class="answer">ABC</span>
+                                        <label class="refname">Last Name</label><span id="lname" class="answer">${prof.lastName}</span>
                                     </div>
                                     <div id="gender_s" class="share-text-field" aria-disabled="true" data-toggle="modal" data-target="#names">
-                                        <label class="refname">Gender</label><span id="gender" class="answer">F</span>
+                                        <label class="refname">Gender</label><span id="gender" class="answer">${prof.gender}</span>
                                     </div>
                                     <div id="job_s" class="share-text-field" aria-disabled="true" data-toggle="modal" data-target="#names">
-                                        <label class="refname">Job</label><span id="job" class="answer">ABC</span>
+                                        <label class="refname">Job</label><span id="job" class="answer">${prof.job}</span>
                                     </div>
                                     <div id="cityb_s" class="share-text-field" aria-disabled="true" data-toggle="modal" data-target="#names">
-                                        <label class="refname">City of Birth</label><span id="cityb" class="answer">ABC</span>
+                                        <label class="refname">City of Birth</label><span id="cityb" class="answer">${prof.cityBirth}</span>
                                     </div>
                                     <div id="dateb_s" class="share-text-field" aria-disabled="true" data-toggle="modal" data-target="#names">
-                                        <label class="refname">Date of Birth</label><span id="dateb" class="answer">1998-09-30</span>
+                                        <label class="refname">Date of Birth</label><span id="dateb" class="answer">${prof.dateBirth}</span>
                                     </div>
                                     <input class="btn-sec" type="submit" value="save"/>
                                 </form>
@@ -274,19 +274,19 @@
                                         <label class="refname">ADDRESS</label>
                                     </div>
                                     <div id="state_s" class="share-text-field" aria-disabled="true">
-                                        <label class="refname">State</label><span id="state" class="answer">ABC</span>
+                                        <label class="refname">State</label><span id="state" class="answer">${prof.address.state}</span>
                                     </div>
                                     <div id="city_s" class="share-text-field" aria-disabled="true">
-                                        <label class="refname">City</label><span id="city" class="answer">ABC</span>
+                                        <label class="refname">City</label><span id="city" class="answer">${prof.address.city}</span>
                                     </div>
                                     <div id="stre1_s" class="share-text-field" aria-disabled="true">
-                                        <label class="refname">Street 1</label><span id="stre1" class="answer">ABC</span>
+                                        <label class="refname">Street 1</label><span id="stre1" class="answer">${prof.address.street1}</span>
                                     </div>
                                     <div id="stre2_s" class="share-text-field" aria-disabled="true">
-                                        <label class="refname">Street2</label><span id="stre2" class="answer">ABC</span>
+                                        <label class="refname">Street2</label><span id="stre2" class="answer">${prof.address.street2}</span>
                                     </div>
                                     <div id="zipc_s" class="share-text-field" aria-disabled="true">
-                                        <label class="refname">ZIP Code</label><span id="zipc" class="answer">ABC</span>
+                                        <label class="refname">ZIP Code</label><span id="zipc" class="answer">${prof.address.zip}</span>
                                     </div>
                                     <input class="btn-sec" type="submit" value="save"/>
                                 </form>
