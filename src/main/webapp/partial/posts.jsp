@@ -8,7 +8,7 @@
     <c:set var="isMyPost" scope="application" value="${(post.avator.id==requestScope.avator.id)}"/>
 
     <!-- post status start -->
-    <div class="card post" data-id="${post.postID}" data-userid="${requestScope.avator.id}">
+    <div class="card post" data-id="${post.postID}" data-userid="${requestScope.avator.id}" data-avatorurl="${requestScope.avator.profileUrl}" data-fullname="${requestScope.avator.firstName} ${requestScope.avator.lastName}" >
         <!-- post title start -->
         <div class="post-title d-flex align-items-center">
             <!-- profile picture end -->
@@ -72,20 +72,41 @@
                     <li>
                         <button class="post-comment">
                             <i class="bi bi-chat-bubble"></i>
-                            <span>${fn:length(post.comments)}</span>
+                            <span class="total-comment-${post.postID}">${fn:length(post.comments)}</span>
                         </button>
                     </li>
 
                 </ul>
             </div>
         </div>
-        <c:if test="${fn:length(post.comments)!=0}" >
+    <!-- List of commant Box Start  -->
 
-            <!-- List of commant Box Start  -->
+        <c:if test="${fn:length(post.comments)==0}" >
+                <div class="hidden-commant-box hide frnd-search-inner custom-scroll ps ps--active-y" style="height: auto; display: none;">
+        </c:if>
+
+        <c:if test="${fn:length(post.comments)!=0}" >
             <div class="commant-box hide frnd-search-inner custom-scroll ps ps--active-y" style="height: auto;">
+        </c:if>
                 <h4 class="widget-title"> Comments </h4>
-                <ul>
+                <ul class="comment-box-${post.postID}">
+                    <li class="d-flex align-items-center profile-active comment-item-${post.postID}" style="display: none!important;">
+                        <!-- profile picture end -->
+                        <div class="profile-thumb ">
+                            <a href="">
+                                <figure class="profile-thumb-small">
+                                    <img src="" alt="profile picture">
+                                </figure>
+                            </a>
+                        </div>
+                        <!-- profile picture end -->
+                        <div class="posted-author">
+                            <h6 class="author">Nobody</h6>
+                            <p>Nth</p>
+                        </div>
+                    </li>
                     <c:forEach var="comment" items="${post.comments}">
+
                         <li class="d-flex align-items-center profile-active">
                             <!-- profile picture end -->
                             <div class="profile-thumb ">
@@ -111,11 +132,14 @@
                 </div>
             </div>
             <!-- End List of commant Box  -->
+        <c:if test="${fn:length(post.reactions)==0}" >
+            <div class="hidden-liked-box frnd-search-inner custom-scroll ps ps--active-y" style="height: auto;display: none;">
         </c:if>
         <c:if test="${fn:length(post.reactions)!=0}" >
+            <div class="liked-box frnd-search-inner custom-scroll ps ps--active-y" style="height: auto;">
+        </c:if>
 
             <!-- List of like list box start -->
-            <div class="liked-box frnd-search-inner custom-scroll ps ps--active-y" style="height: auto;">
                 <h4 class="widget-title"> Liked By </h4>
                 <ul>
                     <c:forEach var="reaction" items="${post.reactions}">
@@ -144,7 +168,7 @@
                 </div>
             </div>
             <!-- List of like list box end -->
-        </c:if>
+
 
         <!-- Commant Box Start -->
         <div class="card card-small">
