@@ -32,7 +32,7 @@
             </div>
         </div>
         <!-- post title start -->
-        <div class="post-content">
+        <div class="post-content" data-postID="${post.postID}">
             <p class="post-desc">
                     ${post.description}
             </p>
@@ -41,7 +41,7 @@
 
             <div class="post-meta">
                 <button class="post-meta-like ">
-                    <button class="like-button" style="margin-left: 0; padding: 0 10px;">
+                    <button class="like-button" style="margin-left: 0; padding: 0 10px;" data-isLiked="true">
                         <img class="heart" src="/images/icons/heart.png" alt="">
                         <img class="heart-color" src="/images/icons/heart-color.png" alt="" style="margin-left: 12px;">
                     </button>

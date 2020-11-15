@@ -12,104 +12,24 @@
                 <div class="col-lg-3 order-2 order-lg-1">
                     <aside class="widget-area">
                         <!-- widget single item start -->
-                        <div class="card card-profile widget-item p-0">
+                        <div class="card card-profile widget-item p-0" id="userID" data-id="2">
                             <div class="profile-banner">
                                 <figure class="profile-banner-small">
                                     <a href="profile.html">
-                                        <img src="images/banner/banner-small.jpg" alt="">
+                                        <img src="${avator.profileUrl}" alt="">
                                     </a>
                                     <a href="profile.html" class="profile-thumb-2">
-                                        <img src="images/profile/profile-midle-1.jpg" alt="">
+                                        <img src="${avator.banner}" alt="">
                                     </a>
                                 </figure>
                                 <div class="profile-desc text-center">
-                                    <h6 class="author"><a href="profile.html">Dimbel Lebmid</a></h6>
-                                    <p>Any one can join with but Social network us if you want Any one can join with us if you want</p>
+                                    <h6 class="author"><a href="profile.html">${avator.firstName} ${avator.lastName}</a></h6>
+                                    <p>${avator.biography}</p>
                                 </div>
                             </div>
                         </div>
-                        <!-- widget single item start -->
-                        <!-- widget single item start -->
-                        <div class="card widget-item">
-                            <h4 class="widget-title">Place You have Visited</h4>
-                            <div class="widget-body">
-                                <ul class="like-page-list-wrapper">
-                                    <li class="unorder-list">
-                                        <!-- profile picture end -->
-                                        <div class="profile-thumb">
-                                            <a href="#">
-                                                <figure>
-                                                    <img src="images/icons/location.png" alt="Location">
-                                                </figure>
-                                            </a>
-                                        </div>
-                                        <!-- profile picture end -->
-                                        <div class="unorder-list-info">
-                                            <h3 class="list-title"><a href="#">USA</a></h3>
-                                            <p class="list-subtitle"><a href="#">State : <b>Iowa</b></a>
-                                            </p>
-                                            <p class="list-subtitle"><a href="#">City : <b>Fairfield</b></a>
-                                            </p>
-                                        </div>
-                                    </li>
-                                    <li class="unorder-list">
-                                        <!-- profile picture end -->
-                                        <div class="profile-thumb">
-                                            <a href="#">
-                                                <figure>
-                                                    <img src="images/icons/location.png" alt="Location">
-                                                </figure>
-                                            </a>
-                                        </div>
-                                        <!-- profile picture end -->
-                                        <div class="unorder-list-info">
-                                            <h3 class="list-title"><a href="#">USA</a></h3>
-                                            <p class="list-subtitle"><a href="#">State : <b>Iowa</b></a>
-                                            </p>
-                                            <p class="list-subtitle"><a href="#">City : <b>Fairfield</b></a>
-                                            </p>
-                                        </div>
-                                    </li>
-                                    <li class="unorder-list">
-                                        <!-- profile picture end -->
-                                        <div class="profile-thumb">
-                                            <a href="#">
-                                                <figure>
-                                                    <img src="images/icons/location.png" alt="Location">
-                                                </figure>
-                                            </a>
-                                        </div>
-                                        <!-- profile picture end -->
-                                        <div class="unorder-list-info">
-                                            <h3 class="list-title"><a href="#">USA</a></h3>
-                                            <p class="list-subtitle"><a href="#">State : <b>Iowa</b></a>
-                                            </p>
-                                            <p class="list-subtitle"><a href="#">City : <b>Fairfield</b></a>
-                                            </p>
-                                        </div>
-                                    </li>
-                                    <li class="unorder-list">
-                                        <!-- profile picture end -->
-                                        <div class="profile-thumb">
-                                            <a href="#">
-                                                <figure>
-                                                    <img src="images/icons/location.png" alt="Location">
-                                                </figure>
-                                            </a>
-                                        </div>
-                                        <!-- profile picture end -->
-                                        <div class="unorder-list-info">
-                                            <h3 class="list-title"><a href="#">USA</a></h3>
-                                            <p class="list-subtitle"><a href="#">State : <b>Iowa</b></a>
-                                            </p>
-                                            <p class="list-subtitle"><a href="#">City : <b>Fairfield</b></a>
-                                            </p>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <!-- widget single item end -->
+                        <c:set var="places" value="${places}" scope="request"/>
+                        <c:import url="partial/visited_place.jsp" />
                     </aside>
                 </div>
                 <div class="col-lg-6 order-1 order-lg-2">
@@ -134,6 +54,8 @@
                             </div>
                             <!-- share content box end -->
                             <!-- Modal start -->
+                            <form action = "/post/interact" method = "post" enctype = "multipart/form-data">
+
                             <div class="modal fade" id="textbox" aria-labelledby="textbox">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
@@ -168,6 +90,7 @@
                                     </div>
                                 </div>
                             </div>
+                            </form>
                             <!-- Modal end -->
                         </div>
                     </div>

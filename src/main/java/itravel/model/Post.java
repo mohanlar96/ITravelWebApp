@@ -8,9 +8,8 @@ public class Post {
     private String postDate;
     private Location location;
     private String depAddress;
-    private String desAddress;
+    private String desAddress; //Address // USA, iowas, USA
     private Avator avator; // email
-    private Address address;//Country, City
     private String description;
     private List<PostImage> images = new ArrayList<PostImage>();
     private List<Comment> comments = new ArrayList<Comment>();
@@ -78,14 +77,6 @@ public class Post {
         this.avator = avator;
     }
 
-    public Address getAddress() {
-        return address;
-    }
-
-    public void setAddress(Address address) {
-        this.address = address;
-    }
-
     public String getPostDate() {
         return postDate;
     }
@@ -135,7 +126,6 @@ public class Post {
                 ", depAddress='" + depAddress + '\'' +
                 ", desAddress='" + desAddress + '\'' +
                 ", avator=" + avator +
-                ", address=" + address +
                 ", description='" + description + '\'' +
                 ", images=" + images +
                 ", comments=" + comments +

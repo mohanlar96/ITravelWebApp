@@ -6,7 +6,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PostDao {
+public class HomeDao {
     // get a connection
     static Connection  con =null;
     public static List<Post> getPosts() throws Exception {
@@ -18,13 +18,13 @@ public class PostDao {
         try {
             // create sql statement
             String sql = "" +
-                    "SELECT user.id, post.*, person.fname, person.lname, image.link" +
-                    " FROM post left JOIN user ON post.User_id=user.id " +
+                    "SELECT user.id, post.*, person.fname, person.lname, image.link " +
+                    "FROM post left JOIN user ON post.User_id=user.id " +
                     "INNER JOIN person ON user.Person_id=person.id " +
                     "INNER JOIN user_image ON user.id=user_image.User_id " +
                     "INNER JOIN image ON user_image.Image_id=image.id " +
-                    "WHERE user_image.sizeimg='M' order by post.datetime limit 10 " +
-                    ";";
+                    "WHERE user_image.sizeimg='M' order by post.datetime limit 10 ";
+
             state = con.createStatement();
             // execute query
             row = state.executeQuery(sql);
@@ -33,6 +33,8 @@ public class PostDao {
                 // retrieve data from result set row
                 // create new post object
                 int postID=row.getInt("id");
+
+
                 Avator postAvator =new Avator(row.getInt("id"),row.getString("fname"),row.getString("lname"),row.getString("link"));
 
                 Post tempPost = new Post(
@@ -142,7 +144,66 @@ public class PostDao {
         }
         return postReactions;
     }
+    public static List<String> getVisitedPlace(int avatorID){
+        con=DbUtil.connectDb();
+
+        List<String> visitedPlaces=new ArrayList<String>();
+        try {
+            String sql="" +
+                    "select post.destinationAddress " +
+                    "from post " +
+                    "where User_id=? ";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1,avatorID);
+            ResultSet row = ps.executeQuery();
+            while (row.next())
+            {
+                visitedPlaces.add(row.getString("destinationAddress"));
+            }
+            DbUtil.close(con,ps,row);
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return visitedPlaces;
 
 
+    }
 
+    public static HomeAvator getAvator(int avatorID) {
+        con=DbUtil.connectDb();
+        HomeAvator avator=null;
+        try {
+            String sql="" +
+                    "SELECT user.id,user.Biography,person.fname,person.lname  " +
+                    "FROM  user INNER JOIN person ON user.Person_id=person.id " +
+                    "WHERE  user.id=?";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1,avatorID);
+            ResultSet row = ps.executeQuery();
+            while (row.next())
+            {
+                avator =new HomeAvator(row.getInt("id"),row.getString("fname"),row.getString("lname"),null);
+                avator.setBiography(row.getString("biography"));
+            }
+            sql="SELECT image.link, user_image.sizeimg " +
+                    "FROM image INNER JOIN user_image ON image.id=user_image.Image_id WHERE " +
+                    "user_image.User_id=?";
+            ps = con.prepareStatement(sql);
+            ps.setInt(1,avatorID);
+            row = ps.executeQuery();
+            while (row.next())
+            {
+                String imgSize=row.getString("sizeimg");
+                if(imgSize.contains("V")) avator.setBanner(row.getString("link"));
+                if(imgSize.contains("M")) avator.setProfileUrl(row.getString("link"));
+
+            }
+            DbUtil.close(con,ps,row);
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return avator;
+    }
 }
