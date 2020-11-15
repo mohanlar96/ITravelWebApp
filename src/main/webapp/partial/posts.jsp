@@ -8,7 +8,7 @@
     <c:set var="isMyPost" scope="application" value="${(post.avator.id==requestScope.avator.id)}"/>
 
     <!-- post status start -->
-    <div class="card post">
+    <div class="card post" data-id="${post.postID}" data-userid="${requestScope.avator.id}">
         <!-- post title start -->
         <div class="post-title d-flex align-items-center">
             <!-- profile picture end -->
@@ -31,8 +31,8 @@
                     <span></span>
                     <div class="post-settings arrow-shape">
                         <ul>
-                            <li><button class="edit-post" data-postID="${post.postID}">edit post</button></li>
-                            <li><button class="edit-post delete-post" data-postID="${post.postID}">delete post</button></li>
+                            <li><button class="edit-post" data-id="${post.postID}">edit post</button></li>
+                            <li><button class="edit-post delete-post" data-id="${post.postID}">delete post</button></li>
                         </ul>
                     </div>
                 </div>
@@ -40,7 +40,7 @@
 
         </div>
         <!-- post title start -->
-        <div class="post-content" data-postID="${post.postID}">
+        <div class="post-content" >
             <p class="post-desc">
                     ${post.description}
             </p>
@@ -50,13 +50,13 @@
             <div class="post-meta">
                 <button class="post-meta-like">
                     <c:if test="${isLiked}">
-                        <button class="like-button" style="margin-left: 0; padding: 0 10px; float: left" data-isLiked="true" >
+                        <button class="like-button" style="margin-left: 0; padding: 0 10px; float: left" data-isliked="true" >
                             <img class="heart" src="/images/icons/heart.png" alt="">
                             <img class="heart-color liked " src="/images/icons/heart-color.png" alt="" style="margin-left: 12px;">
                         </button>
                     </c:if>
                     <c:if test="${!isLiked}">
-                        <button class="like-button" style="margin-left: 0; padding: 0 10px; float: left" data-isLiked="false" >
+                        <button class="like-button" style="margin-left: 0; padding: 0 10px; float: left" data-isliked="false" >
                             <img class="heart" src="/images/icons/heart.png" alt="">
                             <img class="heart-color " src="/images/icons/heart-color.png" alt="" style="margin-left: 12px;">
                         </button>
@@ -160,10 +160,10 @@
                 <!-- profile picture end -->
                 <!-- share content box start -->
                 <div class="share-content-box w-100">
-                    <form class="share-text-box">
-                        <textarea name="share" class="share-text-field" placeholder="Write a comment" spellcheck="false"></textarea>
+                    <form class="share-text-box" method="post">
+                        <textarea name="share" class="share-text-field txt-comment" placeholder="Write a comment" spellcheck="false"></textarea>
                         <grammarly-extension style="position: absolute; top: 0px; left: 0px; pointer-events: none; z-index: auto;" class="_1KJtL"></grammarly-extension>
-                        <button class="btn-share" type="submit">Comment</button>
+                        <button class="btn-share btn-comment" type="button">Comment</button>
                     </form>
                 </div>
             </div>
