@@ -108,103 +108,11 @@
                 <!-- CENTRAL PART START -->
                 <div class="col-lg-6 order-1 order-lg-2">
                     <!-- POST START -->
-                    <%for(int i=0; i<2; i++){%>
-                    <div class="card">
-                        <!-- post title start -->
-                        <div class="post-title d-flex align-items-center">
-                            <!-- profile picture end -->
-                            <div class="profile-thumb">
-                                <a href="#">
-                                    <figure class="profile-thumb-middle">
-                                        <img src="images/profile/profile-small-5.jpg" alt="profile picture">
-                                    </figure>
-                                </a>
-                            </div>
-                            <!-- profile picture end -->
+                    <c:set var="posts" value="${posts}" scope="request"/>
+                    <c:set var="avator" value="${avator}" scope="request"/>
+                    <c:import url="partial/posts.jsp" />
+                    <c:import url="partial/modal.jsp" />
 
-                            <div class="posted-author">
-                                <h6 class="author"><a href="profile.jsp">USER POST 1</a></h6>
-                                <span class="post-time">XX min ago</span>
-                            </div>
-
-                            <div class="post-settings-bar">
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <div class="post-settings arrow-shape">
-                                    <ul>
-                                        <li><button>copy link to adda</button></li>
-                                        <li><button>edit post</button></li>
-                                        <li><button>embed adda</button></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- post title start -->
-                        <div class="post-content">
-                            <p class="post-desc">
-                                COMMENT OF POST 1
-                            </p>
-                            <div class="post-thumb-gallery img-gallery">
-                                <div class="row no-gutters">
-                                    <div class="col-8">
-                                        <figure class="post-thumb">
-                                            <a class="gallery-selector" href="images/post/post-large-2.jpg">
-                                                <img src="images/post/post-2.jpg" alt="post image">
-                                            </a>
-                                        </figure>
-                                    </div>
-                                    <div class="col-4">
-                                        <div class="row">
-                                            <div class="col-12">
-                                                <figure class="post-thumb">
-                                                    <a class="gallery-selector" href="images/post/post-large-3.jpg">
-                                                        <img src="images/post/post-3.jpg" alt="post image">
-                                                    </a>
-                                                </figure>
-                                            </div>
-                                            <div class="col-12">
-                                                <figure class="post-thumb">
-                                                    <a class="gallery-selector" href="images/post/post-large-4.jpg">
-                                                        <img src="images/post/post-4.jpg" alt="post image">
-                                                    </a>
-                                                </figure>
-                                            </div>
-                                            <div class="col-12">
-                                                <figure class="post-thumb">
-                                                    <a class="gallery-selector" href="images/post/post-large-5.jpg">
-                                                        <img src="images/post/post-5.jpg" alt="post image">
-                                                    </a>
-                                                </figure>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="post-meta">
-                                <button class="post-meta-like">
-                                    <i class="bi bi-heart-beat"></i>
-                                    <span>You and xxx people like this</span>
-                                    <strong>xxx</strong>
-                                </button>
-                                <ul class="comment-share-meta">
-                                    <li>
-                                        <button class="post-comment">
-                                            <i class="bi bi-chat-bubble"></i>
-                                            <span>41</span>
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <button class="post-share">
-                                            <i class="bi bi-share"></i>
-                                            <span>07</span>
-                                        </button>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <%}%>
                     <!-- POST END -->
                 </div>
                 <!-- CENTRAL PART END -->
@@ -212,34 +120,8 @@
                 <div class="col-lg-3 order-3">
                     <aside class="widget-area">
                         <!-- widget single item start -->
-                        <div class="card widget-item">
-                            <h4 class="widget-title">COMMON FRIENDS</h4>
-                            <div class="widget-body">
-                                <ul class="like-page-list-wrapper">
-                                    <% for(int i=0; i<4; i++){%>
-                                    <li class="unorder-list">
-                                        <!-- profile picture start -->
-                                        <div class="profile-thumb">
-                                            <a href="#">
-                                                <figure class="profile-thumb-small">
-                                                    <img src="images/profile/profile-small-10.jpg" alt="profile picture">
-                                                </figure>
-                                            </a>
-                                        </div>
-                                        <!-- profile picture end -->
-                                        <div class="unorder-list-info">
-                                            <h3 class="list-title"><a href="#">HERE_NAME</a></h3>
-                                            <p class="list-subtitle"><a href="#">SOME_INFO</a></p>
-                                        </div>
-                                        <button class="like-button"><!--add active for changing state-->
-                                            <img class="heart" src="images/icons/heart.png" alt="">
-                                            <img class="heart-color" src="images/icons/heart-color.png" alt="">
-                                        </button>
-                                    </li>
-                                    <%}%>
-                                </ul>
-                            </div>
-                        </div>
+                        <c:set var="places" value="${places}" scope="request"/>
+                        <c:import url="partial/visited_place.jsp" />
                         <!-- widget single item end -->
                     </aside>
                 </div>
