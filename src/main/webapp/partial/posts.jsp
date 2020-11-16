@@ -33,7 +33,7 @@
                     <div class="post-settings arrow-shape">
                         <ul>
                             <li><button class="edit-post" data-id="${post.postID}">edit post</button></li>
-                            <li><button class="edit-post delete-post" data-id="${post.postID}">delete post</button></li>
+                            <li><button class="delete-post" data-id="${post.postID}">delete post</button></li>
                         </ul>
                     </div>
                 </div>
@@ -41,10 +41,14 @@
 
         </div>
         <!-- post title start -->
-        <div class="post-content" >
-            <p class="post-desc">
+        <div class="post-content " >
+            <p class="post-desc " id="post-description-${post.postID}">
                     ${post.description}
             </p>
+            <p class="post-desc">
+                <b>Travelling</b> From : <b> <u id="post-departureAddress-${post.postID}"> ${post.desAddress}</u></b> To :  <b> <u id="post-destinationAddress-${post.postID}"> ${post.desAddress}</u></b>
+            </p>
+
             <c:set var="images" value="${post.images}" scope="request"/>
             <c:import url="partial/image_gallery.jsp" />
 

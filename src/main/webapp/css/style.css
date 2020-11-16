@@ -2229,6 +2229,11 @@ textarea:focus {
   cursor: pointer;
 
 }
+.post-desc u{
+  color: #d75348;
+  cursor: pointer;
+
+}
 
 
 

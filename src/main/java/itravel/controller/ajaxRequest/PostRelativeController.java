@@ -149,10 +149,10 @@ public class PostRelativeController extends HttpServlet {
         con=DbUtil.connectDb();
 
         String description = request.getParameter("description");
-        Double latitude=Double.valueOf(request.getParameter("latitude"));
-        Double longitude=Double.valueOf(request.getParameter("longitude"));
         String departureAddress=request.getParameter("departureAddress");
         String destinationAddress=request.getParameter("destinationAddress");
+        Double latitude=Double.valueOf(request.getParameter("latitude"));
+        Double longitude=Double.valueOf(request.getParameter("longitude"));
         Integer userID = Integer.parseInt(request.getParameter("userID"));
 
         response.getWriter().println("Server=>"+userID +" "+description+"<br> "+latitude +" "+longitude+"  "+departureAddress+" "+destinationAddress );
@@ -164,18 +164,10 @@ public class PostRelativeController extends HttpServlet {
             // prepare statement
             state = con.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
             long time = new java.util.Date().getTime();
-            Date d= new Date(time);
-            if(Boolean.valueOf(request.getParameter("isUpdatingPost"))){ 
-                //this is for updating the post 
-                //when user want to update the post .. I will delete the old post and will put with the same datetime
-                //that's the logic using here 
-                
-                d= java.sql.Date.valueOf(request.getParameter("datetime"));
-                System.out.println("updating the sql actually for post.");
-            }
+            Date date= new Date(time);
             // set params
             ;
-            state.setDate(1,  d);
+            state.setDate(1,  date);
             state.setDouble(2, latitude);
             state.setDouble(3, longitude);
             state.setString(4,description);
@@ -303,9 +295,31 @@ public class PostRelativeController extends HttpServlet {
         return 0;
     }
     private void updatePost(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        deletePost(request,response);
-        request.setAttribute("isUpdatingPost",true);
-        post(request,response);
+        con=DbUtil.connectDb();
+        String description = request.getParameter("description");
+        String departureAddress=request.getParameter("departureAddress");
+        String destinationAddress=request.getParameter("destinationAddress");
+        Integer id = Integer.parseInt(request.getParameter("postID"));
+       response.getWriter().println("Server=>"+description +" "+departureAddress+" "+destinationAddress+ " "+id);
+
+
+
+        String sql = "update post set description= ? ,departureAddress = ? ,destinationAddress = ? ,unhealthy =? where id= ?";
+
+        state = con.prepareStatement(sql);
+
+        // set params
+        state.setString(1,description);
+        state.setString(2,departureAddress);
+        state.setString(3,destinationAddress);
+        state.setInt(4,1);//unhealthy
+        state.setInt(5,id);
+
+        // execute SQL statement
+        state.executeUpdate();
+
+
+
         response.getWriter().println("Successfully Updated the post !");
 
     }
@@ -317,23 +331,23 @@ public class PostRelativeController extends HttpServlet {
 
         List<Integer> imageIDList=new ArrayList<Integer>();
         try{
-            String sql="delete  from comment where Post_id= ? ";
+            String sql="delete  from comment where Post_id= ? "; //deleting post relative comments
             // prepare statement
             state = con.prepareStatement(sql);
             // set params
             state.setInt(1, postID);
             // execute SQL statement
-            row=state.executeQuery();
+            state.execute();
 
-            sql = "delete  from post where id= ? ";
+            sql = "delete  from post_reaction where Post_id= ? "; //deleting post relative reaction
             // prepare statement
             state = con.prepareStatement(sql);
             // set params
             state.setInt(1, postID);
             // execute SQL statement
-            row=state.executeQuery();
+            state.execute();
 
-            sql="select Image_id from post_image where Post_id= ?";
+            sql="select Image_id from post_image where Post_id= ?"; //deleting post relative image table
             // prepare statement
             state = con.prepareStatement(sql);
             // set params
@@ -346,20 +360,20 @@ public class PostRelativeController extends HttpServlet {
                imageIDList.add(id);
             }
 
-            for(int id:imageIDList){
+            for(int id:imageIDList) { //deleting images
 
-                sql = "select link  from image where id= ? ";
+                sql = "select link  from image where id= ? "; //deleting each post images
 
                 // prepare statement
                 state = con.prepareStatement(sql);
                 // set params
                 state.setInt(1, id);
                 // execute SQL statement
-                row=state.executeQuery();
-                while (row.next()){
-                    String url=row.getString("link");
+                row = state.executeQuery();
+                while (row.next()) {
+                    String url = row.getString("link");
 
-                    File file = new File(request.getContextPath()+url);
+                    File file = new File(request.getContextPath() + url);
 
                     if (!file.isDirectory()) {
                         file.delete();
@@ -367,7 +381,14 @@ public class PostRelativeController extends HttpServlet {
 
                     //DELETE a Image here from this url
                 }
+                sql = " delete from post_image where Post_id= ? ";// post-image connecting table delete
 
+                // prepare statement
+                state = con.prepareStatement(sql);
+                // set params
+                state.setInt(1, id);
+                // execute SQL statement
+                state.execute();
 
                 sql = "delete  from image where id= ? ;";
 
@@ -376,19 +397,20 @@ public class PostRelativeController extends HttpServlet {
                 // set params
                 state.setInt(1, id);
                 // execute SQL statement
-                state.executeUpdate();
+                state.execute();
+            }
 
 
-                sql = " delete from post_image where Post_id= ? ;";
 
+                sql = "delete  from post where id= ? "; //deleting post
                 // prepare statement
                 state = con.prepareStatement(sql);
                 // set params
-                state.setInt(1, id);
+                state.setInt(1, postID);
                 // execute SQL statement
-                state.executeUpdate();
+                state.execute();
 
-            }
+
 
             DbUtil.close(con,state,row);
 

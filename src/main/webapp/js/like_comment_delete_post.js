@@ -112,29 +112,60 @@ $(document).ready(function() {
                 postID:postId
             }).done(function(response){
             console.log(response);
-            menu.parents(".card.post").remove();
+            menu.parents(".card.post").slideUp('slow',function (){
+                $(this).remove();
+            });
         }).fail(function() {
             alert( "error" );
         });
     });
 
     $("button.edit-post").unbind().on('click',function(){
-        const menu=$(this);
         const postId=$(this).data("id");
-        $('#textbox').modal({
-            show: 'true'
-        });
-        console.log("Post id to delete  ="+postId );
-        $.post("/post/interact",
-            {functionRequest:'EDIT',
-                postID:postId
-            }).done(function(response){
-            console.log(response);
-            menu.parents(".card.post").slideUp().remove();
+        const model=$('#textbox');
+        const description=$.trim($("#post-description-"+postId).text());
+        const depatureAddress=$.trim($("#post-departureAddress-"+postId).text());
+        const destinationAddress=$.trim($("#post-departureAddress-"+postId).text());
+        model.find("textarea").eq(0).text(description);
+        model.find("textarea").eq(1).text(depatureAddress);
+        model.find("textarea").eq(2).text(destinationAddress);
+        model.find(".list-title , input").hide();
+        model.find("[type='submit']").val("Update");
 
-        }).fail(function() {
-            alert( "error" );
+        model.modal();//show dialog
+
+        $("[action='post/interact']").on('submit',function(e){
+            e.preventDefault();
+
+            console.log("Post id to update  ="+postId );
+            $.post("/post/interact",
+                {functionRequest:'UPDATE',
+                    postID:postId,
+                    description: $.trim(model.find("textarea").eq(0).val()),
+                    departureAddress: $.trim(model.find("textarea").eq(1).val()),
+                    destinationAddress:$.trim(model.find("textarea").eq(2).val()),
+                }).done(function(response){
+                console.log(response);
+                 $("#post-description-"+postId).text(model.find("textarea").eq(0).val());
+                 $("#post-departureAddress-"+postId).text(model.find("textarea").eq(1).val());
+                 $("#post-departureAddress-"+postId).text(model.find("textarea").eq(2).val());
+
+                model.modal("hide");
+                model.find("textarea").eq(0).text("");
+                model.find("textarea").eq(1).text("");
+                model.find("textarea").eq(2).text("");
+                model.find(".list-title , input").hide();
+                model.find("[type='submit']").val("Post");
+
+            }).fail(function() {
+                alert( "error" );
+            });
+
+
         });
+
+
+
     });
 
 
