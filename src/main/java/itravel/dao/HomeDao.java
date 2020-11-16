@@ -11,13 +11,14 @@ public class HomeDao {
     static Connection  con =null;
     // scroll 10th to 20 ths
     public  static  List<Post> getPosts(int UserId ,int page) throws Exception {
+        String offset=(page>1)?" offset "+(page-1)*10:"";
         String sql = "" +
                 "SELECT post.*, person.fname, person.lname, image.link " +
                 "FROM post INNER JOIN user ON post.User_id=user.id " +
                 "INNER JOIN person ON user.Person_id=person.id " +
                 "INNER JOIN user_image ON user.id=user_image.User_id " +
                 "INNER JOIN image ON user_image.Image_id=image.id " +
-                "WHERE user_image.sizeimg='M' order by post.datetime limit "+page*10;
+                "WHERE user_image.sizeimg='M' order by post.datetime limit "+page*10+offset;
 
 
         return postItems(sql);

@@ -130,7 +130,9 @@ $(document).ready(function() {
         model.find("textarea").eq(1).text(depatureAddress);
         model.find("textarea").eq(2).text(destinationAddress);
         model.find(".list-title , input").hide();
-        model.find("[type='submit']").val("Update");
+        model.find("[type='submit']").text("Update");
+        model.find("h5.modal-title").text("Update Your Travel Info");
+
 
         model.modal();//show dialog
 
@@ -155,7 +157,8 @@ $(document).ready(function() {
                 model.find("textarea").eq(1).text("");
                 model.find("textarea").eq(2).text("");
                 model.find(".list-title , input").hide();
-                model.find("[type='submit']").val("Post");
+                model.find("[type='submit']").text("Post");
+                model.find("h5.modal-title").text("Share Your Travel Info");
 
             }).fail(function() {
                 alert( "error" );
@@ -166,6 +169,31 @@ $(document).ready(function() {
 
 
 
+    });
+    pageForPostScroll=1; // page number
+
+    $(window).on("scroll", function() {
+        var scrollHeight = $(document).height();
+        var scrollPosition = $(window).height() + $(window).scrollTop();
+        if ((scrollHeight - scrollPosition) / scrollHeight === 0) { //when scroll down
+            var userID=$(".card.post").eq(0).data("userid");
+            pageForPostScroll++; //increase page no
+
+            console.log("when scroll down"+pageForPostScroll+userID);
+
+            $.post("/post/interact",
+                {functionRequest:'SCROLL',
+                    userID:userID,
+                    page:pageForPostScroll,
+                }).done(function(response){
+                    console.log(JSON.parse(response));
+                // $(".card.post").last().append(response);
+
+            }).fail(function() {
+                alert( "error" );
+            });
+
+        }
     });
 
 

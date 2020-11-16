@@ -1,7 +1,9 @@
 package itravel.controller.ajaxRequest;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import itravel.dao.DbUtil;
 import java.io.File;
 import java.util.ArrayList;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -12,6 +14,8 @@ import java.io.IOException;
 import java.sql.*;
 import java.util.Iterator;
 import java.util.List;
+import itravel.dao.HomeDao;
+import itravel.model.Post;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
@@ -49,6 +53,10 @@ public class PostRelativeController extends HttpServlet {
             case "DELETE_COMMENT":
                 deleteComment(request, response);
                 break;
+            case "SCROLL":
+                   scrollDown(request, response);
+                break;
+
         }
         } catch (Exception e) {
                 e.printStackTrace();
@@ -420,5 +428,23 @@ public class PostRelativeController extends HttpServlet {
             throwables.printStackTrace();
         }
     }
+
+    private void scrollDown(HttpServletRequest request, HttpServletResponse response) throws Exception{
+        con=DbUtil.connectDb();
+        Integer page = Integer.parseInt(request.getParameter("page"));
+        Integer userID=Integer.parseInt(request.getParameter("userID"));
+//        response.getWriter().println("Server=>"+page +" "+userID);
+
+        List<Post> postItems=HomeDao.getPosts(userID,page);
+        //Creating the ObjectMapper object
+        ObjectMapper mapper = new ObjectMapper();
+        //Converting the Object to JSONString
+        String jsonString = mapper.writeValueAsString(postItems);
+
+        response.getWriter().println(jsonString);
+
+    }
+
+
 
 }

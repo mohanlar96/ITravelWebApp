@@ -30,6 +30,7 @@ public class HomeController extends HttpServlet {
             request.setAttribute("posts", posts);
             request.setAttribute("places",placeVisited);
             RequestDispatcher dispatcher = request.getRequestDispatcher("/home.jsp");
+
             dispatcher.forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();
