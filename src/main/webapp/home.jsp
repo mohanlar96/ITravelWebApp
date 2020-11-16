@@ -12,104 +12,24 @@
                 <div class="col-lg-3 order-2 order-lg-1">
                     <aside class="widget-area">
                         <!-- widget single item start -->
-                        <div class="card card-profile widget-item p-0">
+                        <div class="card card-profile widget-item p-0" id="userID" data-id="2">
                             <div class="profile-banner">
                                 <figure class="profile-banner-small">
-                                    <a href="profile.html">
-                                        <img src="images/banner/banner-small.jpg" alt="">
+                                    <a href="/profile?id${avator.id}">
+                                        <img src="${avator.banner}" alt="">
                                     </a>
-                                    <a href="profile.html" class="profile-thumb-2">
-                                        <img src="images/profile/profile-midle-1.jpg" alt="">
+                                    <a href="/profile?id${avator.id}" class="profile-thumb-2">
+                                        <img src="${avator.profileUrl}" alt="">
                                     </a>
                                 </figure>
                                 <div class="profile-desc text-center">
-                                    <h6 class="author"><a href="profile.html">Dimbel Lebmid</a></h6>
-                                    <p>Any one can join with but Social network us if you want Any one can join with us if you want</p>
+                                    <h6 class="author"><a href="/profile?id${avator.id}">${avator.firstName} ${avator.lastName}</a></h6>
+                                    <p>${avator.biography}</p>
                                 </div>
                             </div>
                         </div>
-                        <!-- widget single item start -->
-                        <!-- widget single item start -->
-                        <div class="card widget-item">
-                            <h4 class="widget-title">Place You have Visited</h4>
-                            <div class="widget-body">
-                                <ul class="like-page-list-wrapper">
-                                    <li class="unorder-list">
-                                        <!-- profile picture end -->
-                                        <div class="profile-thumb">
-                                            <a href="#">
-                                                <figure>
-                                                    <img src="images/icons/location.png" alt="Location">
-                                                </figure>
-                                            </a>
-                                        </div>
-                                        <!-- profile picture end -->
-                                        <div class="unorder-list-info">
-                                            <h3 class="list-title"><a href="#">USA</a></h3>
-                                            <p class="list-subtitle"><a href="#">State : <b>Iowa</b></a>
-                                            </p>
-                                            <p class="list-subtitle"><a href="#">City : <b>Fairfield</b></a>
-                                            </p>
-                                        </div>
-                                    </li>
-                                    <li class="unorder-list">
-                                        <!-- profile picture end -->
-                                        <div class="profile-thumb">
-                                            <a href="#">
-                                                <figure>
-                                                    <img src="images/icons/location.png" alt="Location">
-                                                </figure>
-                                            </a>
-                                        </div>
-                                        <!-- profile picture end -->
-                                        <div class="unorder-list-info">
-                                            <h3 class="list-title"><a href="#">USA</a></h3>
-                                            <p class="list-subtitle"><a href="#">State : <b>Iowa</b></a>
-                                            </p>
-                                            <p class="list-subtitle"><a href="#">City : <b>Fairfield</b></a>
-                                            </p>
-                                        </div>
-                                    </li>
-                                    <li class="unorder-list">
-                                        <!-- profile picture end -->
-                                        <div class="profile-thumb">
-                                            <a href="#">
-                                                <figure>
-                                                    <img src="images/icons/location.png" alt="Location">
-                                                </figure>
-                                            </a>
-                                        </div>
-                                        <!-- profile picture end -->
-                                        <div class="unorder-list-info">
-                                            <h3 class="list-title"><a href="#">USA</a></h3>
-                                            <p class="list-subtitle"><a href="#">State : <b>Iowa</b></a>
-                                            </p>
-                                            <p class="list-subtitle"><a href="#">City : <b>Fairfield</b></a>
-                                            </p>
-                                        </div>
-                                    </li>
-                                    <li class="unorder-list">
-                                        <!-- profile picture end -->
-                                        <div class="profile-thumb">
-                                            <a href="#">
-                                                <figure>
-                                                    <img src="images/icons/location.png" alt="Location">
-                                                </figure>
-                                            </a>
-                                        </div>
-                                        <!-- profile picture end -->
-                                        <div class="unorder-list-info">
-                                            <h3 class="list-title"><a href="#">USA</a></h3>
-                                            <p class="list-subtitle"><a href="#">State : <b>Iowa</b></a>
-                                            </p>
-                                            <p class="list-subtitle"><a href="#">City : <b>Fairfield</b></a>
-                                            </p>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <!-- widget single item end -->
+                        <c:set var="places" value="${places}" scope="request"/>
+                        <c:import url="partial/visited_place.jsp" />
                     </aside>
                 </div>
                 <div class="col-lg-6 order-1 order-lg-2">
@@ -120,7 +40,7 @@
                             <div class="profile-thumb">
                                 <a href="#">
                                     <figure class="profile-thumb-middle">
-                                        <img src="images/profile/profile-small-37.jpg" alt="profile picture">
+                                        <img src="${avator.avatorIcon}" alt="profile picture">
                                     </figure>
                                 </a>
                             </div>
@@ -133,8 +53,20 @@
                                 </form>
                             </div>
                             <!-- share content box end -->
+<%--                            <script--%>
+<%--                                    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCneh1NGoaH33EkKQ6SltmLoqNtwbLqZ7U&callback=initAutocomplete&libraries=places&v=weekly"--%>
+<%--                                    defer--%>
+<%--                            ></script>--%>
+                            <script src="js/geolocation.js"></script>
                             <!-- Modal start -->
-                            <div class="modal fade" id="textbox" aria-labelledby="textbox">
+                            <form action = "post/interact" method ="post" enctype="multipart/form-data">
+<%--                            <form action = "post/interact" method ="post" >--%>
+                                <input type="hidden" name="userID" value="${avator.id}">
+                                <input type="hidden" name="latitude"  value="8998.233" id="latitude">
+                                <input type="hidden" name="longitude" value="239823.99" id="longitude">
+                                <input type="hidden" name="functionRequest" value="POST">
+
+                                <div class="modal fade" id="textbox" aria-labelledby="textbox">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
@@ -145,196 +77,39 @@
                                         </div>
                                         <div class="modal-body custom-scroll">
                                                 <span class="share-text-box">
-                                                    <textarea name="share" class="share-field-big share-text-field custom-scroll" placeholder="Say Something"></textarea>
+                                                    <textarea required name="description" class="share-field-big share-text-field custom-scroll" placeholder="Say Something">Testing Data Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy.</textarea>
                                                 </span>
                                             <span class="share-text-box">
-                                                    <textarea name="share" class="share-text-field" placeholder="Depature Travel Location" spellcheck="false"></textarea>
+                                                    <textarea required name="departureAddress" id="autocompleteDep" onFocus="geolocate()"  class="share-text-field" placeholder="Depature Travel Location" spellcheck="false" >IOWA, USA</textarea>
                                                     <grammarly-extension style="position: absolute; top: 0px; left: 0px; pointer-events: none; z-index: auto;" class="_1KJtL"></grammarly-extension>
-                                                </span>
+                                            </span>
                                             <span class="share-text-box">
-                                                    <textarea name="share" class="share-text-field" placeholder="Desitnation Travel Location" spellcheck="false"></textarea>
+                                                    <textarea required name="destinationAddress" id="autocompleteDest" onFocus="geolocate()"  class="share-text-field" placeholder="Depature Travel Location" spellcheck="false" >CA ,USA </textarea>
                                                     <grammarly-extension style="position: absolute; top: 0px; left: 0px; pointer-events: none; z-index: auto;" class="_1KJtL"></grammarly-extension>
-                                                </span>
+                                            </span>
+
                                             <br>
                                             <span class="list-title" style="padding: 10px">
                                                     Upload Images
                                                 </span>
-                                            <input type="file" multiple="multiple">
+                                            <input type = "file" name = "file" size = "10" />
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="post-share-btn" data-dismiss="modal">cancel</button>
-                                            <button type="button" class="post-share-btn">post</button>
+                                            <button type="submit" class="post-share-btn" >post</button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                            </form>
                             <!-- Modal end -->
                         </div>
                     </div>
                     <!-- share box end -->
+                    <c:set var="posts" value="${posts}" scope="request"/>
+                    <c:set var="avator" value="${avator}" scope="request"/>
+                    <c:import url="partial/posts.jsp" />
 
-                    <!-- post status start -->
-                    <c:forEach var="post" items="${posts}">
-                        <!-- post status start -->
-                        <div class="card post">
-                            <!-- post title start -->
-                            <div class="post-title d-flex align-items-center">
-                                <!-- profile picture end -->
-                                <div class="profile-thumb">
-                                    <a href="#">
-                                        <figure class="profile-thumb-middle">
-                                            <img src="${post.user.profileUrl}" alt="profile picture">
-                                        </figure>
-                                    </a>
-                                </div>
-                                <!-- profile picture end -->
-                                <div class="posted-author">
-                                    <h6 class="author"><a href="profile.html">${post.user.firstName} ${post.user.lastName}</a></h6>
-                                    <span class="post-time">${post.postDate}</span>
-                                </div>
-                                <div class="post-settings-bar">
-                                    <span></span>
-                                    <span></span>
-                                    <span></span>
-                                    <div class="post-settings arrow-shape">
-                                        <ul>
-                                            <li><button>edit post</button></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- post title start -->
-                            <div class="post-content">
-                                <p class="post-desc">
-                                        ${post.description}
-                                </p>
-                                <div class="post-thumb-gallery img-gallery">
-                                    <div class="row no-gutters">
-                                        <c:forEach var="img" items="${post.images}">
-                                            <c:if test="${fn:length(post.images)>=2 && fn:length(post.images)<=6}">
-                                                <div class="col-6">
-                                            </c:if>
-                                            <%--                                            <c:if test="${fn:length(post.images)>=4 && fn:length(post.images)<=6}">--%>
-
-                                            <%--                                            </c:if>--%>
-                                            <figure class="post-thumb img-popup">
-                                                <a href="${img.url}">
-                                                    <img src="${img.url}" alt="post image">
-                                                </a>
-                                            </figure>
-                                            <%--                                            <c:if test="${fn:length(post.images)>=2 && fn:length(post.images)<=6}">--%>
-                                            <%--                                                <div class="col-6">--%>
-                                            <%--                                            </c:if>--%>
-                                            <c:if test="${fn:length(post.images)>=2 && fn:length(post.images)<=6}">
-                                                </div>
-                                            </c:if>
-                                        </c:forEach>
-                                    </div>
-                                </div>
-
-                                <div class="post-meta">
-                                    <button class="post-meta-like">
-                                        <i class="bi bi-heart-beat"></i>
-                                        <span>${fn:length(post.reactions)} people like this</span>
-                                        <strong>${fn:length(post.reactions)}</strong>
-                                    </button>
-                                    <ul class="comment-share-meta">
-                                        <li>
-                                            <button class="post-comment">
-                                                <i class="bi bi-chat-bubble"></i>
-                                                <span>${fn:length(post.comments)}</span>
-                                            </button>
-                                        </li>
-
-                                    </ul>
-                                </div>
-                            </div>
-                            <!-- List of commant Box Start  -->
-                            <div class="commant-box hide frnd-search-inner custom-scroll ps ps--active-y">
-                                <h4 class="widget-title"> Comments </h4>
-                                <ul>
-                                    <c:forEach var="comment" items="${post.comments}">
-                                        <li class="d-flex align-items-center profile-active">
-                                            <!-- profile picture end -->
-                                            <div class="profile-thumb ">
-                                                <a href="#">
-                                                    <figure class="profile-thumb-small">
-                                                        <img src="${comment.commentingUser.profileUrl}" alt="profile picture">
-                                                    </figure>
-                                                </a>
-                                            </div>
-                                            <!-- profile picture end -->
-                                            <div class="posted-author">
-                                                <h6 class="author">${comment.commentingUser.firstName} ${comment.commentingUser.lastName}</h6>
-                                                <p>${comment.commentContent}</p>
-                                            </div>
-                                        </li>
-                                    </c:forEach>
-                                </ul>
-                                <div class="ps__rail-x" style="left: 0px; bottom: -101px;">
-                                    <div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div>
-                                </div>
-                                <div class="ps__rail-y" style="top: 104px; height: 350px; right: 2px;">
-                                    <div class="ps__thumb-y" tabindex="0" style="top: 81px; height: 269px;"></div>
-                                </div>
-                            </div>
-                            <!-- End List of commant Box  -->
-                            <!-- List of like list box start -->
-                            <div class="liked-box frnd-search-inner custom-scroll ps ps--active-y">
-                                <h4 class="widget-title"> Liked By </h4>
-                                <ul>
-                                    <c:forEach var="reaction" items="${post.reactions}">
-
-                                        <li class="d-flex align-items-center profile-active">
-                                            <!-- profile picture end -->
-                                            <div class="profile-thumb ">
-                                                <a href="#">
-                                                    <figure class="profile-thumb-small">
-                                                        <img src="${reaction.user.profileUrl}" alt="profile picture">
-                                                    </figure>
-                                                </a>
-                                            </div>
-                                            <!-- profile picture end -->
-                                            <div class="posted-author">
-                                                <h6 class="author">${reaction.user.firstName} ${reaction.user.lastName}</h6>
-                                            </div>
-                                        </li>
-                                    </c:forEach>
-                                </ul>
-                                <div class="ps__rail-x" style="left: 0px; bottom: -101px;">
-                                    <div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div>
-                                </div>
-                                <div class="ps__rail-y" style="top: 104px; height: 350px; right: 2px;">
-                                    <div class="ps__thumb-y" tabindex="0" style="top: 81px; height: 269px;"></div>
-                                </div>
-                            </div>
-                            <!-- List of like list box end -->
-                            <!-- Commant Box Start -->
-                            <div class="card card-small">
-                                <div class="share-box-inner">
-                                    <!-- profile picture end -->
-                                    <div class="profile-thumb">
-                                        <a href="#">
-                                            <figure class="profile-thumb-middle">
-                                                <img src="images/profile/profile-small-37.jpg" alt="profile picture">
-                                            </figure>
-                                        </a>
-                                    </div>
-                                    <!-- profile picture end -->
-                                    <!-- share content box start -->
-                                    <div class="share-content-box w-100">
-                                        <form class="share-text-box">
-                                            <textarea name="share" class="share-text-field" placeholder="Write a comment" spellcheck="false"></textarea>
-                                            <grammarly-extension style="position: absolute; top: 0px; left: 0px; pointer-events: none; z-index: auto;" class="_1KJtL"></grammarly-extension>
-                                            <button class="btn-share" type="submit">Comment</button>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Commant Box End -->
-                        </div>
-                        <!-- post status end -->
-                    </c:forEach>
                 </div>
                 <div class="col-lg-3 order-3">
                     <aside class="widget-area">
