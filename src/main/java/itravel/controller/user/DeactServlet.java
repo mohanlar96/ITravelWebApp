@@ -40,6 +40,11 @@ public class DeactServlet extends HttpServlet {
         } catch (SQLException sql) {
             sql.printStackTrace();
         } finally {
+            try {
+                if(ps != null) ps.close();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
             // close JDBC objects
             DbUtil.close(myConn, null, null);
         }

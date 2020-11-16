@@ -96,6 +96,60 @@
         else if(parseInt(newdate.substring(0,4))<1880) return "1880-01-01";
         else return newdate;
     }
+    //SUBMITTING USER INFO
+    $("#userinfo").submit(function(e){
+        e.preventDefault();
+        $.post("edit",{
+            "data" : {
+                "id" : ${prof.userId},
+                "section" : "user",
+                "email" : $("#email").text(),
+                "username" : $("#usern").text(),
+                //"passw" : $("#passw").text(),
+                "bio" : $("#bio").text()
+            }
+        }).done(success).fail(error);
+    });
+    //SUBMITTING PERSON INFO
+    $("#persinfo").submit(function(e){
+        e.preventDefault();
+        $.post("edit",{
+            "data" : {
+                "id" : ${prof.userId},
+                "section" : "person",
+                "fname" : $("#fname").text(),
+                "mname" : $("#mname").text(),
+                "lname" : $("#lname").text(),
+                "gender" : $("#gender").text(),
+                "job" : $("#job").text(),
+                "cityb" : $("#cityb").text(),
+                "dateb" : $("#dateb").text(),
+            }
+        }).done(success).fail(error);
+    });
+    //SUBMITTING ADDRESS INFO
+    $("#addrinfo").submit(function(e){
+        e.preventDefault();
+        $.post("edit",{
+            "data" : {
+                "id" : ${prof.userId},
+                "section" : "address",
+                //"state" : $("#state").text();
+                //"city" : $("#city").text();
+                "street1" : $("#stre1").text(),
+                "street2" : $("#stre2").text(),
+                "zip" : $("#zipc").text()
+            }
+        }).done(success).fail(error);
+    });
+
+    function success(data){
+        alert("Information was successfully sent to the server.");
+        alert(data);
+    }
+    function error(){
+        alert("Information was not sent to the server.");
+    }
 </script>
 <main>
     <div class="main-wrapper">
@@ -149,7 +203,7 @@
                         <div class="share-box-inner">
                             <!-- info start -->
                             <div class="share-content-box w-100">
-                                <form data-toggle="modal" data-target="#users">
+                                <form id="userinfo" data-toggle="modal" data-target="#users">
                                     <div class="share-text-field" aria-disabled="true">
                                         <label class="refname">ACCOUNT INFORMATION</label>
                                     </div>
@@ -162,7 +216,7 @@
                                     <div id="bio_s" class="share-text-field" aria-disabled="true">
                                         <label class="refname">Biography</label><span id="bio" class="answer">${prof.biography}</span>
                                     </div>
-                                    <input class="btn-sec" type="submit" value="save"/>
+                                    <input type="submit" value="save" class="btn-sec"/>
                                 </form>
                             </div>
                             <!-- info end -->
@@ -200,32 +254,32 @@
                         <div class="share-box-inner">
                             <!-- info start -->
                             <div class="share-content-box w-100">
-                                <form>
-                                    <div class="share-text-field" aria-disabled="true" data-toggle="modal" data-target="#names">
+                                <form id="persinfo" data-toggle="modal" data-target="#names">
+                                    <div class="share-text-field" aria-disabled="true">
                                         <label class="refname">PERSONAL INFORMATION</label>
                                     </div>
-                                    <div id="fname_s" class="share-text-field" aria-disabled="true" data-toggle="modal" data-target="#names">
+                                    <div id="fname_s" class="share-text-field" aria-disabled="true">
                                         <label class="refname">First Name</label><span id="fname" class="answer">${prof.firstName}</span>
                                     </div>
-                                    <div id="mname_s" class="share-text-field" aria-disabled="true" data-toggle="modal" data-target="#names">
+                                    <div id="mname_s" class="share-text-field" aria-disabled="true">
                                         <label class="refname">Middle Name</label><span id="mname" class="answer">${prof.midName}</span>
                                     </div>
-                                    <div id="lname_s" class="share-text-field" aria-disabled="true" data-toggle="modal" data-target="#names">
+                                    <div id="lname_s" class="share-text-field" aria-disabled="true">
                                         <label class="refname">Last Name</label><span id="lname" class="answer">${prof.lastName}</span>
                                     </div>
-                                    <div id="gender_s" class="share-text-field" aria-disabled="true" data-toggle="modal" data-target="#names">
+                                    <div id="gender_s" class="share-text-field" aria-disabled="true">
                                         <label class="refname">Gender</label><span id="gender" class="answer">${prof.gender}</span>
                                     </div>
-                                    <div id="job_s" class="share-text-field" aria-disabled="true" data-toggle="modal" data-target="#names">
+                                    <div id="job_s" class="share-text-field" aria-disabled="true">
                                         <label class="refname">Job</label><span id="job" class="answer">${prof.job}</span>
                                     </div>
-                                    <div id="cityb_s" class="share-text-field" aria-disabled="true" data-toggle="modal" data-target="#names">
+                                    <div id="cityb_s" class="share-text-field" aria-disabled="true">
                                         <label class="refname">City of Birth</label><span id="cityb" class="answer">${prof.cityBirth}</span>
                                     </div>
-                                    <div id="dateb_s" class="share-text-field" aria-disabled="true" data-toggle="modal" data-target="#names">
+                                    <div id="dateb_s" class="share-text-field" aria-disabled="true">
                                         <label class="refname">Date of Birth</label><span id="dateb" class="answer">${prof.dateBirth}</span>
                                     </div>
-                                    <input class="btn-sec" type="submit" value="save"/>
+                                    <input type="submit" value="save" class="btn-sec"/>
                                 </form>
                             </div>
                             <!-- info end -->
@@ -272,7 +326,7 @@
                         <div class="share-box-inner">
                             <!-- info start -->
                             <div class="share-content-box w-100">
-                                <form data-toggle="modal" data-target="#addresses">
+                                <form id="addrinfo" data-toggle="modal" data-target="#addresses">
                                     <div class="share-text-field" aria-disabled="true">
                                         <label class="refname">ADDRESS</label>
                                     </div>
@@ -291,7 +345,7 @@
                                     <div id="zipc_s" class="share-text-field" aria-disabled="true">
                                         <label class="refname">ZIP Code</label><span id="zipc" class="answer">${prof.address.zipCode}</span>
                                     </div>
-                                    <input class="btn-sec" type="submit" value="save"/>
+                                    <input type="submit" value="save" class="btn-sec"/>
                                 </form>
                             </div>
                             <!-- info end -->
