@@ -12,6 +12,8 @@
 		
     });
 
+
+
 	//Close When Click Outside
 	$('body').on('click', function(e){
 		var $target = e.target;

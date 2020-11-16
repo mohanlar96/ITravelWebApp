@@ -1,5 +1,22 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8"%>
+<%--<script>--%>
+<%--    $(document).ready(function () {--%>
+<%--            $.ajax({--%>
+<%--                type: "GET",--%>
+<%--                url: "FooterTravelersServlet",--%>
+<%--                data: {--%>
+<%--                    "currentUserID": "2" // accept this from session--%>
+<%--                },--%>
+<%--                success: function (responseText) {--%>
+<%--                    alert("Onload");--%>
+<%--                },--%>
+<%--                error: function () {--%>
+<%--                    alert('error');--%>
+<%--                }--%>
+<%--            });--%>
+<%--        });--%>
+<%--</script>--%>
 <jsp:include page="layout/header.jsp" />
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <main>
@@ -10,6 +27,7 @@
         <!-- BANNER END -->
         <!-- OPTIONS BAR START -->
         <div class="profile-menu-area bg-white">
+
             <div class="container">
                 <div class="row align-items-center">
                     <div class="col-lg-3 col-md-3">
@@ -22,6 +40,13 @@
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-6 offset-lg-1">
+                        <%
+                            int profile_ID = Integer.parseInt(request.getParameter("id"));
+                            // This session will be set immediately after user login
+                            if(session.getAttribute("UserSessionID")==null)
+                            session.setAttribute("UserSessionID", 2);
+
+                        %>
                         <div class="profile-menu-wrapper">
                             <div class="main-menu-inner header-top-navigation">
                                 <nav>
@@ -29,7 +54,7 @@
                                         <li><a href="profile.jsp">timeline</a></li>
                                         <li><a href="about.jsp">about</a></li>
                                         <li><a href="photos.jsp">photos</a></li>
-                                        <li><a id="main-menu-people" href="<%=request.getContextPath()%>/allTraveller?currentUserID=${2}">Travellers</a></li>                                        <!-- <li class="d-inline-block d-md-none"><a href="profile.jsp">edit profile</a></li> -->
+                                        <li><a id="main-menu-people" href="<%=request.getContextPath()%>/allTraveller?currentUserID=<%=profile_ID%>">Travellers</a></li>                                        <!-- <li class="d-inline-block d-md-none"><a href="profile.jsp">edit profile</a></li> -->
                                     </ul>
                                 </nav>
                             </div>

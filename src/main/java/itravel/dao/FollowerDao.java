@@ -11,19 +11,35 @@ import java.util.List;
 
 public class FollowerDao {
 
-    public static List<Traveller> getTraveller(int currentUserID) throws Exception {
+    public static List<Traveller> getTraveller(int currentUserID, String travellersType) throws Exception {
         Connection myConn = null;
         Statement myStmt = null;
         ResultSet myRs = null;
         List<Traveller> allTraveller = new ArrayList<>();
         try {
-            // String sql = "SELECT fname,lname FROM itraveldb.person where id<4;";
-            String sql =
-                    "SELECT user.id, image.link, person.fname, person.lname FROM image " +
-                            "Inner JOIN user_image ON image.id=user_image.Image_id " +
-                            "Inner JOIN user ON user_image.User_id=user.id " +
-                            "Inner JOIN person ON user.Person_id=person.id " +
-                            "WHERE  user.id!=" + currentUserID + " and user_image.sizeimg='S' order by person.fname asc";
+            String sql = "";
+            if (travellersType.equals("All")) {
+                sql =
+                        "SELECT user.id as id, image.link, person.fname, person.lname FROM image " +
+                                "Inner JOIN user_image ON image.id=user_image.Image_id " +
+                                "Inner JOIN user ON user_image.User_id=user.id " +
+                                "Inner JOIN person ON user.Person_id=person.id " +
+                                "WHERE  user.id!=" + currentUserID + " and user_image.sizeimg='S' order by person.fname asc";
+            } else if (travellersType.equals("MyFollowers")) {
+                sql = "SELECT Follower1_id as id, image.link, person.fname, person.lname FROM image " +
+                        "Inner JOIN user_image ON image.id=user_image.Image_id " +
+                        "Inner join follower on user_image.User_id= follower.Follower1_id " +
+                        "inner join user on user.id = follower.Follower1_id " +
+                        "Inner JOIN person ON user.Person_id=person.id " +
+                        "WHERE follower.User_id=" + currentUserID + " and follower.Follewer1_id!=" + currentUserID + " and user_image.sizeimg='S' order by person.fname asc";
+            } else if (travellersType.equals("MyFollowees")) {
+                sql = "SELECT follower.User_id as id, image.link, person.fname, person.lname FROM image " +
+                        "Inner JOIN user_image ON image.id=user_image.Image_id " +
+                        "Inner join follower on user_image.User_id= follower.User_id " +
+                        "inner join user on user.id = follower.User_id " +
+                        "Inner JOIN person ON user.Person_id=person.id " +
+                        "WHERE follower.Follower1_id=" + currentUserID +" and follower.User_id!="+ currentUserID+" and user_image.sizeimg='S' order by person.fname asc";
+            }
             myConn = DbUtil.connectDb();
             myStmt = myConn.createStatement();
             myRs = myStmt.executeQuery(sql);
@@ -66,28 +82,21 @@ public class FollowerDao {
         PreparedStatement myStmt = null;
         ResultSet myRs = null;
         String sql = "";
-        String resultString="";
+        String returnVal = "";
         try {
             myConn = DbUtil.connectDb();
             if (status.trim().equals("Following")) {
                 sql = "Delete from follower WHERE follower.User_id=" + travellerID + " and follower.Follower1_id=" + currentUserID;
                 myStmt = myConn.prepareStatement(sql);
                 myStmt.execute();
-                resultString="Follow";
-//                boolean result = myStmt.execute();
-//                if (result) {
-//                    resultString="Follow";
-//                    System.out.println("hiii");
-//                }
-            }
-            else if (status.trim().equals("Follow")) {
+                returnVal = "Follow";
+            } else if (status.trim().equals("Follow")) {
                 sql = "Insert into follower(follower.User_id,follower.Follower1_id) values(" + travellerID + "," + currentUserID + ")";
                 myStmt = myConn.prepareStatement(sql);
                 myStmt.execute();
-                resultString="Following";
-
+                returnVal = "Following";
             }
-            return resultString;
+            return returnVal;
         } finally {
             myConn.close();
         }

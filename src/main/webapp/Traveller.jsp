@@ -5,32 +5,39 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <jsp:include page="layout/header.jsp"/>
-
-<%--<script type="text/java" src="js/Ajax/myAjax.js"> </script>--%>
+<%--<script type="text/java" src="/js/myAjax.js"> </script>--%>
 <script>
-    function followUnfollow(id,followStatus) {
-         //alert(id +" "+followStatus);
-        $.ajax({
-            url: "FollowUnfollowServlet",
-            data: {
-                "travellerID":id,
-                "followingStatus":followStatus
-            },
-            type: "POST",
-            dataType: "json",
-            cache: false,
-            success: function (data) {
-                $('#' + id).text(data);
-            },
-            error: function () {
-                alert('error');
-            }
-        });
+    $(document).ready(function () {
+        $(".add-frnd").click(function () {
+            $userID = $(this).attr('id'); //Button ID
+            $currentUserID = $('#hidden-' + $userID).val();
+            $followStatus = $('#' + $userID).html().trim();
+            $.ajax({
+                url: "FollowUnfollowServlet",
+                data: {
+                    "currentUser":$currentUserID,
+                    "travellerID": $userID,
+                    "followingStatus": $followStatus
+                },
+                type: "GET",
+                cache: false,
+                success: function (responseText) {
+                    $('#' + $userID).text(responseText);
+                    if (responseText.toString().trim() === "Follow") {
+                        $('#' + $userID).css("font-weight", "normal");
+                    } else if (responseText.toString().trim() === "Following") {
+                        $('#' + $userID).css("font-weight", "bold");
+                    }
 
-    }
+                },
+                error: function () {
+                    alert('Ajax Error');
+                }
+            });
+        });
+    });
 
 </script>
 <div class="main-wrapper">
@@ -54,13 +61,16 @@
                 </div>
                 <div class="col-lg-6 col-md-6 offset-lg-1">
                     <div class="profile-menu-wrapper">
+                        <%int profile_ID = Integer.parseInt(request.getParameter("id"));%>
                         <div class="main-menu-inner header-top-navigation">
                             <nav>
                                 <ul class="main-menu">
                                     <li class="active"><a href="#">timeline</a></li>
                                     <li><a href="about.jsp">about</a></li>
                                     <li><a href="photos.jsp">photos</a></li>
-                                    <li><a href="#">People</a></li>
+                                    <li>
+                                        <a href="<%=request.getContextPath()%>/allTraveller?currentUserID=<%=profile_ID%>">Travellers</a>
+                                    </li>
                                     <li><a href="about.jsp">more</a></li>
                                     <!-- <li class="d-inline-block d-md-none"><a href="profile.jsp">edit profile</a></li> -->
                                 </ul>
@@ -85,7 +95,7 @@
                 <div class="col-lg-12">
                     <div class="secondary-menu-wrapper secondary-menu-2 bg-white">
                         <div class="page-title-inner">
-                            <h4 class="page-title">friends (1250)</h4>
+                            <h4 class="page-title">(${myFollowersList.size()}) Travellers Following You</h4>
                         </div>
                         <div class="filter-menu">
                             <button class="active" data-filter="*">all</button>
@@ -130,729 +140,48 @@
                                 <c:choose>
                                     <c:when test="${trvlr.getIsFollwing()}">
                                         <c:set var="buttonName" scope="session" value="Following"/>
+                                        <c:set var="myFontWeight" scope="session" value="bold"/>
                                     </c:when>
                                     <c:otherwise>
                                         <c:set var="buttonName" scope="session" value="Follow"/>
+                                        <c:set var="myFontWeight" scope="session" value="normal"/>
                                     </c:otherwise>
+
                                 </c:choose>
+
 
                                 <div class="col-lg-3 col-sm-6 relative">
                                     <div class="friend-list-view">
                                         <div class="profile-thumb">
                                             <a href="#">
                                                 <figure class="profile-thumb-middle">
-                                                    <img src="${trvlr.getPicturePath().toString()}" alt="profile picture">
+                                                    <img src="${trvlr.getPicturePath().toString()}"
+                                                         alt="profile picture">
                                                 </figure>
                                             </a>
                                         </div>
                                         <div class="posted-author">
-                                            <h6 class="author"><a href="profile.jsp">
+                                            <h6 class="author"><a
+                                                    href="<%=request.getContextPath()%>/profile?id=${trvlr.getUserID()}">
                                                     ${trvlr.getFirstName().toString()} ${trvlr.getLastName().toString()}
                                             </a></h6>
                                         </div>
                                         <div class="posted-author">
-                                            <input type="hidden" id="add-frnd-hidden" value="${trvlr.getUserID()}">
+<%--                                            <%--%>
+<%--                                                String buttontype = "";--%>
+<%--                                                if (profile_ID != Integer.parseInt(session.getAttribute("UserSessionID").toString()))--%>
+<%--                                                    buttontype = "disabled";--%>
+<%--                                            %>--%>
+                                            <input type="hidden" id="hidden-${trvlr.getUserID()}"
+                                                   value="<%=session.getAttribute("UserSessionID").toString()%>">
                                             <button class="add-frnd" id="${trvlr.getUserID()}"
-                                                    onclick="followUnfollow(${trvlr.getUserID()},'${buttonName}')">${buttonName}
-                                            </button>
+                                                    style="font-weight: ${myFontWeight}"  <%//=buttontype%> >${buttonName}</button>
                                         </div>
                                     </div>
                                 </div>
 
                             </c:forEach>
-                            <%--                                    <div class="col-lg-3 col-sm-6 recently collage request">--%>
-                            <%--                                        <div class="friend-list-view">--%>
-                            <%--                                            <!-- profile picture end -->--%>
-                            <%--                                            <div class="profile-thumb">--%>
-                            <%--                                                <a href="#">--%>
-                            <%--                                                    <figure class="profile-thumb-middle">--%>
-                            <%--                                                        <img src="images/profile/profile-small-7.jpg" alt="profile picture">--%>
-                            <%--                                                    </figure>--%>
-                            <%--                                                </a>--%>
-                            <%--                                            </div>--%>
-                            <%--                                            <!-- profile picture end -->--%>
 
-                            <%--                                            <div class="posted-author">--%>
-                            <%--                                                <h6 class="author"><a href="profile.jsp">william henry</a></h6>--%>
-                            <%--                                            </div>--%>
-                            <%--                                            <div class="posted-author">--%>
-                            <%--                                                <button class="add-frnd">Follow</button>--%>
-                            <%--                                            </div>--%>
-                            <%--                                        </div>--%>
-                            <%--                                    </div>--%>
-                            <%--                                    <div class="col-lg-3 col-sm-6 relative request">--%>
-                            <%--                                        <div class="friend-list-view">--%>
-                            <%--                                            <!-- profile picture end -->--%>
-                            <%--                                            <div class="profile-thumb">--%>
-                            <%--                                                <a href="#">--%>
-                            <%--                                                    <figure class="profile-thumb-middle">--%>
-                            <%--                                                        <img src="images/profile/profile-small-22.jpg" alt="profile picture">--%>
-                            <%--                                                    </figure>--%>
-                            <%--                                                </a>--%>
-                            <%--                                            </div>--%>
-                            <%--                                            <!-- profile picture end -->--%>
-
-                            <%--                                            <div class="posted-author">--%>
-                            <%--                                                <h6 class="author"><a href="profile.jsp">Kate Midiltoin</a></h6>--%>
-                            <%--                                            </div>--%>
-                            <%--                                            <div class="posted-author">--%>
-                            <%--                                                <button class="add-frnd">Following</button>--%>
-                            <%--                                            </div>--%>
-                            <%--                                        </div>--%>
-                            <%--                                    </div>--%>
-                            <%--                                    <div class="col-lg-3 col-sm-6 recently collage">--%>
-                            <%--                                        <div class="friend-list-view">--%>
-                            <%--                                            <!-- profile picture end -->--%>
-                            <%--                                            <div class="profile-thumb">--%>
-                            <%--                                                <a href="#">--%>
-                            <%--                                                    <figure class="profile-thumb-middle">--%>
-                            <%--                                                        <img src="images/profile/profile-small-10.jpg" alt="profile picture">--%>
-                            <%--                                                    </figure>--%>
-                            <%--                                                </a>--%>
-                            <%--                                            </div>--%>
-                            <%--                                            <!-- profile picture end -->--%>
-
-                            <%--                                            <div class="posted-author">--%>
-                            <%--                                                <h6 class="author"><a href="profile.jsp">Omio Morganik</a></h6>--%>
-                            <%--                                            </div>--%>
-                            <%--                                            <div class="posted-author">--%>
-                            <%--                                                <button class="add-frnd">Following</button>--%>
-                            <%--                                            </div>--%>
-                            <%--                                        </div>--%>
-                            <%--                                    </div>--%>
-                            <%--                                    <div class="col-lg-3 col-sm-6 relative">--%>
-                            <%--                                        <div class="friend-list-view">--%>
-                            <%--                                            <!-- profile picture end -->--%>
-                            <%--                                            <div class="profile-thumb">--%>
-                            <%--                                                <a href="#">--%>
-                            <%--                                                    <figure class="profile-thumb-middle">--%>
-                            <%--                                                        <img src="images/profile/profile-small-13.jpg" alt="profile picture">--%>
-                            <%--                                                    </figure>--%>
-                            <%--                                                </a>--%>
-                            <%--                                            </div>--%>
-                            <%--                                            <!-- profile picture end -->--%>
-
-                            <%--                                            <div class="posted-author">--%>
-                            <%--                                                <h6 class="author"><a href="profile.jsp">william henry</a></h6>--%>
-                            <%--                                            </div>--%>
-
-                            <%--                                            <div class="posted-author">--%>
-                            <%--                                                <button class="add-frnd">Follow</button>--%>
-                            <%--                                            </div>--%>
-                            <%--                                        </div>--%>
-                            <%--                                    </div>--%>
-                            <%--                                    <div class="col-lg-3 col-sm-6 collage request">--%>
-                            <%--                                        <div class="friend-list-view">--%>
-                            <%--                                            <!-- profile picture end -->--%>
-                            <%--                                            <div class="profile-thumb">--%>
-                            <%--                                                <a href="#">--%>
-                            <%--                                                    <figure class="profile-thumb-middle">--%>
-                            <%--                                                        <img src="images/profile/profile-small-18.jpg" alt="profile picture">--%>
-                            <%--                                                    </figure>--%>
-                            <%--                                                </a>--%>
-                            <%--                                            </div>--%>
-                            <%--                                            <!-- profile picture end -->--%>
-
-                            <%--                                            <div class="posted-author">--%>
-                            <%--                                                <h6 class="author"><a href="profile.jsp">erik jonson</a></h6>--%>
-                            <%--                                                <button class="add-frnd">Follow</button>--%>
-                            <%--                                            </div>--%>
-                            <%--                                        </div>--%>
-                            <%--                                    </div>--%>
-                            <%--                                    <div class="col-lg-3 col-sm-6 relative request">--%>
-                            <%--                                        <div class="friend-list-view">--%>
-                            <%--                                            <!-- profile picture end -->--%>
-                            <%--                                            <div class="profile-thumb">--%>
-                            <%--                                                <a href="#">--%>
-                            <%--                                                    <figure class="profile-thumb-middle">--%>
-                            <%--                                                        <img src="images/profile/profile-small-25.jpg" alt="profile picture">--%>
-                            <%--                                                    </figure>--%>
-                            <%--                                                </a>--%>
-                            <%--                                            </div>--%>
-                            <%--                                            <!-- profile picture end -->--%>
-
-                            <%--                                            <div class="posted-author">--%>
-                            <%--                                                <h6 class="author"><a href="profile.jsp">peter looks</a></h6>--%>
-                            <%--                                                <button class="add-frnd">Follow</button>--%>
-                            <%--                                            </div>--%>
-                            <%--                                        </div>--%>
-                            <%--                                    </div>--%>
-                            <%--                                    <div class="col-lg-3 col-sm-6 recently collage">--%>
-                            <%--                                        <div class="friend-list-view">--%>
-                            <%--                                            <!-- profile picture end -->--%>
-                            <%--                                            <div class="profile-thumb">--%>
-                            <%--                                                <a href="#">--%>
-                            <%--                                                    <figure class="profile-thumb-middle">--%>
-                            <%--                                                        <img src="images/profile/profile-small-16.jpg" alt="profile picture">--%>
-                            <%--                                                    </figure>--%>
-                            <%--                                                </a>--%>
-                            <%--                                            </div>--%>
-                            <%--                                            <!-- profile picture end -->--%>
-
-                            <%--                                            <div class="posted-author">--%>
-                            <%--                                                <h6 class="author"><a href="profile.jsp">jhon doe</a></h6>--%>
-                            <%--                                                <button class="add-frnd">Follow</button>--%>
-                            <%--                                            </div>--%>
-                            <%--                                        </div>--%>
-                            <%--                                    </div>--%>
-                            <%--                                    <div class="col-lg-3 col-sm-6 relative request">--%>
-                            <%--                                        <div class="friend-list-view">--%>
-                            <%--                                            <!-- profile picture end -->--%>
-                            <%--                                            <div class="profile-thumb">--%>
-                            <%--                                                <a href="#">--%>
-                            <%--                                                    <figure class="profile-thumb-middle">--%>
-                            <%--                                                        <img src="images/profile/profile-small-12.jpg" alt="profile picture">--%>
-                            <%--                                                    </figure>--%>
-                            <%--                                                </a>--%>
-                            <%--                                            </div>--%>
-                            <%--                                            <!-- profile picture end -->--%>
-
-                            <%--                                            <div class="posted-author">--%>
-                            <%--                                                <h6 class="author"><a href="profile.jsp">william henry</a></h6>--%>
-                            <%--                                                <button class="add-frnd">Follow</button>--%>
-                            <%--                                            </div>--%>
-                            <%--                                        </div>--%>
-                            <%--                                    </div>--%>
-                            <%--                                    <div class="col-lg-3 col-sm-6 recently collage">--%>
-                            <%--                                        <div class="friend-list-view">--%>
-                            <%--                                            <!-- profile picture end -->--%>
-                            <%--                                            <div class="profile-thumb">--%>
-                            <%--                                                <a href="#">--%>
-                            <%--                                                    <figure class="profile-thumb-middle">--%>
-                            <%--                                                        <img src="images/profile/profile-small-9.jpg" alt="profile picture">--%>
-                            <%--                                                    </figure>--%>
-                            <%--                                                </a>--%>
-                            <%--                                            </div>--%>
-                            <%--                                            <!-- profile picture end -->--%>
-
-                            <%--                                            <div class="posted-author">--%>
-                            <%--                                                <h6 class="author"><a href="profile.jsp">william henry</a></h6>--%>
-                            <%--                                                <button class="add-frnd">Following</button>--%>
-                            <%--                                            </div>--%>
-                            <%--                                        </div>--%>
-                            <%--                                    </div>--%>
-                            <%--                                    <div class="col-lg-3 col-sm-6 recently request">--%>
-                            <%--                                        <div class="friend-list-view">--%>
-                            <%--                                            <!-- profile picture end -->--%>
-                            <%--                                            <div class="profile-thumb">--%>
-                            <%--                                                <a href="#">--%>
-                            <%--                                                    <figure class="profile-thumb-middle">--%>
-                            <%--                                                        <img src="images/profile/profile-small-17.jpg" alt="profile picture">--%>
-                            <%--                                                    </figure>--%>
-                            <%--                                                </a>--%>
-                            <%--                                            </div>--%>
-                            <%--                                            <!-- profile picture end -->--%>
-
-                            <%--                                            <div class="posted-author">--%>
-                            <%--                                                <h6 class="author"><a href="profile.jsp">musa kollins</a></h6>--%>
-                            <%--                                                <button class="add-frnd">Follow</button>--%>
-                            <%--                                            </div>--%>
-                            <%--                                        </div>--%>
-                            <%--                                    </div>--%>
-                            <%--                                    <div class="col-lg-3 col-sm-6 relative collage">--%>
-                            <%--                                        <div class="friend-list-view">--%>
-                            <%--                                            <!-- profile picture end -->--%>
-                            <%--                                            <div class="profile-thumb">--%>
-                            <%--                                                <a href="#">--%>
-                            <%--                                                    <figure class="profile-thumb-middle">--%>
-                            <%--                                                        <img src="images/profile/profile-small-11.jpg" alt="profile picture">--%>
-                            <%--                                                    </figure>--%>
-                            <%--                                                </a>--%>
-                            <%--                                            </div>--%>
-                            <%--                                            <!-- profile picture end -->--%>
-
-                            <%--                                            <div class="posted-author">--%>
-                            <%--                                                <h6 class="author"><a href="profile.jsp">petter jhon</a></h6>--%>
-                            <%--                                                <button class="add-frnd">Follow</button>--%>
-                            <%--                                            </div>--%>
-                            <%--                                        </div>--%>
-                            <%--                                    </div>--%>
-                            <%--                                    <div class="col-lg-3 col-sm-6 request collage">--%>
-                            <%--                                        <div class="friend-list-view">--%>
-                            <%--                                            <!-- profile picture end -->--%>
-                            <%--                                            <div class="profile-thumb">--%>
-                            <%--                                                <a href="#">--%>
-                            <%--                                                    <figure class="profile-thumb-middle">--%>
-                            <%--                                                        <img src="images/profile/profile-small-20.jpg" alt="profile picture">--%>
-                            <%--                                                    </figure>--%>
-                            <%--                                                </a>--%>
-                            <%--                                            </div>--%>
-                            <%--                                            <!-- profile picture end -->--%>
-
-                            <%--                                            <div class="posted-author">--%>
-                            <%--                                                <h6 class="author"><a href="profile.jsp">henry william</a></h6>--%>
-                            <%--                                                <button class="add-frnd">Following</button>--%>
-                            <%--                                            </div>--%>
-                            <%--                                        </div>--%>
-                            <%--                                    </div>--%>
-                            <%--                                    <div class="col-lg-3 col-sm-6 recently relative">--%>
-                            <%--                                        <div class="friend-list-view">--%>
-                            <%--                                            <!-- profile picture end -->--%>
-                            <%--                                            <div class="profile-thumb">--%>
-                            <%--                                                <a href="#">--%>
-                            <%--                                                    <figure class="profile-thumb-middle">--%>
-                            <%--                                                        <img src="images/profile/profile-small-32.jpg" alt="profile picture">--%>
-                            <%--                                                    </figure>--%>
-                            <%--                                                </a>--%>
-                            <%--                                            </div>--%>
-                            <%--                                            <!-- profile picture end -->--%>
-
-                            <%--                                            <div class="posted-author">--%>
-                            <%--                                                <h6 class="author"><a href="profile.jsp">cristian paul</a></h6>--%>
-                            <%--                                                <button class="add-frnd">Follow</button>--%>
-                            <%--                                            </div>--%>
-                            <%--                                        </div>--%>
-                            <%--                                    </div>--%>
-                            <%--                                    <div class="col-lg-3 col-sm-6 relative collage request">--%>
-                            <%--                                        <div class="friend-list-view">--%>
-                            <%--                                            <!-- profile picture end -->--%>
-                            <%--                                            <div class="profile-thumb">--%>
-                            <%--                                                <a href="#">--%>
-                            <%--                                                    <figure class="profile-thumb-middle">--%>
-                            <%--                                                        <img src="images/profile/profile-small-31.jpg" alt="profile picture">--%>
-                            <%--                                                    </figure>--%>
-                            <%--                                                </a>--%>
-                            <%--                                            </div>--%>
-                            <%--                                            <!-- profile picture end -->--%>
-
-                            <%--                                            <div class="posted-author">--%>
-                            <%--                                                <h6 class="author"><a href="profile.jsp">willson merry</a></h6>--%>
-                            <%--                                                <button class="add-frnd">Follow</button>--%>
-                            <%--                                            </div>--%>
-                            <%--                                        </div>--%>
-                            <%--                                    </div>--%>
-                            <%--                                    <div class="col-lg-3 col-sm-6 request recently">--%>
-                            <%--                                        <div class="friend-list-view">--%>
-                            <%--                                            <!-- profile picture end -->--%>
-                            <%--                                            <div class="profile-thumb">--%>
-                            <%--                                                <a href="#">--%>
-                            <%--                                                    <figure class="profile-thumb-middle">--%>
-                            <%--                                                        <img src="images/profile/profile-small-29.jpg" alt="profile picture">--%>
-                            <%--                                                    </figure>--%>
-                            <%--                                                </a>--%>
-                            <%--                                            </div>--%>
-                            <%--                                            <!-- profile picture end -->--%>
-
-                            <%--                                            <div class="posted-author">--%>
-                            <%--                                                <h6 class="author"><a href="profile.jsp">jhonsina boss</a></h6>--%>
-                            <%--                                                <button class="add-frnd">Follow</button>--%>
-                            <%--                                            </div>--%>
-                            <%--                                        </div>--%>
-                            <%--                                    </div>--%>
-                            <%--                                    <div class="col-lg-3 col-sm-6 recently">--%>
-                            <%--                                        <div class="friend-list-view">--%>
-                            <%--                                            <!-- profile picture end -->--%>
-                            <%--                                            <div class="profile-thumb">--%>
-                            <%--                                                <a href="#">--%>
-                            <%--                                                    <figure class="profile-thumb-middle">--%>
-                            <%--                                                        <img src="images/profile/profile-small-26.jpg" alt="profile picture">--%>
-                            <%--                                                    </figure>--%>
-                            <%--                                                </a>--%>
-                            <%--                                            </div>--%>
-                            <%--                                            <!-- profile picture end -->--%>
-
-                            <%--                                            <div class="posted-author">--%>
-                            <%--                                                <h6 class="author"><a href="profile.jsp">william jowel</a></h6>--%>
-                            <%--                                                <button class="add-frnd">Follow</button>--%>
-                            <%--                                            </div>--%>
-                            <%--                                        </div>--%>
-                            <%--                                    </div>--%>
-                            <%--                                    <div class="col-lg-3 col-sm-6 relative collage">--%>
-                            <%--                                        <div class="friend-list-view">--%>
-                            <%--                                            <!-- profile picture end -->--%>
-                            <%--                                            <div class="profile-thumb">--%>
-                            <%--                                                <a href="#">--%>
-                            <%--                                                    <figure class="profile-thumb-middle">--%>
-                            <%--                                                        <img src="images/profile/profile-small-19.jpg" alt="profile picture">--%>
-                            <%--                                                    </figure>--%>
-                            <%--                                                </a>--%>
-                            <%--                                            </div>--%>
-                            <%--                                            <!-- profile picture end -->--%>
-
-                            <%--                                            <div class="posted-author">--%>
-                            <%--                                                <h6 class="author"><a href="profile.jsp">ashim pual</a></h6>--%>
-                            <%--                                                <button class="add-frnd">Follow</button>--%>
-                            <%--                                            </div>--%>
-                            <%--                                        </div>--%>
-                            <%--                                    </div>--%>
-                            <%--                                    <div class="col-lg-3 col-sm-6 recently request">--%>
-                            <%--                                        <div class="friend-list-view">--%>
-                            <%--                                            <!-- profile picture end -->--%>
-                            <%--                                            <div class="profile-thumb">--%>
-                            <%--                                                <a href="#">--%>
-                            <%--                                                    <figure class="profile-thumb-middle">--%>
-                            <%--                                                        <img src="images/profile/profile-small-23.jpg" alt="profile picture">--%>
-                            <%--                                                    </figure>--%>
-                            <%--                                                </a>--%>
-                            <%--                                            </div>--%>
-                            <%--                                            <!-- profile picture end -->--%>
-
-                            <%--                                            <div class="posted-author">--%>
-                            <%--                                                <h6 class="author"><a href="profile.jsp">Barak Obama</a></h6>--%>
-                            <%--                                                <button class="add-frnd">Follow</button>--%>
-                            <%--                                            </div>--%>
-                            <%--                                        </div>--%>
-                            <%--                                    </div>--%>
-                            <%--                                    <div class="col-lg-3 col-sm-6 recently request">--%>
-                            <%--                                        <div class="friend-list-view">--%>
-                            <%--                                            <!-- profile picture end -->--%>
-                            <%--                                            <div class="profile-thumb">--%>
-                            <%--                                                <a href="#">--%>
-                            <%--                                                    <figure class="profile-thumb-middle">--%>
-                            <%--                                                        <img src="images/profile/profile-small-1.jpg" alt="profile picture">--%>
-                            <%--                                                    </figure>--%>
-                            <%--                                                </a>--%>
-                            <%--                                            </div>--%>
-                            <%--                                            <!-- profile picture end -->--%>
-
-                            <%--                                            <div class="posted-author">--%>
-                            <%--                                                <h6 class="author"><a href="profile.jsp">Kate Midiltoin</a></h6>--%>
-                            <%--                                                <button class="add-frnd">Follow</button>--%>
-                            <%--                                            </div>--%>
-                            <%--                                        </div>--%>
-                            <%--                                    </div>--%>
-                            <%--                                    <div class="col-lg-3 col-sm-6 relative">--%>
-                            <%--                                        <div class="friend-list-view">--%>
-                            <%--                                            <!-- profile picture end -->--%>
-                            <%--                                            <div class="profile-thumb">--%>
-                            <%--                                                <a href="#">--%>
-                            <%--                                                    <figure class="profile-thumb-middle">--%>
-                            <%--                                                        <img src="images/profile/profile-small-4.jpg" alt="profile picture">--%>
-                            <%--                                                    </figure>--%>
-                            <%--                                                </a>--%>
-                            <%--                                            </div>--%>
-                            <%--                                            <!-- profile picture end -->--%>
-
-                            <%--                                            <div class="posted-author">--%>
-                            <%--                                                <h6 class="author"><a href="profile.jsp">Jon Wileyam</a></h6>--%>
-                            <%--                                                <button class="add-frnd">Follow</button>--%>
-                            <%--                                            </div>--%>
-                            <%--                                        </div>--%>
-                            <%--                                    </div>--%>
-                            <%--                                    <div class="col-lg-3 col-sm-6 recently collage request">--%>
-                            <%--                                        <div class="friend-list-view">--%>
-                            <%--                                            <!-- profile picture end -->--%>
-                            <%--                                            <div class="profile-thumb">--%>
-                            <%--                                                <a href="#">--%>
-                            <%--                                                    <figure class="profile-thumb-middle">--%>
-                            <%--                                                        <img src="images/profile/profile-small-7.jpg" alt="profile picture">--%>
-                            <%--                                                    </figure>--%>
-                            <%--                                                </a>--%>
-                            <%--                                            </div>--%>
-                            <%--                                            <!-- profile picture end -->--%>
-
-                            <%--                                            <div class="posted-author">--%>
-                            <%--                                                <h6 class="author"><a href="profile.jsp">william henry</a></h6>--%>
-                            <%--                                                <button class="add-frnd">Follow</button>--%>
-                            <%--                                            </div>--%>
-                            <%--                                        </div>--%>
-                            <%--                                    </div>--%>
-                            <%--                                    <div class="col-lg-3 col-sm-6 relative request">--%>
-                            <%--                                        <div class="friend-list-view">--%>
-                            <%--                                            <!-- profile picture end -->--%>
-                            <%--                                            <div class="profile-thumb">--%>
-                            <%--                                                <a href="#">--%>
-                            <%--                                                    <figure class="profile-thumb-middle">--%>
-                            <%--                                                        <img src="images/profile/profile-small-22.jpg" alt="profile picture">--%>
-                            <%--                                                    </figure>--%>
-                            <%--                                                </a>--%>
-                            <%--                                            </div>--%>
-                            <%--                                            <!-- profile picture end -->--%>
-
-                            <%--                                            <div class="posted-author">--%>
-                            <%--                                                <h6 class="author"><a href="profile.jsp">Kate Midiltoin</a></h6>--%>
-                            <%--                                                <button class="add-frnd">Following</button>--%>
-                            <%--                                            </div>--%>
-                            <%--                                        </div>--%>
-                            <%--                                    </div>--%>
-                            <%--                                    <div class="col-lg-3 col-sm-6 recently collage">--%>
-                            <%--                                        <div class="friend-list-view">--%>
-                            <%--                                            <!-- profile picture end -->--%>
-                            <%--                                            <div class="profile-thumb">--%>
-                            <%--                                                <a href="#">--%>
-                            <%--                                                    <figure class="profile-thumb-middle">--%>
-                            <%--                                                        <img src="images/profile/profile-small-10.jpg" alt="profile picture">--%>
-                            <%--                                                    </figure>--%>
-                            <%--                                                </a>--%>
-                            <%--                                            </div>--%>
-                            <%--                                            <!-- profile picture end -->--%>
-
-                            <%--                                            <div class="posted-author">--%>
-                            <%--                                                <h6 class="author"><a href="profile.jsp">Omio Morganik</a></h6>--%>
-                            <%--                                                <button class="add-frnd">Following</button>--%>
-                            <%--                                            </div>--%>
-                            <%--                                        </div>--%>
-                            <%--                                    </div>--%>
-                            <%--                                    <div class="col-lg-3 col-sm-6 relative">--%>
-                            <%--                                        <div class="friend-list-view">--%>
-                            <%--                                            <!-- profile picture end -->--%>
-                            <%--                                            <div class="profile-thumb">--%>
-                            <%--                                                <a href="#">--%>
-                            <%--                                                    <figure class="profile-thumb-middle">--%>
-                            <%--                                                        <img src="images/profile/profile-small-13.jpg" alt="profile picture">--%>
-                            <%--                                                    </figure>--%>
-                            <%--                                                </a>--%>
-                            <%--                                            </div>--%>
-                            <%--                                            <!-- profile picture end -->--%>
-
-                            <%--                                            <div class="posted-author">--%>
-                            <%--                                                <h6 class="author"><a href="profile.jsp">william henry</a></h6>--%>
-                            <%--                                                <button class="add-frnd">Follow</button>--%>
-                            <%--                                            </div>--%>
-                            <%--                                        </div>--%>
-                            <%--                                    </div>--%>
-                            <%--                                    <div class="col-lg-3 col-sm-6 collage request">--%>
-                            <%--                                        <div class="friend-list-view">--%>
-                            <%--                                            <!-- profile picture end -->--%>
-                            <%--                                            <div class="profile-thumb">--%>
-                            <%--                                                <a href="#">--%>
-                            <%--                                                    <figure class="profile-thumb-middle">--%>
-                            <%--                                                        <img src="images/profile/profile-small-18.jpg" alt="profile picture">--%>
-                            <%--                                                    </figure>--%>
-                            <%--                                                </a>--%>
-                            <%--                                            </div>--%>
-                            <%--                                            <!-- profile picture end -->--%>
-
-                            <%--                                            <div class="posted-author">--%>
-                            <%--                                                <h6 class="author"><a href="profile.jsp">erik jonson</a></h6>--%>
-                            <%--                                                <button class="add-frnd">Follow</button>--%>
-                            <%--                                            </div>--%>
-                            <%--                                        </div>--%>
-                            <%--                                    </div>--%>
-                            <%--                                    <div class="col-lg-3 col-sm-6 relative request">--%>
-                            <%--                                        <div class="friend-list-view">--%>
-                            <%--                                            <!-- profile picture end -->--%>
-                            <%--                                            <div class="profile-thumb">--%>
-                            <%--                                                <a href="#">--%>
-                            <%--                                                    <figure class="profile-thumb-middle">--%>
-                            <%--                                                        <img src="images/profile/profile-small-25.jpg" alt="profile picture">--%>
-                            <%--                                                    </figure>--%>
-                            <%--                                                </a>--%>
-                            <%--                                            </div>--%>
-                            <%--                                            <!-- profile picture end -->--%>
-
-                            <%--                                            <div class="posted-author">--%>
-                            <%--                                                <h6 class="author"><a href="profile.jsp">peter looks</a></h6>--%>
-                            <%--                                                <button class="add-frnd">Follow</button>--%>
-                            <%--                                            </div>--%>
-                            <%--                                        </div>--%>
-                            <%--                                    </div>--%>
-                            <%--                                    <div class="col-lg-3 col-sm-6 recently collage">--%>
-                            <%--                                        <div class="friend-list-view">--%>
-                            <%--                                            <!-- profile picture end -->--%>
-                            <%--                                            <div class="profile-thumb">--%>
-                            <%--                                                <a href="#">--%>
-                            <%--                                                    <figure class="profile-thumb-middle">--%>
-                            <%--                                                        <img src="images/profile/profile-small-16.jpg" alt="profile picture">--%>
-                            <%--                                                    </figure>--%>
-                            <%--                                                </a>--%>
-                            <%--                                            </div>--%>
-                            <%--                                            <!-- profile picture end -->--%>
-
-                            <%--                                            <div class="posted-author">--%>
-                            <%--                                                <h6 class="author"><a href="profile.jsp">jhon doe</a></h6>--%>
-                            <%--                                                <button class="add-frnd">Follow</button>--%>
-                            <%--                                            </div>--%>
-                            <%--                                        </div>--%>
-                            <%--                                    </div>--%>
-                            <%--                                    <div class="col-lg-3 col-sm-6 relative request">--%>
-                            <%--                                        <div class="friend-list-view">--%>
-                            <%--                                            <!-- profile picture end -->--%>
-                            <%--                                            <div class="profile-thumb">--%>
-                            <%--                                                <a href="#">--%>
-                            <%--                                                    <figure class="profile-thumb-middle">--%>
-                            <%--                                                        <img src="images/profile/profile-small-12.jpg" alt="profile picture">--%>
-                            <%--                                                    </figure>--%>
-                            <%--                                                </a>--%>
-                            <%--                                            </div>--%>
-                            <%--                                            <!-- profile picture end -->--%>
-
-                            <%--                                            <div class="posted-author">--%>
-                            <%--                                                <h6 class="author"><a href="profile.jsp">william henry</a></h6>--%>
-                            <%--                                                <button class="add-frnd">Follow</button>--%>
-                            <%--                                            </div>--%>
-                            <%--                                        </div>--%>
-                            <%--                                    </div>--%>
-                            <%--                                    <div class="col-lg-3 col-sm-6 recently collage">--%>
-                            <%--                                        <div class="friend-list-view">--%>
-                            <%--                                            <!-- profile picture end -->--%>
-                            <%--                                            <div class="profile-thumb">--%>
-                            <%--                                                <a href="#">--%>
-                            <%--                                                    <figure class="profile-thumb-middle">--%>
-                            <%--                                                        <img src="images/profile/profile-small-9.jpg" alt="profile picture">--%>
-                            <%--                                                    </figure>--%>
-                            <%--                                                </a>--%>
-                            <%--                                            </div>--%>
-                            <%--                                            <!-- profile picture end -->--%>
-
-                            <%--                                            <div class="posted-author">--%>
-                            <%--                                                <h6 class="author"><a href="profile.jsp">william henry</a></h6>--%>
-                            <%--                                                <button class="add-frnd">Following</button>--%>
-                            <%--                                            </div>--%>
-                            <%--                                        </div>--%>
-                            <%--                                    </div>--%>
-                            <%--                                    <div class="col-lg-3 col-sm-6 recently request">--%>
-                            <%--                                        <div class="friend-list-view">--%>
-                            <%--                                            <!-- profile picture end -->--%>
-                            <%--                                            <div class="profile-thumb">--%>
-                            <%--                                                <a href="#">--%>
-                            <%--                                                    <figure class="profile-thumb-middle">--%>
-                            <%--                                                        <img src="images/profile/profile-small-17.jpg" alt="profile picture">--%>
-                            <%--                                                    </figure>--%>
-                            <%--                                                </a>--%>
-                            <%--                                            </div>--%>
-                            <%--                                            <!-- profile picture end -->--%>
-
-                            <%--                                            <div class="posted-author">--%>
-                            <%--                                                <h6 class="author"><a href="profile.jsp">musa kollins</a></h6>--%>
-                            <%--                                                <button class="add-frnd">Follow</button>--%>
-                            <%--                                            </div>--%>
-                            <%--                                        </div>--%>
-                            <%--                                    </div>--%>
-                            <%--                                    <div class="col-lg-3 col-sm-6 relative collage">--%>
-                            <%--                                        <div class="friend-list-view">--%>
-                            <%--                                            <!-- profile picture end -->--%>
-                            <%--                                            <div class="profile-thumb">--%>
-                            <%--                                                <a href="#">--%>
-                            <%--                                                    <figure class="profile-thumb-middle">--%>
-                            <%--                                                        <img src="images/profile/profile-small-11.jpg" alt="profile picture">--%>
-                            <%--                                                    </figure>--%>
-                            <%--                                                </a>--%>
-                            <%--                                            </div>--%>
-                            <%--                                            <!-- profile picture end -->--%>
-
-                            <%--                                            <div class="posted-author">--%>
-                            <%--                                                <h6 class="author"><a href="profile.jsp">petter jhon</a></h6>--%>
-                            <%--                                                <button class="add-frnd">Follow</button>--%>
-                            <%--                                            </div>--%>
-                            <%--                                        </div>--%>
-                            <%--                                    </div>--%>
-                            <%--                                    <div class="col-lg-3 col-sm-6 request collage">--%>
-                            <%--                                        <div class="friend-list-view">--%>
-                            <%--                                            <!-- profile picture end -->--%>
-                            <%--                                            <div class="profile-thumb">--%>
-                            <%--                                                <a href="#">--%>
-                            <%--                                                    <figure class="profile-thumb-middle">--%>
-                            <%--                                                        <img src="images/profile/profile-small-20.jpg" alt="profile picture">--%>
-                            <%--                                                    </figure>--%>
-                            <%--                                                </a>--%>
-                            <%--                                            </div>--%>
-                            <%--                                            <!-- profile picture end -->--%>
-
-                            <%--                                            <div class="posted-author">--%>
-                            <%--                                                <h6 class="author"><a href="profile.jsp">henry william</a></h6>--%>
-                            <%--                                                <button class="add-frnd">Following</button>--%>
-                            <%--                                            </div>--%>
-                            <%--                                        </div>--%>
-                            <%--                                    </div>--%>
-                            <%--                                    <div class="col-lg-3 col-sm-6 recently relative">--%>
-                            <%--                                        <div class="friend-list-view">--%>
-                            <%--                                            <!-- profile picture end -->--%>
-                            <%--                                            <div class="profile-thumb">--%>
-                            <%--                                                <a href="#">--%>
-                            <%--                                                    <figure class="profile-thumb-middle">--%>
-                            <%--                                                        <img src="images/profile/profile-small-32.jpg" alt="profile picture">--%>
-                            <%--                                                    </figure>--%>
-                            <%--                                                </a>--%>
-                            <%--                                            </div>--%>
-                            <%--                                            <!-- profile picture end -->--%>
-
-                            <%--                                            <div class="posted-author">--%>
-                            <%--                                                <h6 class="author"><a href="profile.jsp">cristian paul</a></h6>--%>
-                            <%--                                                <button class="add-frnd">Follow</button>--%>
-                            <%--                                            </div>--%>
-                            <%--                                        </div>--%>
-                            <%--                                    </div>--%>
-                            <%--                                    <div class="col-lg-3 col-sm-6 relative collage request">--%>
-                            <%--                                        <div class="friend-list-view">--%>
-                            <%--                                            <!-- profile picture end -->--%>
-                            <%--                                            <div class="profile-thumb">--%>
-                            <%--                                                <a href="#">--%>
-                            <%--                                                    <figure class="profile-thumb-middle">--%>
-                            <%--                                                        <img src="images/profile/profile-small-31.jpg" alt="profile picture">--%>
-                            <%--                                                    </figure>--%>
-                            <%--                                                </a>--%>
-                            <%--                                            </div>--%>
-                            <%--                                            <!-- profile picture end -->--%>
-
-                            <%--                                            <div class="posted-author">--%>
-                            <%--                                                <h6 class="author"><a href="profile.jsp">willson merry</a></h6>--%>
-                            <%--                                                <button class="add-frnd">Follow</button>--%>
-                            <%--                                            </div>--%>
-                            <%--                                        </div>--%>
-                            <%--                                    </div>--%>
-                            <%--                                    <div class="col-lg-3 col-sm-6 request recently">--%>
-                            <%--                                        <div class="friend-list-view">--%>
-                            <%--                                            <!-- profile picture end -->--%>
-                            <%--                                            <div class="profile-thumb">--%>
-                            <%--                                                <a href="#">--%>
-                            <%--                                                    <figure class="profile-thumb-middle">--%>
-                            <%--                                                        <img src="images/profile/profile-small-29.jpg" alt="profile picture">--%>
-                            <%--                                                    </figure>--%>
-                            <%--                                                </a>--%>
-                            <%--                                            </div>--%>
-                            <%--                                            <!-- profile picture end -->--%>
-
-                            <%--                                            <div class="posted-author">--%>
-                            <%--                                                <h6 class="author"><a href="profile.jsp">jhonsina boss</a></h6>--%>
-                            <%--                                                <button class="add-frnd">Follow</button>--%>
-                            <%--                                            </div>--%>
-                            <%--                                        </div>--%>
-                            <%--                                    </div>--%>
-                            <%--                                    <div class="col-lg-3 col-sm-6 recently">--%>
-                            <%--                                        <div class="friend-list-view">--%>
-                            <%--                                            <!-- profile picture end -->--%>
-                            <%--                                            <div class="profile-thumb">--%>
-                            <%--                                                <a href="#">--%>
-                            <%--                                                    <figure class="profile-thumb-middle">--%>
-                            <%--                                                        <img src="images/profile/profile-small-26.jpg" alt="profile picture">--%>
-                            <%--                                                    </figure>--%>
-                            <%--                                                </a>--%>
-                            <%--                                            </div>--%>
-                            <%--                                            <!-- profile picture end -->--%>
-
-                            <%--                                            <div class="posted-author">--%>
-                            <%--                                                <h6 class="author"><a href="profile.jsp">william jowel</a></h6>--%>
-                            <%--                                                <button class="add-frnd">Follow</button>--%>
-                            <%--                                            </div>--%>
-                            <%--                                        </div>--%>
-                            <%--                                    </div>--%>
-                            <%--                                    <div class="col-lg-3 col-sm-6 relative collage">--%>
-                            <%--                                        <div class="friend-list-view">--%>
-                            <%--                                            <!-- profile picture end -->--%>
-                            <%--                                            <div class="profile-thumb">--%>
-                            <%--                                                <a href="#">--%>
-                            <%--                                                    <figure class="profile-thumb-middle">--%>
-                            <%--                                                        <img src="images/profile/profile-small-19.jpg" alt="profile picture">--%>
-                            <%--                                                    </figure>--%>
-                            <%--                                                </a>--%>
-                            <%--                                            </div>--%>
-                            <%--                                            <!-- profile picture end -->--%>
-
-                            <%--                                            <div class="posted-author">--%>
-                            <%--                                                <h6 class="author"><a href="profile.jsp">ashim pual</a></h6>--%>
-                            <%--                                                <button class="add-frnd">Follow</button>--%>
-                            <%--                                            </div>--%>
-                            <%--                                        </div>--%>
-                            <%--                                    </div>--%>
-                            <%--                                    <div class="col-lg-3 col-sm-6 recently request">--%>
-                            <%--                                        <div class="friend-list-view">--%>
-                            <%--                                            <!-- profile picture end -->--%>
-                            <%--                                            <div class="profile-thumb">--%>
-                            <%--                                                <a href="#">--%>
-                            <%--                                                    <figure class="profile-thumb-middle">--%>
-                            <%--                                                        <img src="images/profile/profile-small-23.jpg" alt="profile picture">--%>
-                            <%--                                                    </figure>--%>
-                            <%--                                                </a>--%>
-                            <%--                                            </div>--%>
-                            <%--                                            <!-- profile picture end -->--%>
-
-                            <%--                                            <div class="posted-author">--%>
-                            <%--                                                <h6 class="author"><a href="profile.jsp">Barak Obama</a></h6>--%>
-                            <%--                                                <button class="add-frnd">Follow</button>--%>
-                            <%--                                            </div>--%>
-                            <%--                                        </div>--%>
-                            <%--                                    </div>--%>
                         </div>
                     </div>
                 </div>

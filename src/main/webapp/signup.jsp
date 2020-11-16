@@ -6,7 +6,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Adda - Social Network HTML Template</title>
+    <title>MIU - I-Travel Platform</title>
     <meta name="robots" content="noindex, follow" />
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -54,7 +54,7 @@
                                         </a>
                                     </div>
                                     <div class="timeline-tagline">
-                                        <h6 class="tagline">It’s helps you to connect and share with the people in your life</h6>
+                                        <h6 class="tagline">You can connect and and share with different travelers</h6>
                                     </div>
                                 </div>
                             </div>
