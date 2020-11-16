@@ -38,6 +38,8 @@
     <link rel="stylesheet" href="css/plugins/lightgallery.min.css">
     <!-- Main Style CSS -->
     <link rel="stylesheet" href="css/style.css">
+
+
 </head>
 
 <body>

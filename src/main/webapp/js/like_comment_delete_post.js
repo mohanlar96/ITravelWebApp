@@ -187,7 +187,8 @@ $(document).ready(function() {
                     page:pageForPostScroll,
                 }).done(function(response){
                     console.log(JSON.parse(response));
-                // $(".card.post").last().append(response);
+                var template = Handlebars.compile($("#postTemplate").html());
+                $(".card.post").last().append(template(JSON.parse(response)));
 
             }).fail(function() {
                 alert( "error" );

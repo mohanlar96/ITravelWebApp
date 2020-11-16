@@ -211,3 +211,7 @@
     </div>
     <!-- post status end -->
 </c:forEach>
+<c:import url="partial/post-template.jsp" />
+
+
+
