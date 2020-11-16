@@ -1,7 +1,10 @@
 package itravel.controller.user;
 
 import itravel.dao.DbUtil;
+import itravel.dao.HomeDao;
 import itravel.model.Address;
+import itravel.model.HomeAvator;
+import itravel.model.Post;
 import itravel.model.Profile;
 import javax.annotation.Resource;
 import javax.servlet.RequestDispatcher;
@@ -15,6 +18,9 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.List;
+
+import static itravel.dao.HomeDao.postItems;
 
 @WebServlet(value = "/profile")
 public class ProfileServlet extends HttpServlet {
@@ -53,6 +59,12 @@ public class ProfileServlet extends HttpServlet {
                 System.out.println("Id is: " + profile.getUserId());
                 if (profile.getUserId() != null) filepath = "/profile.jsp";
             }
+            List<Post> posts = getProfilePosts(Integer.parseInt(userid),1); //10 posts // hershw ...
+            HomeAvator avator= HomeDao.getAvator(Integer.parseInt(userid));
+            List<String> placeVisited=HomeDao.getVisitedPlace(Integer.parseInt(userid));
+            request.setAttribute("avator",avator );
+            request.setAttribute("posts", posts);
+            request.setAttribute("places",placeVisited);
             // send to JSP page (view)
             RequestDispatcher dispatcher = request.getRequestDispatcher(filepath);
             dispatcher.forward(request, response);
@@ -140,5 +152,16 @@ public class ProfileServlet extends HttpServlet {
             DbUtil.close(myConn, info, myRs);
         }
         return profile;
+    }
+    public  static  List<Post> getProfilePosts(int UserId ,int page) throws Exception {
+        String offset=(page>1)?" offset "+(page-1)*10:"";
+        String sql = "" +
+                "SELECT post.*, person.fname, person.lname, image.link " +
+                "FROM post INNER JOIN user ON post.User_id=user.id " +
+                "INNER JOIN person ON user.Person_id=person.id " +
+                "INNER JOIN user_image ON user.id=user_image.User_id " +
+                "INNER JOIN image ON user_image.Image_id=image.id " +
+                "WHERE user_image.sizeimg='M' AND user.id="+UserId+"  order by post.datetime limit "+page*10+offset;
+        return postItems(sql);
     }
 }
