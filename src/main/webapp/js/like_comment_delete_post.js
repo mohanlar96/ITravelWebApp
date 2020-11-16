@@ -58,12 +58,12 @@ $(document).ready(function() {
             console.log(response);
 
             let newEle=$("li.comment-item-"+postId).eq(0).clone(true,true);
-            newEle.find('a').attr('href',"/profile?id="+userID);
+            newEle.find('a').attr('href',"/profile?id="+userID); //moh
             newEle.find('img').attr('src',avatorUrl);
-            newEle.find('h6.author span').text(fullName);
-            newEle.find('p').text(comment);
+            newEle.find('h6.author span').text(fullName); //
+            newEle.find('p').text(comment); //howo
             newEle.find('button.deletecomment').attr("data-commentid",response);
-            newEle.show().appendTo( "ul.comment-box-"+postId );
+            newEle.show().appendTo( "ul.comment-box-"+postId ); //appen
             var totalE=$("span.total-comment-"+postId);
             var totalComments=parseInt(totalE.text());
             newEle=undefined;
@@ -186,9 +186,13 @@ $(document).ready(function() {
                     userID:userID,
                     page:pageForPostScroll,
                 }).done(function(response){
-                    console.log(JSON.parse(response));
-                var template = Handlebars.compile($("#postTemplate").html());
-                $(".card.post").last().append(template(JSON.parse(response)));
+                const data=JSON.parse(response);
+
+                    // console.log(data);
+
+                    var template = Handlebars.compile($("#postTemplate").html());
+
+                    $(".card.post").last().after(template(data));
 
             }).fail(function() {
                 alert( "error" );
@@ -196,6 +200,23 @@ $(document).ready(function() {
 
         }
     });
+
+    // $.post("/post/interact",
+    //     {functionRequest:'SCROLL',
+    //         userID:1,
+    //         page:1,
+    //     }).done(function(response){ //list of
+    //      const data=JSON.parse(response);
+    //
+    //     console.log(data);
+    //
+    //     var template = Handlebars.compile($("#postTemplate").html());
+    //
+    //     $(".card.post").first().after(template(data));
+    //
+    // }).fail(function() {
+    //     alert( "error" );
+    // });
 
 
 });
