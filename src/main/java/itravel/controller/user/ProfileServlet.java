@@ -1,6 +1,7 @@
 package itravel.controller.user;
 
 import itravel.dao.DbUtil;
+import itravel.model.Address;
 import itravel.model.Profile;
 import javax.annotation.Resource;
 import javax.servlet.RequestDispatcher;
@@ -77,7 +78,7 @@ public class ProfileServlet extends HttpServlet {
             myConn = DbUtil.connectDb();
 
             // create sql statement
-            String sql = "SELECT user.id, CONCAT(person.fname, ' ', person.lname) AS name, user.biography, person.job, person.cityBirth FROM person INNER JOIN user ON person.id=user.Person_id WHERE user.id="+id;
+            String sql = "SELECT * FROM profileNoPics WHERE id="+id;
             String getImgs = "SELECT image.link, user_image.sizeimg FROM image INNER JOIN user_image ON image.id=user_image.Image_id WHERE user_image.User_id="+id;
             info = myConn.createStatement();
             info2 = myConn.createStatement();
@@ -88,12 +89,29 @@ public class ProfileServlet extends HttpServlet {
 
             // process resultset
             while(myRs.next()) {
+
                 // retrieve data from result set row
                 profile.setUserId(String.valueOf(myRs.getInt("id")));
-                profile.setFullName(myRs.getString("name"));
+                profile.setEmail(myRs.getString("email"));
+                //profile.setPassword(myRs.getString("password"));
+                profile.setUsername(myRs.getString("username"));
                 profile.setBiography(myRs.getString("biography"));
-                profile.setJob(myRs.getString("job"));
+
+                profile.setFirstName(myRs.getString("fname"));
+                profile.setMidName(myRs.getString("mname"));
+                profile.setLastName(myRs.getString("lname"));
+                profile.setGender(myRs.getString("gender"));
+                profile.setDateBirth(myRs.getString("dateBirth"));
                 profile.setCityBirth(myRs.getString("cityBirth"));
+                profile.setJob(myRs.getString("job"));
+
+                profile.setAddress(new Address());
+                profile.getAddress().setStreet1(myRs.getString("street1"));
+                profile.getAddress().setStreet2(myRs.getString("street2"));
+                profile.getAddress().setZipCode(myRs.getString("zip"));
+                profile.getAddress().setCity(myRs.getString("city"));
+                profile.getAddress().setState(myRs.getString("state"));
+
                 while(rsImgs.next()){
                     switch (rsImgs.getString("sizeimg")) {
                         case "S":

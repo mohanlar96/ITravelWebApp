@@ -9,6 +9,94 @@
          pageEncoding="UTF-8"%>
 <jsp:include page="layout/header.jsp" />
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<style>
+    .refname{
+        color:#dc4734;
+        font-weight:500;
+        padding-right: 10px;
+    }
+    .answer{
+        padding-left: 1px;
+    }
+    .lightred{
+        background-color:#ebccd1;
+        display: block;
+        block-size: max-content;
+    }
+    .btn-sec {
+        position: absolute;
+        top: 9px;
+        right: 9px;
+        line-height: 1;
+        padding: 11px 25px;
+        border-radius: 40px;
+        color: #fff;
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+        background-color: #dc4734;
+    }
+</style>
+<script>
+    $(document).ready(function(){
+        /*var statesSel = document.getElementById("state_m");
+        var citiesSel = document.getElementById("city_m");
+        statesSel.onchange = function(){
+            citiesSel = 1;
+            if(this.selectedIndex<0) return;
+            s;
+        }*/
+        $("#users").on('show.bs.modal', function(){
+            $("#email_m").val($("#email").text());
+            $("#usern_m").val($("#usern").text());
+            //$ ("#passw_m").val($ ("#passw").text());
+            $("#bio_m").val($("#bio").text());
+        });
+        $("#names").on('show.bs.modal', function(){
+            $("#fname_m").val($("#fname").text());
+            $("#mname_m").val($("#mname").text());
+            $("#lname_m").val($("#lname").text());
+            $("#gender").text() === "M" ? $("#gender_m").val("M") : $("#gender_m").val("F");
+            $("#job_m").val($("#job").text());
+            $("#cityb_m").val($("#cityb").text());
+            $("#dateb_m").val($("#dateb").text());
+        });
+        $("#addresses").on('show.bs.modal', function(){
+            //$ ("#state_m").val($ ("#state").text());
+            //$ ("#city_m").val($ ("#city").text());
+            $("#stre1_m").val($("#stre1").text());
+            $("#stre2_m").val($("#stre2").text());
+            $("#zipc_m").val($("#zipc").text());
+        });
+    });
+    function xUsers(){
+        $("#email").text($("#email_m").val());
+        $("#usern").text($("#usern_m").val());
+        //$("#passw").text($("#passw_m").val());
+        $("#bio").text($("#bio_m").val());
+    }
+    function xNames(){
+        $("#fname").text($("#fname_m").val());
+        $("#mname").text($("#mname_m").val());
+        $("#lname").text($("#lname_m").val());
+        $("#gender").text($("#gender_m").val());
+        $("#job").text($("#job_m").val());
+        $("#cityb").text($("#cityb_m").val());
+        $("#dateb").text(validYear($("#dateb_m").val()));
+    }
+    function xAddresses(){
+        //$("#state").text($("#state_m").val());
+        //$("#city").text($("#city_m").val());
+        $("#stre1").text($("#stre1_m").val());
+        $("#stre2").text($("#stre2_m").val());
+        $("#zipc").text($("#zipc_m").val());
+    }
+    function validYear(newdate){
+        if(parseInt(newdate.substring(0,4))>2100) return "2100-12-31";
+        else if(parseInt(newdate.substring(0,4))<1880) return "1880-01-01";
+        else return newdate;
+    }
+</script>
 <main>
     <div class="main-wrapper">
         <!-- BANNER START -->
@@ -30,7 +118,7 @@
                     </div>
                     <div class="col-lg-2 col-md-3 d-none d-md-block">
                         <div class="profile-edit-panel">
-                            <button class="edit-btn">GO BACK</button>
+                            <button onclick="window.location.href='profile?id=${prof.userId}'" class="edit-btn">BACK</button>
                         </div>
                     </div>
                 </div>
@@ -45,7 +133,7 @@
                     <aside class="widget-area profile-sidebar">
                         <!-- widget single item start -->
                         <div class="card widget-item">
-                            <h4 class="widget-title">EDIT PROFILE: ${prof.fullName}</h4>
+                            <h4 class="widget-title">EDIT PROFILE: ${prof.firstName} ${prof.lastName}</h4>
                             <div class="widget-body">
                                 Remember to press 'Save' button in the section(s) you update information.
                             </div>
@@ -55,87 +143,6 @@
                 </div>
                 <!-- LEFT ASIDE END -->
                 <!-- CENTRAL PART START -->
-                <style>
-                    .refname{
-                        color:#dc4734;
-                        font-weight:500;
-                        padding-right: 10px;
-                    }
-                    .answer{
-                        padding-left: 1px;
-                    }
-                    .lightred{
-                        background-color:#ebccd1;
-                        display: block;
-                        block-size: max-content;
-                    }
-                    .btn-sec {
-                        position: absolute;
-                        top: 9px;
-                        right: 9px;
-                        line-height: 1;
-                        padding: 11px 25px;
-                        border-radius: 40px;
-                        color: #fff;
-                        font-size: 12px;
-                        font-weight: 700;
-                        text-transform: uppercase;
-                        background-color: #dc4734;
-                    }
-                </style>
-                <script>
-                    $(document).ready(function(){
-                        $("#users").on('show.bs.modal', function(){
-                            $("#email_m").val($("#email").text());
-                            $("#usern_m").val($("#usern").text());
-                            //$("#passw_m").val($("#passw").text());
-                            $("#bio_m").val($("#bio").text());
-                        });
-                        $("#names").on('show.bs.modal', function(){
-                            $("#fname_m").val($("#fname").text());
-                            $("#mname_m").val($("#mname").text());
-                            $("#lname_m").val($("#lname").text());
-                            $("#gender").text() === "M" ? $("#gender_m").val("M") : $("#gender_m").val("F");
-                            $("#job_m").val($("#job").text());
-                            $("#cityb_m").val($("#cityb").text());
-                            $("#dateb_m").val($("#dateb").text());
-                        });
-                        $("#addresses").on('show.bs.modal', function(){
-                            $("#state_m").val($("#state").text());
-                            $("#city_m").val($("#city").text());
-                            $("#stre1_m").val($("#stre1").text());
-                            $("#stre2_m").val($("#stre2").text());
-                            $("#zipc_m").val($("#zipc").text());
-                        });
-                    });
-                    function xUsers(){
-                        $("#email").text($("#email_m").val());
-                        $("#usern").text($("#usern_m").val());
-                        //$("#passw").text($("#passw_m").val());
-                        $("#bio").text($("#bio_m").val());
-                    }
-                    function xNames(){
-                        $("#fname").text($("#fname_m").val());
-                        $("#mname").text($("#mname_m").val());
-                        $("#lname").text($("#lname_m").val());
-                        $("#gender").text($("#gender_m").val());
-                        $("#job").text($("#job_m").val());
-                        $("#cityb").text($("#cityb_m").val());
-                        $("#dateb").text(validYear($("#dateb_m").val()));
-                    }
-                    function xAddresses(){
-                        $("#state").text($("#state_m").val());
-                        $("#city").text($("#city_m").val());
-                        $("#stre1").text($("#stre1_m").val());
-                        $("#stre2").text($("#stre2_m").val());
-                        $("#zipc").text($("#zipc_m").val());
-                    }
-                    function validYear(newdate){
-                        if(parseInt(newdate.substring(0,4))>2100) return "2100-12-31";
-                        else if(parseInt(newdate.substring(0,4))<1880) return "1880-01-01";
-                        else return newdate;
-                    }
-                </script>
                 <div class="col-lg-6 order-1 order-lg-2">
                     <!-- USER START -->
                     <div class="card card-small">
@@ -152,9 +159,6 @@
                                     <div id="usern_s" class="share-text-field" aria-disabled="true">
                                         <label class="refname">Username</label><span id="usern" class="answer">${prof.username}</span>
                                     </div>
-                                    <!--<div id="passw_s" class="share-text-field" aria-disabled="true">
-                                        <label class="refname">Password</label><span id="passw" class="answer">{prof.password}</span>
-                                    </div>-->
                                     <div id="bio_s" class="share-text-field" aria-disabled="true">
                                         <label class="refname">Biography</label><span id="bio" class="answer">${prof.biography}</span>
                                     </div>
@@ -176,7 +180,6 @@
                                             <!-- UPDATING PART START -->
                                             <label for="email_m" class="refname">Email</label><input type="text" id="email_m" name="email_m" maxlength="50" required class="top-search-field lightred"/>
                                             <label for="usern_m" class="refname">Username</label><input type="text" id="usern_m" name="usern_m" maxlength="20" required class="top-search-field lightred"/>
-                                            <!--<label for="passw_m" class="refname">Password</label><input type="password" id="passw_m" name="passw_m" maxlength="50" required class="top-search-field lightred"/>-->
                                             <label for="bio_m" class="refname">Biography</label><textarea id="bio_m" name="bio_m" maxlength="200" placeholder="Describe yourself briefly..." rows="4" class="top-search-field lightred"></textarea>
                                             <!-- UPDATING PART END   -->
                                         </div>
@@ -286,7 +289,7 @@
                                         <label class="refname">Street2</label><span id="stre2" class="answer">${prof.address.street2}</span>
                                     </div>
                                     <div id="zipc_s" class="share-text-field" aria-disabled="true">
-                                        <label class="refname">ZIP Code</label><span id="zipc" class="answer">${prof.address.zip}</span>
+                                        <label class="refname">ZIP Code</label><span id="zipc" class="answer">${prof.address.zipCode}</span>
                                     </div>
                                     <input class="btn-sec" type="submit" value="save"/>
                                 </form>
@@ -304,16 +307,6 @@
                                         </div>
                                         <div class="modal-body custom-scroll">
                                             <!-- UPDATING PART START -->
-                                            <label for="state_m" class="refname">State</label>
-                                            <select id="state_m" name="state_m" required class="top-search-field lightred">
-                                                <option value="states">READ DB</option>
-                                            </select>
-                                            <div> </div>
-                                            <label for="city_m" class="refname">City</label>
-                                            <select id="city_m" name="city_m" required class="top-search-field lightred">
-                                                <option value="cities">READ DB, IMPORTANT STATE</option>
-                                            </select>
-                                            <div> </div>
                                             <label for="stre1_m" class="refname">Street 1</label><input type="text" id="stre1_m" name="stre1_m" maxlength="50" class="top-search-field lightred"/>
                                             <label for="stre2_m" class="refname">Street 2</label><input type="text" id="stre2_m" name="stre2_m" maxlength="50" class="top-search-field lightred"/>
                                             <label for="zipc_m" class="refname">ZIP Code</label><input type="text" id="zipc_m" name="zipc_m" maxlength="10" required class="top-search-field lightred"/>
@@ -330,7 +323,30 @@
                         </div>
                     </div>
                     <!-- ADDRESS END -->
+                    <a href="deactivate?id=${prof.userId}">Deactivate User</a>
                 </div>
+                <!-- CENTRAL PART END -->
+                <!--<div>
+                    <table>
+                        <forEach var="loc" items="$ {locs}">
+                            <tr>
+                                <td><out value="$ {loc.key}"/></td>
+                                <forEach var="cits" items="$ {loc.value}">
+                                    <td><out value="$ {cits}"/></td>
+                                </forEach>
+                            </tr>
+                        <forEach>
+                    </table>
+                </div>
+                <script>
+                    var e = '$ {locs}';
+                    e = e.substring(1,e.length-2).split("], ");
+                    var arrs = e.map(s => s.split("=["));
+                    var cs = {
+                        "Dallas": ["75201", "75202"],
+                        "Austin": ["73301", "73344"]
+                    }
+                </script>-->
                 <!-- CENTRAL PART END -->
             </div>
         </div>

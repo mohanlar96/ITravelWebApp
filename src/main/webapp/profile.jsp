@@ -2,6 +2,16 @@
          pageEncoding="UTF-8"%>
 <jsp:include page="layout/header.jsp" />
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<style>
+    .refname{
+        color:#dc4734;
+        font-weight:500;
+        padding-right: 10px;
+    }
+    .answer{
+        padding-left: 1px;
+    }
+</style>
 <main>
     <div class="main-wrapper">
         <!-- BANNER START -->
@@ -26,7 +36,7 @@
                             <div class="main-menu-inner header-top-navigation">
                                 <nav>
                                     <ul class="main-menu">
-                                        <li><a href="profile.jsp">timeline</a></li>
+                                        <li><a href="profile?id=${prof.userId}">timeline</a></li>
                                         <li><a href="about.jsp">about</a></li>
                                         <li><a href="photos.jsp">photos</a></li>
                                         <li><a id="main-menu-people" href="<%=request.getContextPath()%>/allpeople">People</a></li>                                        <!-- <li class="d-inline-block d-md-none"><a href="profile.jsp">edit profile</a></li> -->
@@ -37,7 +47,7 @@
                     </div>
                     <div class="col-lg-2 col-md-3 d-none d-md-block">
                         <div class="profile-edit-panel">
-                            <button class="edit-btn">edit profile</button>
+                            <button onclick="window.location.href='editprofile?id=${prof.userId}'" class="edit-btn">EDIT PROFILE</button>
                         </div>
                     </div>
                 </div>
@@ -52,14 +62,20 @@
                     <aside class="widget-area profile-sidebar">
                         <!-- widget single item start -->
                         <div class="card widget-item">
-                            <h4 class="widget-title">${prof.fullName}</h4>
+                            <h4 class="widget-title">${prof.firstName} ${prof.lastName}</h4>
                             <div class="widget-body">
                                 <div class="about-author">
                                     <p>${prof.biography}</p>
                                     <ul class="author-into-list">
-                                        <li><a href="#"><i class="bi bi-office-bag"></i>${prof.job}</a></li>
-                                        <li><a href="#"><i class="bi bi-home"></i>${prof.cityBirth}</a></li>
-                                        <li><a href="#"><i class="bi bi-location-pointer"></i>${prof.cityBirth}</a></li>
+                                        <li><label class="refname">Full Name</label> <span class="answer">${prof.firstName} ${prof.midName} ${prof.lastName}</span></li>
+                                        <li><label class="refname">Gender</label> <span class="answer">${prof.gender}</span></li>
+                                        <li><label class="refname">State</label> <span class="answer">${prof.address.state}</span></li>
+                                        <li><label class="refname">City</label> <span class="answer">${prof.address.city}</span></li>
+                                        <li><label class="refname">Main Street</label> <span class="answer">${prof.address.street1}</span></li>
+                                        <li><label class="refname">ZIP Code</label> <span class="answer">${prof.address.zipCode}</span></li>
+                                        <li><label class="refname">Year Birth</label> <span class="answer">${prof.dateBirth.substring(0,4)}</span></li>
+                                        <li><label class="refname">Email</label> <span class="answer">${prof.email}</span></li>
+                                        <li><label class="refname">Job</label> <span class="answer">${prof.job}</span></li>
                                     </ul>
                                 </div>
                             </div>
@@ -91,51 +107,6 @@
                 <!-- LEFT ASIDE END -->
                 <!-- CENTRAL PART START -->
                 <div class="col-lg-6 order-1 order-lg-2">
-                    <!-- SHARE BOX START -->
-                    <div class="card card-small">
-                        <div class="share-box-inner">
-                            <!-- profile picture end -->
-                            <div class="profile-thumb">
-                                <a href="#">
-                                    <figure class="profile-thumb-middle">
-                                        <img src="${prof.profPicSmall}" alt="profile picture">
-                                    </figure>
-                                </a>
-                            </div>
-                            <!-- profile picture end -->
-
-                            <!-- share content box start -->
-                            <div class="share-content-box w-100">
-                                <form class="share-text-box">
-                                    <textarea name="share" class="share-text-field" aria-disabled="true" placeholder="Say Something" data-toggle="modal" data-target="#textbox" id="email"></textarea>
-                                    <button class="btn-share" type="submit">share</button>
-                                </form>
-                            </div>
-                            <!-- share content box end -->
-                            <!-- Modal start -->
-                            <div class="modal fade" id="textbox" aria-labelledby="textbox">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title">What are you thinking about?</h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body custom-scroll">
-                                            <textarea name="share" class="share-field-big custom-scroll" placeholder="Say Something"></textarea>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="post-share-btn" data-dismiss="modal">cancel</button>
-                                            <button type="button" class="post-share-btn">post</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Modal end -->
-                        </div>
-                    </div>
-                    <!-- SHARE BOX END -->
                     <!-- POST START -->
                     <%for(int i=0; i<2; i++){%>
                     <div class="card">

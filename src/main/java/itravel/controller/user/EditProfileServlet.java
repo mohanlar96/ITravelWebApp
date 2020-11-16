@@ -14,6 +14,9 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 @WebServlet(value = "/editprofile")
 public class EditProfileServlet extends HttpServlet {
@@ -28,9 +31,11 @@ public class EditProfileServlet extends HttpServlet {
             if(userid != null && userid.length()>0 && userid.chars().mapToObj(c -> (char) c).allMatch(Character::isDigit)){
                 // get whatever from db util
                 Profile profile = getProfile(userid);
+                //HashMap<String,List<String>> locations = getLocations();
 
                 // add students to the request
                 request.setAttribute("prof", profile);
+                //request.setAttribute("locs", locations);
                 System.out.println("Id is: " + profile.getUserId());
                 if (profile.getUserId() != null) filepath = "/edit_profile.jsp";
             }
@@ -57,7 +62,7 @@ public class EditProfileServlet extends HttpServlet {
             // get a connection
             myConn = DbUtil.connectDb();
 
-            // create sql statement
+            // create sql statement //SELECT * FROM profileNoPics WHERE id=
             String sql = "SELECT * FROM profileNoPics WHERE id="+id;
             String getImgs = "SELECT image.link, user_image.sizeimg FROM image INNER JOIN user_image ON image.id=user_image.Image_id WHERE user_image.User_id="+id;
             info = myConn.createStatement();
@@ -119,5 +124,38 @@ public class EditProfileServlet extends HttpServlet {
             DbUtil.close(myConn, info, myRs);
         }
         return profile;
+    }
+    //END getProfile
+    //getLocations
+    public static HashMap<String,List<String>> getLocations() throws Exception {
+        HashMap<String,List<String>> towns = new HashMap<>();
+
+        Connection myConn = null;
+        Statement infoci = null;
+        ResultSet rsci = null;
+
+        try {
+            // get a connection
+            myConn = DbUtil.connectDb();
+
+            // create sql statement
+            String getCities = "SELECT city.name AS city, state.name AS state FROM city INNER JOIN state ON city.State_id=state.id"; // SELECT city.id FROM city INNER JOIN state ON city.State_id=state.id WHERE city.name="Dallas" AND state.name="Texas";
+            infoci = myConn.createStatement();
+            // execute query
+            rsci = infoci.executeQuery(getCities);
+
+            // process resultset
+            while(rsci.next()) {
+                // retrieve data from result set row
+                String state = rsci.getString("state");
+                if(!towns.containsKey(state)) towns.put(state,new ArrayList<String>());
+                towns.get(state).add(rsci.getString("city"));
+            }
+        }
+        finally {
+            // close JDBC objects
+            DbUtil.close(myConn, infoci, rsci);
+        }
+        return towns;
     }
 }
