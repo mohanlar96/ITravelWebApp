@@ -19,10 +19,11 @@ public class HomeController extends HttpServlet {
     }
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
+
             Integer currentLoginUserID=2;
             // need to connect with session .
 
-            List<Post> posts = HomeDao.getPosts(); //10 posts
+            List<Post> posts = HomeDao.getPosts(currentLoginUserID,1); //10 posts // hershw ...
             HomeAvator avator= HomeDao.getAvator(currentLoginUserID);
             List<String> placeVisited=HomeDao.getVisitedPlace(currentLoginUserID);
             request.setAttribute("avator",avator );

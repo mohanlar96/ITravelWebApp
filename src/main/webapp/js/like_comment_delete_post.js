@@ -18,7 +18,23 @@ $(document).ready(function() {
             }).done(function(response){
                 likeBtn.data("isliked",!(isLiked));
                 likeBtn.children('.heart-color').toggleClass('liked');
-                likeBtn=undefined;
+                    var val=likeBtn.siblings(".show-liked-dialog").children('strong').text();
+                  var totoalLiked= parseInt(val);
+
+                if(isLiked){ // if already liked so we are going to dislike
+
+                    totoalLiked= totoalLiked-1;
+                    likeBtn.siblings('.show-liked-dialog').children('span').text(totoalLiked+" people like this");
+
+
+                }else{ //if diskliked ,, now going to like
+                    totoalLiked= totoalLiked+1;
+
+                    likeBtn.siblings('.show-liked-dialog').children('span').text("You and "+ totoalLiked+" people like this");
+                }
+                 likeBtn.siblings('.show-liked-dialog').children('strong').text(totoalLiked);
+
+                 likeBtn=undefined;
                 console.log(response);
              }).fail(function() {
                  alert( "error" );
@@ -83,6 +99,39 @@ $(document).ready(function() {
                         .addClass('hidden-commant-box').slideUp()
                         .removeClass(".commant-box");
                 }
+        }).fail(function() {
+            alert( "error" );
+        });
+    });
+    $("button.delete-post").unbind().on('click',function(){
+        const menu=$(this);
+        const postId=$(this).data("id");
+        console.log("Post id to delete  ="+postId );
+        $.post("/post/interact",
+            {functionRequest:'DELETE',
+                postID:postId
+            }).done(function(response){
+            console.log(response);
+            menu.parents(".card.post").remove();
+        }).fail(function() {
+            alert( "error" );
+        });
+    });
+
+    $("button.edit-post").unbind().on('click',function(){
+        const menu=$(this);
+        const postId=$(this).data("id");
+        $('#textbox').modal({
+            show: 'true'
+        });
+        console.log("Post id to delete  ="+postId );
+        $.post("/post/interact",
+            {functionRequest:'EDIT',
+                postID:postId
+            }).done(function(response){
+            console.log(response);
+            menu.parents(".card.post").slideUp().remove();
+
         }).fail(function() {
             alert( "error" );
         });

@@ -317,22 +317,33 @@ public class PostRelativeController extends HttpServlet {
 
         List<Integer> imageIDList=new ArrayList<Integer>();
         try{
-            String sql = "delete  from post where id= ? " +
-                    "select Image_id from post_image where Post_id= ? ";
-
+            String sql="delete  from comment where Post_id= ? ";
             // prepare statement
             state = con.prepareStatement(sql);
             // set params
             state.setInt(1, postID);
-            state.setInt(2, postID);
+            // execute SQL statement
+            row=state.executeQuery();
 
+            sql = "delete  from post where id= ? ";
+            // prepare statement
+            state = con.prepareStatement(sql);
+            // set params
+            state.setInt(1, postID);
+            // execute SQL statement
+            row=state.executeQuery();
+
+            sql="select Image_id from post_image where Post_id= ?";
+            // prepare statement
+            state = con.prepareStatement(sql);
+            // set params
+            state.setInt(1, postID);
             // execute SQL statement
             row=state.executeQuery();
 
             while (row.next() ) {
                int id= row.getInt("Image_id");
                imageIDList.add(id);
-
             }
 
             for(int id:imageIDList){
@@ -354,19 +365,26 @@ public class PostRelativeController extends HttpServlet {
                         file.delete();
                     }
 
-                        //DELETE a Image here from this url
-
+                    //DELETE a Image here from this url
                 }
 
 
-                sql = "delete  from image where id= ? ;delete from post_image where Post_id= ? ";
+                sql = "delete  from image where id= ? ;";
 
                 // prepare statement
                 state = con.prepareStatement(sql);
                 // set params
                 state.setInt(1, id);
-                state.setInt(2, id);
+                // execute SQL statement
+                state.executeUpdate();
 
+
+                sql = " delete from post_image where Post_id= ? ;";
+
+                // prepare statement
+                state = con.prepareStatement(sql);
+                // set params
+                state.setInt(1, id);
                 // execute SQL statement
                 state.executeUpdate();
 
