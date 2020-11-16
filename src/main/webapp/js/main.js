@@ -104,10 +104,10 @@
 		$(this).parents(".post-content").siblings('.liked-box').slideUp();
 		$(this).parents(".post-content").siblings('.commant-box').slideToggle();
 	});
-	$("button.post-meta-like").on("click",function(){
+
+	$("button.post-meta-like span,button.post-meta-like strong").on("click",function(){
 		$(this).parents(".post-content").siblings('.commant-box').slideUp();
 		$(this).parents(".post-content").siblings('.liked-box').slideToggle();
-
 
 	});
 	$(".post h4.widget-title").on("click",function(){

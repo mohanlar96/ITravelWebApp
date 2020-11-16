@@ -18,7 +18,7 @@ public class PostDao {
         try {
             // create sql statement
             String sql = "" +
-                    "SELECT post.*, person.fname, person.lname, image.link" +
+                    "SELECT user.id, post.*, person.fname, person.lname, image.link" +
                     " FROM post left JOIN user ON post.User_id=user.id " +
                     "INNER JOIN person ON user.Person_id=person.id " +
                     "INNER JOIN user_image ON user.id=user_image.User_id " +
@@ -27,13 +27,13 @@ public class PostDao {
                     ";";
             state = con.createStatement();
             // execute query
-             row = state.executeQuery(sql);
+            row = state.executeQuery(sql);
             // process resultset
             while (row.next()) {
                 // retrieve data from result set row
                 // create new post object
                 int postID=row.getInt("id");
-                User postUser=new User(row.getString("fname"),row.getString("lname"),row.getString("link"));
+                Avator postAvator =new Avator(row.getInt("id"),row.getString("fname"),row.getString("lname"),row.getString("link"));
 
                 Post tempPost = new Post(
                         postID,
@@ -41,7 +41,7 @@ public class PostDao {
                         row.getString("datetime"),
                         new Location(row.getString("latitude"), row.getString("longitude")),
                         row.getString("departureAddress"), row.getString("destinationAddress"),
-                        postUser
+                        postAvator
                 );
 
                 //now going to fetch all of the images from posts
@@ -94,7 +94,7 @@ public class PostDao {
         List<Comment> postedComment=new ArrayList<>();
         try {
             String sql="" +
-                    "SELECT comment.id,comment.description, person.fname, person.lname, image.link FROM comment " +
+                    "SELECT user_image.User_id, comment.id,comment.description, person.fname, person.lname, image.link FROM comment " +
                     "INNER JOIN user ON comment.Actor_id=user.id " +
                     "INNER JOIN person ON user.Person_id=person.id " +
                     "INNER JOIN user_image ON user.id=user_image.User_id " +
@@ -106,8 +106,8 @@ public class PostDao {
             ResultSet row = ps.executeQuery();
             while (row.next())
             {
-                User user=new User(row.getString("fname"),row.getString("lname"),row.getString("link"));
-                Comment comment = new Comment(row.getInt("id"),user,row.getString("description"));
+                Avator avator =new Avator(row.getInt("User_id"),row.getString("fname"),row.getString("lname"),row.getString("link"));
+                Comment comment = new Comment(row.getInt("id"), avator,row.getString("description"));
                 postedComment.add(comment);
             }
         } catch (SQLException throwables) {
@@ -121,7 +121,7 @@ public class PostDao {
     private static List<PostReaction> fetchPostReactions(int postID)  {
         List<PostReaction> postReactions=new ArrayList<>();
         try {
-            String sql="SELECT person.fname, person.lname, image.link FROM post " +
+            String sql="SELECT user.id, person.fname, person.lname, image.link FROM post " +
                     "INNER JOIN post_reaction ON post.id=post_reaction.Post_id " +
                     "INNER JOIN user ON post_reaction.Actor_id=user.id " +
                     "INNER JOIN person ON user.id=person.id " +
@@ -133,8 +133,8 @@ public class PostDao {
             ResultSet row = ps.executeQuery();
             while (row.next())
             {
-                User user=new User(row.getString("fname"),row.getString("lname"),row.getString("link"));
-                PostReaction reaction=new PostReaction(user);
+                Avator avator =new Avator(row.getInt("id"),row.getString("fname"),row.getString("lname"),row.getString("link"));
+                PostReaction reaction=new PostReaction(avator);
                 postReactions.add(reaction);
             }
         } catch (SQLException throwables) {
