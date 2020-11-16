@@ -94,15 +94,19 @@
                     <li class="d-flex align-items-center profile-active comment-item-${post.postID}" style="display: none!important;">
                         <!-- profile picture end -->
                         <div class="profile-thumb ">
-                            <a href="">
+                            <a href="/">
                                 <figure class="profile-thumb-small">
-                                    <img src="" alt="profile picture">
+                                    <img src="/" alt="profile picture">
                                 </figure>
                             </a>
                         </div>
                         <!-- profile picture end -->
                         <div class="posted-author">
-                            <h6 class="author">Nobody</h6>
+                            <h6 class="author"><span></span>
+                                <button class="deletecomment" data-commentid="${comment.id}">
+                                    delete
+                                </button>
+                            </h6>
                             <p>Nth</p>
                         </div>
                     </li>
@@ -120,11 +124,11 @@
                             <!-- profile picture end -->
                             <div class="posted-author">
                                 <h6 class="author">${comment.avator.firstName} ${comment.avator.lastName}
-<%--                                    <c:if test="${comment.id==requestScope.avator.id}">--%>
-<%--                                         <button class="deletecomment" data-commentid="${comment.id}">--%>
-<%--                                               delete--%>
-<%--                                         </button>--%>
-<%--                                    </c:if>--%>
+                                    <c:if test="${comment.avator.id==requestScope.avator.id}">
+                                         <button class="deletecomment" data-commentid="${comment.id}">
+                                               delete
+                                         </button>
+                                    </c:if>
                                 </h6>
                                 <p>${comment.commentContent}</p>
                             </div>
@@ -203,4 +207,3 @@
     </div>
     <!-- post status end -->
 </c:forEach>
-<script src="/js/like_comment_delete_post.js"></script>

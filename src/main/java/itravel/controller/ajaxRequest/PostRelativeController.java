@@ -46,6 +46,9 @@ public class PostRelativeController extends HttpServlet {
             case "DELETE":
                 deletePost(request, response);
                 break;
+            case "DELETE_COMMENT":
+                deleteComment(request, response);
+                break;
         }
         } catch (Exception e) {
                 e.printStackTrace();
@@ -88,6 +91,28 @@ public class PostRelativeController extends HttpServlet {
 
 
     }
+    private  void deleteComment(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+        con=DbUtil.connectDb();
+        Integer commentID = Integer.parseInt(request.getParameter("commentID"));
+
+        response.getWriter().println("Server=> commentID"+commentID );
+
+        try{
+            String sql = "delete from comment where id= ? ";
+            // prepare statement
+            state = con.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
+            // set params
+            state.setInt(1, commentID);
+            state.executeUpdate();
+
+            DbUtil.close(con,state,null);
+            response.getWriter().println("Successfully deleted the comment !");
+        }catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+    }
     private void commentPost(HttpServletRequest request, HttpServletResponse response) throws Exception {
         con=DbUtil.connectDb();
 
@@ -95,20 +120,26 @@ public class PostRelativeController extends HttpServlet {
         Integer userID = Integer.parseInt(request.getParameter("userID"));
         Integer postID= Integer.parseInt(request.getParameter("postID"));
 
-        response.getWriter().println("Server=>"+userID +" "+postID+" "+comment);
+//        response.getWriter().println("Server=>"+userID +" "+postID+" "+comment);
 
         try{
             String sql = "insert  into comment(description,Post_id,Actor_id) VALUES( ? , ? , ? )";
 
             // prepare statement
-            state = con.prepareStatement(sql);
+            state = con.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
             // set params
             state.setString(1, comment);
             state.setInt(2, postID);
             state.setInt(3, userID);
+
+            int id = 0; //this is auto generate comment id
             state.executeUpdate();
-            DbUtil.close(con,state,null);
-            response.getWriter().println("Successfully Added the comment !");
+            row= state.getGeneratedKeys();
+            while (row.next() ) {
+                id = row.getInt(1);
+            }
+            DbUtil.close(con,state,row);
+            response.getWriter().println(id);
         }catch (SQLException throwables) {
             throwables.printStackTrace();
         }

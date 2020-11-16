@@ -41,14 +41,16 @@ $(document).ready(function() {
             }).done(function(response){
             console.log(response);
 
-            var newEle=$("li.comment-item-"+postId).eq(0).clone();
+            let newEle=$("li.comment-item-"+postId).eq(0).clone(true,true);
             newEle.find('a').attr('href',"/profile?id="+userID);
             newEle.find('img').attr('src',avatorUrl);
-            newEle.find('h6.author').text(fullName);
+            newEle.find('h6.author span').text(fullName);
             newEle.find('p').text(comment);
+            newEle.find('button.deletecomment').attr("data-commentid",response);
             newEle.show().appendTo( "ul.comment-box-"+postId );
             var totalE=$("span.total-comment-"+postId);
             var totalComments=parseInt(totalE.text());
+            newEle=undefined;
 
             if(totalComments==0){
                 $("ul.comment-box-"+postId).parent(".hidden-commant-box").addClass('commant-box').slideDown();
@@ -61,22 +63,30 @@ $(document).ready(function() {
               alert( "error" );
         });
     });
-    // $("button.btn-comment").unbind().on('click',function(){
-    //     const comment=$(this).siblings("textarea").val();
-    //     const userID=$(this).parents(".card.post").data("userid");
-    //     const postId=$(this).parents(".card.post").data("id");
-    //     console.log("Comment btn userID,postID ,comment  ="+userID+" "+postId+" " +comment);
-    //     $.post('/post/interact',
-    //         {   functionRequest:'COMMENT',
-    //             userID:userID,
-    //             postID:postId,
-    //             comment:comment,
-    //         }).done(function(response){
-    //         console.log(response);
-    //     }).fail(function() {
-    //         alert( "error" );
-    //     });
-    // });
+    $("button.deletecomment").unbind().on('click',function(){
+        const commentItem=$(this);
+        const postId=$(this).parents(".card.post").data("id");
+        const commentID=$(this).data("commentid");
+        console.log("Comment id to delete  ="+commentID );
+        $.post("/post/interact",
+            {functionRequest:'DELETE_COMMENT',
+             commentID:commentID
+            }).done(function(response){
+                console.log(response);
+                commentItem.parents("li").remove();
+                var totalE=$("span.total-comment-"+postId);
+                var totalComments=parseInt(totalE.text());
+                totalComments=parseInt(totalComments)-1;
+                totalE.text(totalComments);
+                if(totalComments==0){
+                    $("ul.comment-box-"+postId).parent(".commant-box")
+                        .addClass('hidden-commant-box').slideUp()
+                        .removeClass(".commant-box");
+                }
+        }).fail(function() {
+            alert( "error" );
+        });
+    });
 
 
 });

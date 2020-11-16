@@ -1,23 +1,23 @@
 package itravel.model;
 
 public class Comment {
-    private int ID;
+    private int id;
     private Avator avator;
     private String commentContent;
 
 
     public Comment(int ID, Avator avator, String commentContent) {
-        this.ID = ID;
+        this.id = ID;
         this.avator = avator;
         this.commentContent = commentContent;
     }
 
-    public int getID() {
-        return ID;
+    public int getId() {
+        return id;
     }
 
-    public void setID(int iD) {
-        ID = iD;
+    public void setId(int iD) {
+        id = iD;
     }
 
     public Avator getCommentingUser() {
@@ -43,7 +43,7 @@ public class Comment {
     @Override
     public String toString() {
         return "Comment{" +
-                "ID=" + ID +
+                "ID=" + id +
                 ", avator=" + avator +
                 ", commentContent='" + commentContent + '\'' +
                 '}';
