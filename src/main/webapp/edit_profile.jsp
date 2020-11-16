@@ -9,10 +9,98 @@
          pageEncoding="UTF-8"%>
 <jsp:include page="layout/header.jsp" />
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<style>
+    .refname{
+        color:#dc4734;
+        font-weight:500;
+        padding-right: 10px;
+    }
+    .answer{
+        padding-left: 1px;
+    }
+    .lightred{
+        background-color:#ebccd1;
+        display: block;
+        block-size: max-content;
+    }
+    .btn-sec {
+        position: absolute;
+        top: 9px;
+        right: 9px;
+        line-height: 1;
+        padding: 11px 25px;
+        border-radius: 40px;
+        color: #fff;
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+        background-color: #dc4734;
+    }
+</style>
+<script>
+    $(document).ready(function(){
+        /*var statesSel = document.getElementById("state_m");
+        var citiesSel = document.getElementById("city_m");
+        statesSel.onchange = function(){
+            citiesSel = 1;
+            if(this.selectedIndex<0) return;
+            s;
+        }*/
+        $("#users").on('show.bs.modal', function(){
+            $("#email_m").val($("#email").text());
+            $("#usern_m").val($("#usern").text());
+            //$ ("#passw_m").val($ ("#passw").text());
+            $("#bio_m").val($("#bio").text());
+        });
+        $("#names").on('show.bs.modal', function(){
+            $("#fname_m").val($("#fname").text());
+            $("#mname_m").val($("#mname").text());
+            $("#lname_m").val($("#lname").text());
+            $("#gender").text() === "M" ? $("#gender_m").val("M") : $("#gender_m").val("F");
+            $("#job_m").val($("#job").text());
+            $("#cityb_m").val($("#cityb").text());
+            $("#dateb_m").val($("#dateb").text());
+        });
+        $("#addresses").on('show.bs.modal', function(){
+            //$ ("#state_m").val($ ("#state").text());
+            //$ ("#city_m").val($ ("#city").text());
+            $("#stre1_m").val($("#stre1").text());
+            $("#stre2_m").val($("#stre2").text());
+            $("#zipc_m").val($("#zipc").text());
+        });
+    });
+    function xUsers(){
+        $("#email").text($("#email_m").val());
+        $("#usern").text($("#usern_m").val());
+        //$("#passw").text($("#passw_m").val());
+        $("#bio").text($("#bio_m").val());
+    }
+    function xNames(){
+        $("#fname").text($("#fname_m").val());
+        $("#mname").text($("#mname_m").val());
+        $("#lname").text($("#lname_m").val());
+        $("#gender").text($("#gender_m").val());
+        $("#job").text($("#job_m").val());
+        $("#cityb").text($("#cityb_m").val());
+        $("#dateb").text(validYear($("#dateb_m").val()));
+    }
+    function xAddresses(){
+        //$("#state").text($("#state_m").val());
+        //$("#city").text($("#city_m").val());
+        $("#stre1").text($("#stre1_m").val());
+        $("#stre2").text($("#stre2_m").val());
+        $("#zipc").text($("#zipc_m").val());
+    }
+    function validYear(newdate){
+        if(parseInt(newdate.substring(0,4))>2100) return "2100-12-31";
+        else if(parseInt(newdate.substring(0,4))<1880) return "1880-01-01";
+        else return newdate;
+    }
+</script>
 <main>
     <div class="main-wrapper">
         <!-- BANNER START -->
-        <div class="profile-banner-large bg-img" data-bg="${prof.profPicMedium}">
+        <div class="profile-banner-large bg-img" data-bg="${prof.banner}">
         </div>
         <!-- BANNER END -->
         <!-- OPTIONS BAR START -->
@@ -20,32 +108,17 @@
             <div class="container">
                 <div class="row align-items-center">
                     <div class="col-lg-3 col-md-3">
-                            <div class="profile-picture-box">
-                                <figure class="profile-picture">
-                                    <a href="profile.jsp">
-                                        <img src="${prof.profPicLarge}" alt="profile picture" height="225" width="225"> <!--"images/profile/profile-1.jpg"-->
-                                    </a>
-                                </figure>
-                            </div>
-                    </div>
-                    <div class="col-lg-6 col-md-6 offset-lg-1">
-                        <div class="profile-menu-wrapper">
-                            <div class="main-menu-inner header-top-navigation">
-                                <nav>
-                                    <ul class="main-menu">
-                                        <li><a href="profile.jsp">timeline</a></li>
-                                        <li><a href="about.jsp">about</a></li>
-                                        <li><a href="photos.jsp">photos</a></li>
-                                        <li><a href="friends.jsp">friends</a></li>
-                                        <!-- <li class="d-inline-block d-md-none"><a href="profile.jsp">edit profile</a></li> -->
-                                    </ul>
-                                </nav>
-                            </div>
+                        <div class="profile-picture-box">
+                            <figure class="profile-picture">
+                                <a href="profile.jsp">
+                                    <img src="${prof.profPicLarge}" alt="profile picture" height="225" width="225"> <!--"images/profile/profile-1.jpg"-->
+                                </a>
+                            </figure>
                         </div>
                     </div>
                     <div class="col-lg-2 col-md-3 d-none d-md-block">
                         <div class="profile-edit-panel">
-                            <button class="edit-btn">edit profile</button>
+                            <button onclick="window.location.href='profile?id=${prof.userId}'" class="edit-btn">BACK</button>
                         </div>
                     </div>
                 </div>
@@ -58,84 +131,61 @@
                 <!-- LEFT ASIDE START -->
                 <div class="col-lg-3 order-2 order-lg-1">
                     <aside class="widget-area profile-sidebar">
-                            <!-- widget single item start -->
-                            <div class="card widget-item">
-                                <h4 class="widget-title">${prof.fullName}</h4>
-                                <div class="widget-body">
-                                    <div class="about-author">
-                                        <p>${prof.biography}</p>
-                                        <ul class="author-into-list">
-                                            <li><a href="#"><i class="bi bi-office-bag"></i>${prof.job}</a></li>
-                                            <li><a href="#"><i class="bi bi-home"></i>${prof.cityBirth}</a></li>
-                                            <li><a href="#"><i class="bi bi-location-pointer"></i>${prof.cityBirth}</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
+                        <!-- widget single item start -->
+                        <div class="card widget-item">
+                            <h4 class="widget-title">EDIT PROFILE: ${prof.firstName} ${prof.lastName}</h4>
+                            <div class="widget-body">
+                                Remember to press 'Save' button in the section(s) you update information.
                             </div>
-                            <!-- widget single item end -->
-                            <!-- widget single item start -->
-                            <div class="card widget-item">
-                                <h4 class="widget-title">LAST IMAGES</h4>
-                                <div class="widget-body">
-                                    <div class="sweet-galley img-gallery">
-                                        <div class="row row-5">
-                                            <%for(int i=0; i<9; i++){%>
-                                            <div class="col-4">
-                                                <div class="gallery-tem">
-                                                    <figure class="post-thumb">
-                                                        <a class="gallery-selector" href="images/gallery/gallery-2.jpg">
-                                                            <img src="images/gallery/gallery-2.jpg" alt="sweet memory">
-                                                        </a>
-                                                    </figure>
-                                                </div>
-                                            </div>
-                                            <%}%>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                        </div>
+                        <!-- widget single item end -->
                     </aside>
                 </div>
                 <!-- LEFT ASIDE END -->
                 <!-- CENTRAL PART START -->
                 <div class="col-lg-6 order-1 order-lg-2">
-                    <!-- SHARE BOX START -->
+                    <!-- USER START -->
                     <div class="card card-small">
                         <div class="share-box-inner">
-                            <!-- profile picture end -->
-                                <div class="profile-thumb">
-                                    <a href="#">
-                                        <figure class="profile-thumb-middle">
-                                            <img src="${prof.profPicSmall}" alt="profile picture">
-                                        </figure>
-                                    </a>
-                                </div>
-                            <!-- profile picture end -->
-
-                            <!-- share content box start -->
+                            <!-- info start -->
                             <div class="share-content-box w-100">
-                                <form class="share-text-box">
-                                    <textarea name="share" class="share-text-field" aria-disabled="true" placeholder="Say Something" data-toggle="modal" data-target="#textbox" id="email"></textarea>
-                                    <button class="btn-share" type="submit">share</button>
+                                <form data-toggle="modal" data-target="#users">
+                                    <div class="share-text-field" aria-disabled="true">
+                                        <label class="refname">ACCOUNT INFORMATION</label>
+                                    </div>
+                                    <div id="email_s" class="share-text-field" aria-disabled="true">
+                                        <label class="refname">Email</label><span id="email" class="answer">${prof.email}</span>
+                                    </div>
+                                    <div id="usern_s" class="share-text-field" aria-disabled="true">
+                                        <label class="refname">Username</label><span id="usern" class="answer">${prof.username}</span>
+                                    </div>
+                                    <div id="bio_s" class="share-text-field" aria-disabled="true">
+                                        <label class="refname">Biography</label><span id="bio" class="answer">${prof.biography}</span>
+                                    </div>
+                                    <input class="btn-sec" type="submit" value="save"/>
                                 </form>
                             </div>
-                            <!-- share content box end -->
+                            <!-- info end -->
                             <!-- Modal start -->
-                            <div class="modal fade" id="textbox" aria-labelledby="textbox">
+                            <div class="modal fade" id="users" aria-labelledby="users">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title">What are you thinking about?</h5>
+                                            <h5 class="modal-title">EDIT ACCOUNT INFORMATION</h5>
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
                                         </div>
                                         <div class="modal-body custom-scroll">
-                                            <textarea name="share" class="share-field-big custom-scroll" placeholder="Say Something"></textarea>
+                                            <!-- UPDATING PART START -->
+                                            <label for="email_m" class="refname">Email</label><input type="text" id="email_m" name="email_m" maxlength="50" required class="top-search-field lightred"/>
+                                            <label for="usern_m" class="refname">Username</label><input type="text" id="usern_m" name="usern_m" maxlength="20" required class="top-search-field lightred"/>
+                                            <label for="bio_m" class="refname">Biography</label><textarea id="bio_m" name="bio_m" maxlength="200" placeholder="Describe yourself briefly..." rows="4" class="top-search-field lightred"></textarea>
+                                            <!-- UPDATING PART END   -->
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="post-share-btn" data-dismiss="modal">cancel</button>
-                                            <button type="button" class="post-share-btn">post</button>
+                                            <button type="button" class="post-share-btn" onclick="xUsers()" data-dismiss="modal">next</button>
                                         </div>
                                     </div>
                                 </div>
@@ -143,144 +193,161 @@
                             <!-- Modal end -->
                         </div>
                     </div>
-                    <!-- SHARE BOX END -->
-                    <!-- POST START -->
-                    <%for(int i=0; i<2; i++){%>
-                    <div class="card">
-                        <!-- post title start -->
-                        <div class="post-title d-flex align-items-center">
-                            <!-- profile picture end -->
-                            <div class="profile-thumb">
-                                <a href="#">
-                                    <figure class="profile-thumb-middle">
-                                        <img src="images/profile/profile-small-5.jpg" alt="profile picture">
-                                    </figure>
-                                </a>
-                            </div>
-                            <!-- profile picture end -->
+                    <!-- USER END -->
 
-                            <div class="posted-author">
-                                <h6 class="author"><a href="profile.jsp">USER POST 1</a></h6>
-                                <span class="post-time">XX min ago</span>
-                            </div>
-
-                            <div class="post-settings-bar">
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <div class="post-settings arrow-shape">
-                                    <ul>
-                                        <li><button>copy link to adda</button></li>
-                                        <li><button>edit post</button></li>
-                                        <li><button>embed adda</button></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- post title start -->
-                        <div class="post-content">
-                            <p class="post-desc">
-                                COMMENT OF POST 1
-                            </p>
-                            <div class="post-thumb-gallery img-gallery">
-                                <div class="row no-gutters">
-                                    <div class="col-8">
-                                        <figure class="post-thumb">
-                                            <a class="gallery-selector" href="images/post/post-large-2.jpg">
-                                                <img src="images/post/post-2.jpg" alt="post image">
-                                            </a>
-                                        </figure>
+                    <!-- PERSONAL INFORMATION START -->
+                    <div class="card card-small">
+                        <div class="share-box-inner">
+                            <!-- info start -->
+                            <div class="share-content-box w-100">
+                                <form>
+                                    <div class="share-text-field" aria-disabled="true" data-toggle="modal" data-target="#names">
+                                        <label class="refname">PERSONAL INFORMATION</label>
                                     </div>
-                                    <div class="col-4">
-                                        <div class="row">
-                                            <div class="col-12">
-                                                <figure class="post-thumb">
-                                                    <a class="gallery-selector" href="images/post/post-large-3.jpg">
-                                                        <img src="images/post/post-3.jpg" alt="post image">
-                                                    </a>
-                                                </figure>
-                                            </div>
-                                            <div class="col-12">
-                                                <figure class="post-thumb">
-                                                    <a class="gallery-selector" href="images/post/post-large-4.jpg">
-                                                        <img src="images/post/post-4.jpg" alt="post image">
-                                                    </a>
-                                                </figure>
-                                            </div>
-                                            <div class="col-12">
-                                                <figure class="post-thumb">
-                                                    <a class="gallery-selector" href="images/post/post-large-5.jpg">
-                                                        <img src="images/post/post-5.jpg" alt="post image">
-                                                    </a>
-                                                </figure>
-                                            </div>
+                                    <div id="fname_s" class="share-text-field" aria-disabled="true" data-toggle="modal" data-target="#names">
+                                        <label class="refname">First Name</label><span id="fname" class="answer">${prof.firstName}</span>
+                                    </div>
+                                    <div id="mname_s" class="share-text-field" aria-disabled="true" data-toggle="modal" data-target="#names">
+                                        <label class="refname">Middle Name</label><span id="mname" class="answer">${prof.midName}</span>
+                                    </div>
+                                    <div id="lname_s" class="share-text-field" aria-disabled="true" data-toggle="modal" data-target="#names">
+                                        <label class="refname">Last Name</label><span id="lname" class="answer">${prof.lastName}</span>
+                                    </div>
+                                    <div id="gender_s" class="share-text-field" aria-disabled="true" data-toggle="modal" data-target="#names">
+                                        <label class="refname">Gender</label><span id="gender" class="answer">${prof.gender}</span>
+                                    </div>
+                                    <div id="job_s" class="share-text-field" aria-disabled="true" data-toggle="modal" data-target="#names">
+                                        <label class="refname">Job</label><span id="job" class="answer">${prof.job}</span>
+                                    </div>
+                                    <div id="cityb_s" class="share-text-field" aria-disabled="true" data-toggle="modal" data-target="#names">
+                                        <label class="refname">City of Birth</label><span id="cityb" class="answer">${prof.cityBirth}</span>
+                                    </div>
+                                    <div id="dateb_s" class="share-text-field" aria-disabled="true" data-toggle="modal" data-target="#names">
+                                        <label class="refname">Date of Birth</label><span id="dateb" class="answer">${prof.dateBirth}</span>
+                                    </div>
+                                    <input class="btn-sec" type="submit" value="save"/>
+                                </form>
+                            </div>
+                            <!-- info end -->
+                            <!-- Modal start -->
+                            <div class="modal fade" id="names" aria-labelledby="names">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">EDIT PERSONAL INFORMATION</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body custom-scroll">
+                                            <!-- UPDATING PART START -->
+                                            <label for="fname_m" class="refname">First name</label><input type="text" id="fname_m" name="fname_m" maxlength="50" required class="top-search-field lightred"/>
+                                            <label for="mname_m" class="refname">Middle name</label><input type="text" id="mname_m" name="mname_m" maxlength="50" class="top-search-field lightred"/>
+                                            <label for="lname_m" class="refname">Last name</label><input type="text" id="lname_m" name="lname_m" maxlength="50" class="top-search-field lightred"/>
+                                            <label for="gender_m" class="refname">Gender</label>
+                                            <select id="gender_m" name="gender_m" class="top-search-field lightred">
+                                                <option value="M">M</option>
+                                                <option value="F" selected>F</option>
+                                            </select>
+                                            <div> </div>
+                                            <label for="job_m" class="refname">Job</label><input type="text" id="job_m" name="job_m" maxlength="80" class="top-search-field lightred"/>
+                                            <label for="cityb_m" class="refname">City of birth</label><input type="text" id="cityb_m" name="cityb_m" maxlength="50" required class="top-search-field lightred"/>
+                                            <label for="dateb_m" class="refname">Date of birth</label><input type="date" id="dateb_m" name="dateb_m" required class="top-search-field lightred"/>
+                                            <!-- UPDATING PART END   -->
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="post-share-btn" data-dismiss="modal">cancel</button>
+                                            <button type="button" class="post-share-btn" onclick="xNames()" data-dismiss="modal">next</button><!--inside func: ('#fname_m','#fname')-->
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="post-meta">
-                                <button class="post-meta-like">
-                                    <i class="bi bi-heart-beat"></i>
-                                    <span>You and xxx people like this</span>
-                                    <strong>xxx</strong>
-                                </button>
-                                <ul class="comment-share-meta">
-                                    <li>
-                                        <button class="post-comment">
-                                            <i class="bi bi-chat-bubble"></i>
-                                            <span>41</span>
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <button class="post-share">
-                                            <i class="bi bi-share"></i>
-                                            <span>07</span>
-                                        </button>
-                                    </li>
-                                </ul>
-                            </div>
+                            <!-- Modal end -->
                         </div>
                     </div>
-                    <%}%>
-                    <!-- POST END -->
+                    <!-- PERSONAL INFORMATION END -->
+
+                    <!-- ADDRESS START -->
+                    <div class="card card-small">
+                        <div class="share-box-inner">
+                            <!-- info start -->
+                            <div class="share-content-box w-100">
+                                <form data-toggle="modal" data-target="#addresses">
+                                    <div class="share-text-field" aria-disabled="true">
+                                        <label class="refname">ADDRESS</label>
+                                    </div>
+                                    <div id="state_s" class="share-text-field" aria-disabled="true">
+                                        <label class="refname">State</label><span id="state" class="answer">${prof.address.state}</span>
+                                    </div>
+                                    <div id="city_s" class="share-text-field" aria-disabled="true">
+                                        <label class="refname">City</label><span id="city" class="answer">${prof.address.city}</span>
+                                    </div>
+                                    <div id="stre1_s" class="share-text-field" aria-disabled="true">
+                                        <label class="refname">Street 1</label><span id="stre1" class="answer">${prof.address.street1}</span>
+                                    </div>
+                                    <div id="stre2_s" class="share-text-field" aria-disabled="true">
+                                        <label class="refname">Street2</label><span id="stre2" class="answer">${prof.address.street2}</span>
+                                    </div>
+                                    <div id="zipc_s" class="share-text-field" aria-disabled="true">
+                                        <label class="refname">ZIP Code</label><span id="zipc" class="answer">${prof.address.zipCode}</span>
+                                    </div>
+                                    <input class="btn-sec" type="submit" value="save"/>
+                                </form>
+                            </div>
+                            <!-- info end -->
+                            <!-- Modal start -->
+                            <div class="modal fade" id="addresses" aria-labelledby="addresses">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">EDIT ADDRESS</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body custom-scroll">
+                                            <!-- UPDATING PART START -->
+                                            <label for="stre1_m" class="refname">Street 1</label><input type="text" id="stre1_m" name="stre1_m" maxlength="50" class="top-search-field lightred"/>
+                                            <label for="stre2_m" class="refname">Street 2</label><input type="text" id="stre2_m" name="stre2_m" maxlength="50" class="top-search-field lightred"/>
+                                            <label for="zipc_m" class="refname">ZIP Code</label><input type="text" id="zipc_m" name="zipc_m" maxlength="10" required class="top-search-field lightred"/>
+                                            <!-- UPDATING PART END   -->
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="post-share-btn" data-dismiss="modal">cancel</button>
+                                            <button type="button" class="post-share-btn" onclick="xAddresses()" data-dismiss="modal">next</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Modal end -->
+                        </div>
+                    </div>
+                    <!-- ADDRESS END -->
+                    <a href="deactivate?id=${prof.userId}">Deactivate User</a>
                 </div>
                 <!-- CENTRAL PART END -->
-                <!-- RIGHT ASIDE START -->
-                <div class="col-lg-3 order-3">
-                    <aside class="widget-area">
-                        <!-- widget single item start -->
-                        <div class="card widget-item">
-                            <h4 class="widget-title">COMMON FRIENDS</h4>
-                            <div class="widget-body">
-                                <ul class="like-page-list-wrapper">
-                                    <% for(int i=0; i<4; i++){%>
-                                    <li class="unorder-list">
-                                        <!-- profile picture start -->
-                                        <div class="profile-thumb">
-                                            <a href="#">
-                                                <figure class="profile-thumb-small">
-                                                    <img src="images/profile/profile-small-10.jpg" alt="profile picture">
-                                                </figure>
-                                            </a>
-                                        </div>
-                                        <!-- profile picture end -->
-                                        <div class="unorder-list-info">
-                                            <h3 class="list-title"><a href="#">HERE_NAME</a></h3>
-                                            <p class="list-subtitle"><a href="#">SOME_INFO</a></p>
-                                        </div>
-                                        <button class="like-button"><!--add active for changing state-->
-                                            <img class="heart" src="images/icons/heart.png" alt="">
-                                            <img class="heart-color" src="images/icons/heart-color.png" alt="">
-                                        </button>
-                                    </li>
-                                    <%}%>
-                                </ul>
-                            </div>
-                        </div>
-                        <!-- widget single item end -->
-                    </aside>
+                <!--<div>
+                    <table>
+                        <forEach var="loc" items="$ {locs}">
+                            <tr>
+                                <td><out value="$ {loc.key}"/></td>
+                                <forEach var="cits" items="$ {loc.value}">
+                                    <td><out value="$ {cits}"/></td>
+                                </forEach>
+                            </tr>
+                        <forEach>
+                    </table>
                 </div>
-                <!-- RIGHT ASIDE END -->
+                <script>
+                    var e = '$ {locs}';
+                    e = e.substring(1,e.length-2).split("], ");
+                    var arrs = e.map(s => s.split("=["));
+                    var cs = {
+                        "Dallas": ["75201", "75202"],
+                        "Austin": ["73301", "73344"]
+                    }
+                </script>-->
+                <!-- CENTRAL PART END -->
             </div>
         </div>
         <!-- CONTAINER END -->
