@@ -480,6 +480,9 @@
 <script src="js/plugins/imagesloaded.pkgd.min.js"></script>
 <!-- isotope filter js -->
 <script src="js/plugins/isotope.pkgd.min.js"></script>
+<%--just  custom for posts --%>
+<script src="js/like_comment_delete_post.js"></script>
+
 <!-- Main JS -->
 <script src="js/main.js"></script>
 </body>
