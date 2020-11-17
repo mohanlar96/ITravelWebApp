@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
 <!doctype html>
 <html class="no-js" lang="en">
 <!-- Mirrored from demo.hasthemes.com/ITravel-preview/ITravel/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 11 Nov 2020 03:42:57 GMT -->
@@ -7,14 +9,12 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>ITravel - Social Network HTML Template</title>
+    <title>ITravel - Travelling To the World</title>
     <meta name="robots" content="noindex, follow" />
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Favicon -->
     <link rel="shortcut icon" type="image/x-icon" href="images/favicon.png">
-
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 
     <!-- CSS
     ============================================ -->
@@ -39,100 +39,6 @@
     <!-- Main Style CSS -->
     <link rel="stylesheet" href="css/style.css">
 
-    <script>
-        $(document).ready(function () {
-            $(".add-frnd").click(function () {
-                $userSession = $('#hidden-session-user-id').val();
-                $travellerID = $(this).attr('id'); //Button ID
-                $followStatus = $('#' + $travellerID).html().trim();
-              //  alert($userSession+" "+$travellerID+" "+$followStatus);
-                $.ajax({
-                    url: "FollowUnfollowServlet",
-                    data: {
-                        "SessionUser":$userSession,
-                        "TravellerID": $travellerID,
-                        "FollowingStatus": $followStatus
-                    },
-                    type: "GET",
-                    cache: false,
-                    success: function (responseText) {
-                        $('#' + $travellerID).text(responseText);
-                        if (responseText.toString().trim() === "Follow") {
-                            $('#' + $travellerID).css("font-weight", "normal");
-                        } else if (responseText.toString().trim() === "Following") {
-                            $('#' + $travellerID).css("font-weight", "bold");
-                        }
-                    },
-                    error: function () {
-                        alert('Ajax Error');
-                    }
-                });
-            });
-        });
-
-        $(document).ready(function () {
-            $(".footerBtn").click(function (e) {
-                e.preventDefault();
-                const $travelerType = $(this).attr('name').toString().trim(); // Follower or Followee
-                const $userID = $('#avatar-id-hidden').val().toString().trim();  //Comes from Footer Holding the ID of the Opened Profile
-                $.ajax({
-                    type: "GET",
-                    url: "FooterTravelersServlet",
-                    data: {
-                        "currentUserID": $userID, // accept this from session or hidden-user
-                        "travellerType": $travelerType
-                    },
-                    success: function (responseText) {
-                        const len = JSON.parse(responseText).length;
-                        let disp = "";
-                        let profile_images="";
-                        for (let i = 0; i < len; i++) {
-                            var obj = JSON.parse(responseText, function (key, value) {
-                                return value;
-                            });
-                            let newEle = $("li.followers-li").eq(0).clone(true, true);
-                            var ButtonText = obj[i].isFollwing.toString().trim() ? "Following" : "Follow";
-
-                            disp += "<li class='d-flex align-items-center profile-active followers-li>'" +
-                                "<div class='profile-thumb'> " +
-                                "<a href='/profile?id=" + obj[i].userID + "' class='profPic'>" +
-                                "<figure class='profile-thumb-small'> " +
-                                "<img src='" + obj[i].picturePath + "' alt='profile picture'> " +
-                                "</figure> " +
-                                "</a> " +
-                                "</div>" +
-                                "<div class='posted-author'> " +
-                                "<h6 class='author posted-author'> " +
-                                "<a class='followerName' href='/profile?id=" + obj[i].userID + "'>" + obj[i].firstName + " " + obj[i].lastName + "</a>" +
-                                "</h6>" +
-                                "</div> " +
-                                "<div class='posted-author'> " +
-                               // "<button class='add-frnd follwers-left' style='float: right; border:none' id='" + obj[i].userID + "'>" + ButtonText +
-                                //"</button>" +
-                                "</div> " +
-                                " </li>";
-                            // profile_images+=
-                            //
-                            //     "<div class='profile-thumb profile-active'>" +
-                            //     "<a href='/profile?id=" + obj[i].userID + "'>" +
-                            //     "<figure class='profile-thumb-small'>" +
-                            //     "<img class='all-images' src='"+obj[i].picturePath+"' alt='profile picture'>" +
-                            //     "</figure>" +
-                            //     "</a>" +
-                            //     "</div>" +
-
-
-                        }
-                        $("#" + $travelerType).html(disp);
-                    },
-                    error: function () {
-                        alert('Ajax Error');
-                    }
-                });
-            });
-        });
-
-    </script>
 
 </head>
 
@@ -157,69 +63,30 @@
                                             </button>
                                         </div>
                                         <ul class="dropdown-msg-list">
+                                            <c:forEach var="notification" items="${notifications}">
+
                                             <li class="msg-list-item d-flex justify-content-between">
                                                 <!-- profile picture end -->
                                                 <div class="profile-thumb">
                                                     <figure class="profile-thumb-middle">
-                                                        <img src="images/profile/profile-small-3.jpg" alt="profile picture">
+                                                        <img src="${notification.avator.profileUrl}" alt="profile picture">
                                                     </figure>
                                                 </div>
                                                 <!-- profile picture end -->
                                                 <!-- message content start -->
                                                 <div class="msg-content notification-content">
-                                                    <a href="profile.html">Robert Faul</a>,
-                                                    <a href="profile.html">william jhon</a>
-                                                    <p>and 35 other people reacted to your photo</p>
+                                                    <a href="profile.html">${notification.avator.firstName} ${notification.avator.lastName}</a>,
+                                                    <p>${notification.message}</p>
                                                 </div>
                                                 <!-- message content end -->
                                                 <!-- message time start -->
                                                 <div class="msg-time">
-                                                    <p>25 Apr 2019</p>
+                                                    <p>${notification.datetime}</p>
                                                 </div>
                                                 <!-- message time end -->
                                             </li>
-                                            <li class="msg-list-item d-flex justify-content-between">
-                                                <!-- profile picture end -->
-                                                <div class="profile-thumb">
-                                                    <figure class="profile-thumb-middle">
-                                                        <img src="images/profile/profile-small-4.jpg" alt="profile picture">
-                                                    </figure>
-                                                </div>
-                                                <!-- profile picture end -->
-                                                <!-- message content start -->
-                                                <div class="msg-content notification-content">
-                                                    <a href="profile.html">Robert mushkil</a>,
-                                                    <a href="profile.html">Terry jhon</a>
-                                                    <p>and 20 other people reacted to your photo</p>
-                                                </div>
-                                                <!-- message content end -->
-                                                <!-- message time start -->
-                                                <div class="msg-time">
-                                                    <p>20 May 2019</p>
-                                                </div>
-                                                <!-- message time end -->
-                                            </li>
-                                            <li class="msg-list-item d-flex justify-content-between">
-                                                <!-- profile picture end -->
-                                                <div class="profile-thumb">
-                                                    <figure class="profile-thumb-middle">
-                                                        <img src="images/profile/profile-small-6.jpg" alt="profile picture">
-                                                    </figure>
-                                                </div>
-                                                <!-- profile picture end -->
-                                                <!-- message content start -->
-                                                <div class="msg-content notification-content">
-                                                    <a href="profile.html">Horijon Mbala</a>,
-                                                    <a href="profile.html">Bashu jhon</a>
-                                                    <p>and 55 other people reacted to your post</p>
-                                                </div>
-                                                <!-- message content end -->
-                                                <!-- message time start -->
-                                                <div class="msg-time">
-                                                    <p>15 Jan 2019</p>
-                                                </div>
-                                                <!-- message time end -->
-                                            </li>
+                                            </c:forEach>
+
                                         </ul>
                                         <div class="msg-dropdown-footer">
                                             <button>See all in messenger</button>
@@ -243,8 +110,8 @@
                     <div class="header-top-right d-flex align-items-center justify-content-end">
                         <!-- header top search start -->
                         <div class="header-top-search">
-                            <form class="top-search-box">
-                                <input type="text" placeholder="Search" class="top-search-field">
+                            <form  type="post" class="top-search-box" id="search">
+                                <input type="text"  placeholder="Search" class="top-search-field">
                                 <button class="top-search-btn"><i class="flaticon-search"></i></button>
                             </form>
                         </div>

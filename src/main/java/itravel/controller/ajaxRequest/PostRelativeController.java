@@ -2,7 +2,8 @@ package itravel.controller.ajaxRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import itravel.dao.DbUtil;
 import java.io.File;
-import java.util.ArrayList;
+import java.sql.Date;
+import java.util.*;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -10,11 +11,13 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.*;
-import java.util.Iterator;
-import java.util.List;
+
 import itravel.dao.HomeDao;
+import itravel.model.BanWord;
+import itravel.model.HomeAvator;
 import itravel.model.Post;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
@@ -27,6 +30,7 @@ public class PostRelativeController extends HttpServlet {
     PreparedStatement state=null;
     ResultSet row=null;
     Statement statement=null;
+
     @Override
     public void init() throws ServletException {
         super.init();
@@ -56,6 +60,8 @@ public class PostRelativeController extends HttpServlet {
             case "SCROLL":
                    scrollDown(request, response);
                 break;
+            case "SEARCH":
+                searchPost(request,response);
 
         }
         } catch (Exception e) {
@@ -64,6 +70,7 @@ public class PostRelativeController extends HttpServlet {
 
 
     }
+
     private void toggleLike(HttpServletRequest request, HttpServletResponse response) throws Exception {
         con=DbUtil.connectDb();
         Integer userID = Integer.parseInt(request.getParameter("userID"));
@@ -162,12 +169,23 @@ public class PostRelativeController extends HttpServlet {
         Double latitude=Double.valueOf(request.getParameter("latitude"));
         Double longitude=Double.valueOf(request.getParameter("longitude"));
         Integer userID = Integer.parseInt(request.getParameter("userID"));
+        String notify = request.getParameter("notify");
+        Integer isNotify=(notify=="on")?1:0;
+
+
+        int unhealthy=isUnhealthy(description);
+        if(unhealthy==1){
+            HttpSession session=request.getSession();
+            session.setAttribute("unhealthy","true");
+
+        }
+
 
         response.getWriter().println("Server=>"+userID +" "+description+"<br> "+latitude +" "+longitude+"  "+departureAddress+" "+destinationAddress );
 
 
         try{
-            String sql = "insert  into post(datetime,latitude,longitude,description,departureAddress,destinationAddress,unhealthy,User_id) VALUES( ? , ? , ? , ? , ? , ? , ? , ? )";
+            String sql = "insert  into post(datetime,latitude,longitude,description,departureAddress,destinationAddress,unhealthy,notified,User_id) VALUES( ? , ? , ? , ? , ? , ? , ? , ? , ? )";
 
             // prepare statement
             state = con.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
@@ -181,8 +199,9 @@ public class PostRelativeController extends HttpServlet {
             state.setString(4,description);
             state.setString(5,departureAddress);
             state.setString(6,destinationAddress);
-            state.setInt(7,1);//unhealthy
-            state.setInt(8,userID);
+            state.setInt(7,unhealthy);//unhealthy
+            state.setInt(8,isNotify);
+            state.setInt(9,userID);
             // execute SQL statement
             int postID = 0;
             state.executeUpdate();
@@ -206,7 +225,6 @@ public class PostRelativeController extends HttpServlet {
             int maxFileSize = 50 * 1024;
             int maxMemSize = 4 * 1024;
             String dbFileURL=null;
-
 
             DiskFileItemFactory factory = new DiskFileItemFactory();
 
@@ -276,7 +294,45 @@ public class PostRelativeController extends HttpServlet {
         }
     }
 
-    private int insertAnImageIntoDbTable(String url) {
+    private int isUnhealthy(String description) {
+        List<String> theBanWords = new ArrayList<>();
+        Connection myConn = null;
+        Statement myStmt = null;
+        ResultSet myRs = null;
+
+        try {
+            // get a connection
+            myConn = DbUtil.connectDb();
+
+            // create sql statement
+            String sql = "select * from filterwords";
+            myStmt = myConn.createStatement();
+
+            // execute query
+            myRs = myStmt.executeQuery(sql);
+            // process resultset
+            while (myRs.next()) {
+                // retrieve data from result set row
+                String theWord = myRs.getString("theWord");
+
+                // add it to the list of students
+                theBanWords.add(theWord);
+            }
+            for(String str:description.split(" ")){
+                if(theBanWords.contains(str)){
+                    return 1; //if some unhealthy things
+                }
+            }
+
+             return 0;
+
+        }catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return 0;
+    }
+
+        private int insertAnImageIntoDbTable(String url) {
 
         try{
             String sql = "insert  into post(name,link) VALUES(?,?)";
@@ -308,7 +364,14 @@ public class PostRelativeController extends HttpServlet {
         String departureAddress=request.getParameter("departureAddress");
         String destinationAddress=request.getParameter("destinationAddress");
         Integer id = Integer.parseInt(request.getParameter("postID"));
-       response.getWriter().println("Server=>"+description +" "+departureAddress+" "+destinationAddress+ " "+id);
+        response.getWriter().println("Server=>"+description +" "+departureAddress+" "+destinationAddress+ " "+id);
+
+        int unhealthy=isUnhealthy(description);
+        if(unhealthy==1){
+            HttpSession session=request.getSession();
+            session.setAttribute("unhealthy","true");
+
+        }
 
 
 
@@ -320,7 +383,7 @@ public class PostRelativeController extends HttpServlet {
         state.setString(1,description);
         state.setString(2,departureAddress);
         state.setString(3,destinationAddress);
-        state.setInt(4,1);//unhealthy
+        state.setInt(4,unhealthy);//unhealthy
         state.setInt(5,id);
 
         // execute SQL statement
@@ -433,15 +496,37 @@ public class PostRelativeController extends HttpServlet {
         con=DbUtil.connectDb();
         Integer page = Integer.parseInt(request.getParameter("page"));
         Integer userID=Integer.parseInt(request.getParameter("userID"));
-//        response.getWriter().println("Server=>"+page +" "+userID);
 
         List<Post> postItems=HomeDao.getPosts(userID,page);
+        HomeAvator avator= HomeDao.getAvator(userID);
+
+        HashMap<String, Object> data = new HashMap<String, Object>();
+        data.put("loginAvator",avator);
+        data.put("posts",postItems);
         //Creating the ObjectMapper object
         ObjectMapper mapper = new ObjectMapper();
         //Converting the Object to JSONString
-        String jsonString = mapper.writeValueAsString(postItems);
+        String jsonString = mapper.writeValueAsString(data);
+
         response.getWriter().println(jsonString);
 
+    }
+    private void searchPost(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+        String keyword = request.getParameter("keywords");
+        Integer userID = Integer.parseInt(request.getParameter("userID"));
+        List<Post> postItems = HomeDao.searchPosts(userID,1,keyword); //10 posts // hershw ...
+        HomeAvator avator= HomeDao.getAvator(userID);
+
+        HashMap<String, Object> data = new HashMap<String, Object>();
+        data.put("loginAvator",avator);
+        data.put("posts",postItems);
+        //Creating the ObjectMapper object
+        ObjectMapper mapper = new ObjectMapper();
+        //Converting the Object to JSONString
+        String jsonString = mapper.writeValueAsString(data);
+
+        response.getWriter().println(jsonString);
     }
 
 
