@@ -164,7 +164,7 @@
                     <div class="col-lg-3 col-md-3">
                         <div class="profile-picture-box">
                             <figure class="profile-picture">
-                                <a href="profile.jsp">
+                                <a href="profile?id=${prof.userId}">
                                     <img src="${prof.profPicLarge}" alt="profile picture" height="225" width="225"> <!--"images/profile/profile-1.jpg"-->
                                 </a>
                             </figure>

@@ -440,7 +440,6 @@ public class PostRelativeController extends HttpServlet {
         ObjectMapper mapper = new ObjectMapper();
         //Converting the Object to JSONString
         String jsonString = mapper.writeValueAsString(postItems);
-
         response.getWriter().println(jsonString);
 
     }

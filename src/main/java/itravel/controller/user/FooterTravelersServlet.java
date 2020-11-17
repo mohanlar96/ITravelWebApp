@@ -1,5 +1,6 @@
 package itravel.controller.user;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import itravel.dao.FollowerDao;
 import itravel.model.Traveller;
 
@@ -19,24 +20,29 @@ public class FooterTravelersServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         int currentUser = Integer.parseInt(request.getParameter("currentUserID"));
+        String myTravellerType = request.getParameter("travellerType").trim();
         HttpSession session=request.getSession();
+        int sessionUser = 2;
 //        session.setAttribute("currntUser",currentUser);
 
         FollowerDao dbu = new FollowerDao();
 
-        List<Traveller> myFollowersList  = null;
-        List<Traveller> myFolloweesList  = null;
+        List<Traveller> myTravllerLists  = null;
         try {
-            myFollowersList = dbu.getTraveller(currentUser,"MyFollowers");
-            myFolloweesList = dbu.getTraveller(currentUser,"MyFollowees");
+            if(myTravellerType.equals("Followers")){
+                myTravllerLists = dbu.getTraveller(sessionUser,currentUser,"MyFollowers");
+            }
+            else if(myTravellerType.equals("Followees")){
+                myTravllerLists = dbu.getTraveller(sessionUser,currentUser,"MyFollowees");
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        session.setAttribute("myFollowersList", myFollowersList);
-        session.setAttribute("myFolloweesList", myFolloweesList);
-
-
-
+       // session.setAttribute("myFollowersList", myFollowersList);
+       // session.setAttribute("myFolloweesList", myFolloweesList);
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = mapper.writeValueAsString(myTravllerLists);
+        response.getWriter().println(jsonString);
     }
 
 

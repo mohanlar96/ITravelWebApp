@@ -11,7 +11,7 @@ import java.util.List;
 
 public class FollowerDao {
 
-    public static List<Traveller> getTraveller(int currentUserID, String travellersType) throws Exception {
+    public static List<Traveller> getTraveller(int sessionUser, int currentUserID, String travellersType) throws Exception {
         Connection myConn = null;
         Statement myStmt = null;
         ResultSet myRs = null;
@@ -31,14 +31,14 @@ public class FollowerDao {
                         "Inner join follower on user_image.User_id= follower.Follower1_id " +
                         "inner join user on user.id = follower.Follower1_id " +
                         "Inner JOIN person ON user.Person_id=person.id " +
-                        "WHERE follower.User_id=" + currentUserID + " and follower.Follewer1_id!=" + currentUserID + " and user_image.sizeimg='S' order by person.fname asc";
+                        "WHERE follower.User_id=" + currentUserID + " and user_image.sizeimg='S' order by person.fname asc";
             } else if (travellersType.equals("MyFollowees")) {
                 sql = "SELECT follower.User_id as id, image.link, person.fname, person.lname FROM image " +
                         "Inner JOIN user_image ON image.id=user_image.Image_id " +
                         "Inner join follower on user_image.User_id= follower.User_id " +
                         "inner join user on user.id = follower.User_id " +
                         "Inner JOIN person ON user.Person_id=person.id " +
-                        "WHERE follower.Follower1_id=" + currentUserID +" and follower.User_id!="+ currentUserID+" and user_image.sizeimg='S' order by person.fname asc";
+                        "WHERE Follower1_id=" + currentUserID +" and user_image.sizeimg='S' order by person.fname asc";
             }
             myConn = DbUtil.connectDb();
             myStmt = myConn.createStatement();
@@ -50,7 +50,7 @@ public class FollowerDao {
                 Traveller.setPicturePath(myRs.getString("image.link"));
                 Traveller.setFirstName(myRs.getString("person.fname"));
                 Traveller.setLastName(myRs.getString("person.lname"));
-                Traveller.setFollwing(isFollwing(currentUserID, TravellerId));
+                Traveller.setFollwing(isFollwing(sessionUser, TravellerId));
                 allTraveller.add(Traveller);
             }
             return allTraveller;

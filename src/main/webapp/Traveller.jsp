@@ -8,38 +8,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <jsp:include page="layout/header.jsp"/>
 <%--<script type="text/java" src="/js/myAjax.js"> </script>--%>
-<script>
-    $(document).ready(function () {
-        $(".add-frnd").click(function () {
-            $userID = $(this).attr('id'); //Button ID
-            $currentUserID = $('#hidden-' + $userID).val();
-            $followStatus = $('#' + $userID).html().trim();
-            $.ajax({
-                url: "FollowUnfollowServlet",
-                data: {
-                    "currentUser":$currentUserID,
-                    "travellerID": $userID,
-                    "followingStatus": $followStatus
-                },
-                type: "GET",
-                cache: false,
-                success: function (responseText) {
-                    $('#' + $userID).text(responseText);
-                    if (responseText.toString().trim() === "Follow") {
-                        $('#' + $userID).css("font-weight", "normal");
-                    } else if (responseText.toString().trim() === "Following") {
-                        $('#' + $userID).css("font-weight", "bold");
-                    }
 
-                },
-                error: function () {
-                    alert('Ajax Error');
-                }
-            });
-        });
-    });
-
-</script>
 <div class="main-wrapper">
     <!-- profile banner area start -->
     <div class="profile-banner-large bg-img" data-bg="images/banner/profile-banner.jpg">
@@ -53,8 +22,8 @@
                 <div class="col-lg-3 col-md-3">
                     <div class="profile-picture-box">
                         <figure class="profile-picture">
-                            <a href="#">
-                                <img src="images/profile/profile-1.jpg" alt="profile picture">
+                            <a href="profile.jsp">
+                                <img src="${profile.profPicLarge}" alt="profile picture" height="225" width="225"> <!--"images/profile/profile-1.jpg"-->
                             </a>
                         </figure>
                     </div>
@@ -69,7 +38,7 @@
                                     <li><a href="about.jsp">about</a></li>
                                     <li><a href="photos.jsp">photos</a></li>
                                     <li>
-                                        <a href="<%=request.getContextPath()%>/allTraveller?currentUserID=<%=profile_ID%>">Travellers</a>
+                                        <a href="/allTraveller?id=<%=profile_ID%>">Travellers</a>
                                     </li>
                                     <li><a href="about.jsp">more</a></li>
                                     <!-- <li class="d-inline-block d-md-none"><a href="profile.jsp">edit profile</a></li> -->
@@ -80,7 +49,8 @@
                 </div>
                 <div class="col-lg-2 col-md-3 d-none d-md-block">
                     <div class="profile-edit-panel">
-                        <button class="edit-btn">edit profile</button>
+                        <button onclick="window.location.href='editprofile?id=2'" class="edit-btn">EDIT PROFILE</button>
+                        <%--    ======================================================== Session Analysis Here =======================================--%>
                     </div>
                 </div>
             </div>
@@ -172,10 +142,9 @@
 <%--                                                if (profile_ID != Integer.parseInt(session.getAttribute("UserSessionID").toString()))--%>
 <%--                                                    buttontype = "disabled";--%>
 <%--                                            %>--%>
-                                            <input type="hidden" id="hidden-${trvlr.getUserID()}"
-                                                   value="<%=session.getAttribute("UserSessionID").toString()%>">
+<%--    ======================================================== Session Analysis Here =======================================--%>
                                             <button class="add-frnd" id="${trvlr.getUserID()}"
-                                                    style="font-weight: ${myFontWeight}"  <%//=buttontype%> >${buttonName}</button>
+                                                    style="font-weight: ${myFontWeight}"  >${buttonName}</button>
                                         </div>
                                     </div>
                                 </div>

@@ -1,6 +1,8 @@
 package itravel.controller.user;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import itravel.dao.FollowerDao;
+import itravel.dao.HomeDao;
 import itravel.model.*;
 
 import javax.servlet.RequestDispatcher;
@@ -16,26 +18,35 @@ import java.util.List;
 @WebServlet("/allTraveller")
 public class AllTravelersServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int currentUser = Integer.parseInt(request.getParameter("currentUserID"));
-        HttpSession session=request.getSession();
-        session.setAttribute("currntUser",currentUser);
+        int currentUser = Integer.parseInt(request.getParameter("id"));
+        int sessionUser = 2;
+        ///HttpSession session=request.getSession();
+        //session.setAttribute("currntUser",currentUser);
         FollowerDao dbu = new FollowerDao();
-
         List<Traveller> allTravelers  = null;
-        List<Traveller> myFollowersList  = null;
-        List<Traveller> myFolloweesList  = null;
+//        List<Traveller> myFollowersList  = null;
+//        List<Traveller> myFolloweesList  = null;
+        Profile profile = null;
+
         try {
-            allTravelers = dbu.getTraveller(currentUser,"All");
-            myFollowersList = dbu.getTraveller(currentUser,"MyFollowers");
-            myFolloweesList = dbu.getTraveller(currentUser,"MyFollowees");
+            allTravelers = dbu.getTraveller(sessionUser,currentUser,"All");
+            //myFollowersList = dbu.getTraveller(currentUser,"MyFollowers");
+            //myFolloweesList = dbu.getTraveller(currentUser,"MyFollowees");
+            profile = ProfileServlet.getProfile(request.getParameter("id"));
+
         } catch (Exception e) {
             e.printStackTrace();
         }
         request.setAttribute("TravelersList", allTravelers);
-        request.setAttribute("myFollowersList", myFollowersList);
-        request.setAttribute("myFolloweesList", myFolloweesList);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/Traveller.jsp?id="+currentUser);
+        request.setAttribute("profile",profile );
+        request.getParameter("id");
+       // request.setAttribute("myFollowersList", myFollowersList);
+       // request.setAttribute("myFolloweesList", myFolloweesList);
+
+        RequestDispatcher dispatcher = request.getRequestDispatcher("Traveller.jsp");
         dispatcher.forward(request, response);
+
+
 
 
 //      PrintWriter out = response.getWriter();

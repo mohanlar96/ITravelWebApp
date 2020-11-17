@@ -5,44 +5,7 @@
 
 <script>
 
-    $(document).ready(function () {
-        $("#myFollowersList").click(function (e) {
-            e.preventDefault();
-            $.ajax({
-                type: "GET",
-                url: "FooterTravelersServlet",
-                data: {
-                    "currentUserID": "2" // accept this from session
-                },
-                success: function (responseText) {
-                    alert(responseText);
-                },
-                error: function () {
-                    alert('error');
-                }
-            });
-        });
 
-
-        $("#myFolloweesList").click(function (e) {
-            e.preventDefault();
-            $.ajax({
-                type: "GET",
-                url: "FooterTravelersServlet",
-                data: {
-                    "currentUserID": "2" // accept this from session
-                },
-                success: function (responseText) {
-                    alert(responseText);
-                },
-                error: function () {
-                    alert('error');
-                }
-            });
-        });
-
-
-    });
 
 
 </script>
@@ -61,225 +24,43 @@
                     <div class="footer-wrapper">
                         <div class="footer-card footer-card-override position-relative">
                             <div class="friends-search">
-                                <%--                                <form class="search-box" action="<%=request.getContextPath()%>/FooterTravellers?currentUserID=2">--%>
-                                <%--                                    <button style="width:100%" class="btn-share show-your-followers" id="myFollowersList" type="button">Your--%>
-                                <%--                                        Followers--%>
-                                <%--                                    </button>--%>
-                                <%--                                </form>--%>
+                                <input type="hidden" id="hidden-session-user-id"
+                                    value="2">
+                                <%--   Session needed here in the hidden-button value--%>
 
-                                <button style="width:100%" class="btn-share show-your-followers" id="myFollowersList"
-                                        type="button">Your
-                                    Followers
+                                <input type="hidden" id="avatar-id-hidden"
+                                       value="<%=request.getParameter("id")%>">
+
+                                <button style="width:100%" class="btn-share show-your-followers footerBtn"
+                                        name="Followers"
+                                        type="button">Followers
                                 </button>
-
-                                <%--                                     <a style="width:100%" class="btn-share show-your-followers" id="myFollowersList" type="button"--%>
-                                <%--                                       href="<%=request.getContextPath()%>/FooterTravellers?currentUserID=2">Your--%>
-                                <%--                                        Followers--%>
-                                <%--                                    </a>--%>
-
 
                             </div>
                             <div class="friend-search-list l1" id="follower-list">
                                 <div class="frnd-search-title">
                                     <button class="frnd-search-icon">
                                     </button>
-                                    <p>Your Followers</p>
+                                    <p>Followers</p>
                                     <button class="close-btn" data-close="l1"><i class="flaticon-cross-out"></i>
                                     </button>
                                 </div>
                                 <div class="frnd-search-inner custom-scroll">
-                                    <ul>
-
-                                        <c:forEach var="flwrs" items="${myFollowersList}">
-                                            <c:choose>
-                                                <c:when test="${flwrs.getIsFollwing()}">
-                                                    <c:set var="flwrButtonName" scope="session" value="Following"/>
-                                                    <c:set var="flwrFontWeight" scope="session" value="bold"/>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <c:set var="flwrButtonName" scope="session" value="Follow"/>
-                                                    <c:set var="flwrFontWeight" scope="session" value="normal"/>
-                                                </c:otherwise>
-
-                                            </c:choose>
-                                            <li class="d-flex align-items-center profile-active">
-                                                <!-- profile picture end -->
-                                                <div class="profile-thumb ">
-                                                    <a href="#">
-                                                        <figure class="profile-thumb-small">
-                                                            <img src="${flwrs.getPicturePath().toString()}"
-                                                                 alt="profile picture">
-                                                        </figure>
-                                                    </a>
-                                                </div>
-                                                <!-- profile picture end -->
-                                                <div class="posted-author">
-                                                    <h6 class="author posted-author">
-                                                        <a href="<%=request.getContextPath()%>/profile?id=${flwrs.getUserID()}">
-                                                                ${flwrs.getFirstName().toString()} ${flwrs.getLastName().toString()}
-                                                        </a>
-
-<%--                                                        <button class="add-frnd" id="${flwrs.getUserID()}"--%>
-<%--                                                                style="font-weight: ${flwrFontWeight}">${flwrButtonName}--%>
-<%--                                                        </button>--%>
-                                                    </h6>
-
-
-                                                </div>
-                                            </li>
-
-                                        </c:forEach>
+                                    <ul class="followers-ul" id="Followers">
+                                        <%--   ======================================================= OUTPUT OF FOLLOWERS HERE ================================================--%>
                                     </ul>
                                 </div>
                             </div>
                         </div>
+
                         <div class="card card-small mb-0 active-profile-wrapper">
                             <div class="active-profiles-wrapper">
                                 <div class="active-profile-carousel slick-row-20 slick-arrow-style">
                                     <!-- profile picture end -->
-                                    <div class="single-slide">
-                                        <div class="profile-thumb profile-active">
-                                            <a href="#">
-                                                <figure class="profile-thumb-small">
-                                                    <img src="images/profile/profile-small-1.jpg" alt="profile picture">
-                                                </figure>
-                                            </a>
-                                        </div>
+                                    <div class="single-slide" id="footer-images">
+
                                     </div>
-                                    <!-- profile picture end -->
-                                    <!-- profile picture end -->
-                                    <div class="single-slide">
-                                        <div class="profile-thumb profile-active">
-                                            <a href="javascript:void(0)">
-                                                <figure class="profile-thumb-small">
-                                                    <img src="images/profile/profile-small-1.jpg" alt="profile picture">
-                                                </figure>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <!-- profile picture end -->
-                                    <!-- profile picture end -->
-                                    <div class="single-slide">
-                                        <div class="profile-thumb profile-active">
-                                            <a href="javascript:void(0)">
-                                                <figure class="profile-thumb-small">
-                                                    <img src="images/profile/profile-small-2.jpg" alt="profile picture">
-                                                </figure>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <!-- profile picture end -->
-                                    <!-- profile picture end -->
-                                    <div class="single-slide">
-                                        <div class="profile-thumb profile-active">
-                                            <a href="javascript:void(0)">
-                                                <figure class="profile-thumb-small">
-                                                    <img src="images/profile/profile-small-3.jpg" alt="profile picture">
-                                                </figure>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <!-- profile picture end -->
-                                    <!-- profile picture end -->
-                                    <div class="single-slide">
-                                        <div class="profile-thumb profile-active">
-                                            <a href="javascript:void(0)">
-                                                <figure class="profile-thumb-small">
-                                                    <img src="images/profile/profile-small-4.jpg" alt="profile picture">
-                                                </figure>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <!-- profile picture end -->
-                                    <!-- profile picture end -->
-                                    <div class="single-slide">
-                                        <div class="profile-thumb profile-active">
-                                            <a href="javascript:void(0)">
-                                                <figure class="profile-thumb-small">
-                                                    <img src="images/profile/profile-small-1.jpg" alt="profile picture">
-                                                </figure>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <!-- profile picture end -->
-                                    <!-- profile picture end -->
-                                    <div class="single-slide">
-                                        <div class="profile-thumb profile-active">
-                                            <a href="javascript:void(0)">
-                                                <figure class="profile-thumb-small">
-                                                    <img src="images/profile/profile-small-5.jpg" alt="profile picture">
-                                                </figure>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <!-- profile picture end -->
-                                    <!-- profile picture end -->
-                                    <div class="single-slide">
-                                        <div class="profile-thumb profile-active">
-                                            <a href="javascript:void(0)">
-                                                <figure class="profile-thumb-small">
-                                                    <img src="images/profile/profile-small-6.jpg" alt="profile picture">
-                                                </figure>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <!-- profile picture end -->
-                                    <!-- profile picture end -->
-                                    <div class="single-slide">
-                                        <div class="profile-thumb profile-active">
-                                            <a href="javascript:void(0)">
-                                                <figure class="profile-thumb-small">
-                                                    <img src="images/profile/profile-small-7.jpg" alt="profile picture">
-                                                </figure>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <!-- profile picture end -->
-                                    <!-- profile picture end -->
-                                    <div class="single-slide">
-                                        <div class="profile-thumb profile-active">
-                                            <a href="javascript:void(0)">
-                                                <figure class="profile-thumb-small">
-                                                    <img src="images/profile/profile-small-8.jpg" alt="profile picture">
-                                                </figure>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <!-- profile picture end -->
-                                    <!-- profile picture end -->
-                                    <div class="single-slide">
-                                        <div class="profile-thumb profile-active">
-                                            <a href="javascript:void(0)">
-                                                <figure class="profile-thumb-small">
-                                                    <img src="images/profile/profile-small-9.jpg" alt="profile picture">
-                                                </figure>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <!-- profile picture end -->
-                                    <!-- profile picture end -->
-                                    <div class="single-slide">
-                                        <div class="profile-thumb profile-active">
-                                            <a href="javascript:void(0)">
-                                                <figure class="profile-thumb-small">
-                                                    <img src="images/profile/profile-small-10.jpg"
-                                                         alt="profile picture">
-                                                </figure>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <!-- profile picture end -->
-                                    <!-- profile picture end -->
-                                    <div class="single-slide">
-                                        <div class="profile-thumb profile-active">
-                                            <a href="javascript:void(0)">
-                                                <figure class="profile-thumb-small">
-                                                    <img src="images/profile/profile-small-11.jpg"
-                                                         alt="profile picture">
-                                                </figure>
-                                            </a>
-                                        </div>
-                                    </div>
+
                                     <!-- profile picture end -->
                                 </div>
                             </div>
@@ -288,58 +69,24 @@
                         <div class="footer-card footer-card-override position-relative">
                             <div class="friends-search">
 
-                                    <button style="width:100%" class="btn-share show-your-following" type="button" id="myFolloweesList">You
-                                        Followings
-                                    </button>
+                                <button style="width:100%" class="btn-share show-your-following footerBtn"
+                                        type="button" name="Followees"
+                                        id="myFolloweesList"> Followees
+                                </button>
 
                             </div>
                             <div class="friend-search-list l2" id="following-list">
                                 <div class="frnd-search-title">
                                     <button class="frnd-search-icon">
                                     </button>
-                                    <p>You Followings</p>
+                                    <p>Followees</p>
                                     <button class="close-btn" data-close="l2"><i class="flaticon-cross-out"></i>
                                     </button>
                                 </div>
                                 <div class="frnd-search-inner custom-scroll">
-                                    <ul>
-                                        <c:forEach var="flwees" items="${myFolloweesList}">
-                                            <c:choose>
-                                                <c:when test="${flwees.getIsFollwing()}">
-                                                    <c:set var="flweesButtonName" scope="session" value="Following"/>
-                                                    <c:set var="flweesFontWeight" scope="session" value="bold"/>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <c:set var="flweesButtonName" scope="session" value="Follow"/>
-                                                    <c:set var="flweesFontWeight" scope="session" value="normal"/>
-                                                </c:otherwise>
+                                    <ul class="my-followees" id="Followees">
+                                        <%--                                       ======================================================= OUTPUT OF FOLOWEES HERE ================================================--%>
 
-                                            </c:choose>
-                                            <li class="d-flex align-items-center profile-active">
-                                                <!-- profile picture end -->
-                                                <div class="profile-thumb ">
-                                                    <a href="#">
-                                                        <figure class="profile-thumb-small">
-                                                            <img src="${flwees.getPicturePath().toString()}"
-                                                                 alt="profile picture">
-                                                        </figure>
-                                                    </a>
-                                                </div>
-                                                <!-- profile picture end -->
-                                                <div class="posted-author">
-                                                    <h6 class="author" posted-author>
-                                                        <a href="<%=request.getContextPath()%>/profile?id=${flwees.getUserID()}">
-                                                                ${flwees.getFirstName().toString()} ${flwees.getLastName().toString()}
-                                                        </a>
-
-<%--                                                        <button class="add-frnd" id="${flwees.getUserID()}"--%>
-<%--                                                                style="font-weight: ${flweesFontWeight}">${flweesButtonName}</button>--%>
-                                                    </h6>
-
-                                                </div>
-                                            </li>
-
-                                        </c:forEach>
                                     </ul>
                                 </div>
                             </div>

@@ -12,6 +12,64 @@
         padding-left: 1px;
     }
 </style>
+
+<script>
+
+    $(document).ready(function () {
+        $("#main-menu-people").click(function (e) {
+            $("#container").load('Traveller.jsp');
+            /*
+            e.preventDefault();
+            const $travelerType = $(this).attr('name').toString().trim();
+            const $userID = $('#hidden-user').val().toString().trim();
+            $.ajax({
+                type: "GET",
+                url: "FooterTravelersServlet",
+                data: {
+                    "currentUserID": $userID, // accept this from session hidden-myFollowersList
+                    "travellerType": $travelerType
+                },
+                success: function (responseText) {
+                    const len = JSON.parse(responseText).length;
+                    let disp = "";
+                    for (let i = 0; i < len; i++) {
+                        var obj = JSON.parse(responseText, function (key, value) {
+                            return value;
+                        });
+                        let newEle = $("li.followers-li").eq(0).clone(true, true);
+                        var ButtonText = obj[i].isFollwing.toString().trim() ? "Following" : "Follow";
+                        disp += "<li class='d-flex align-items-center profile-active followers-li>'" +
+                            "<div class='profile-thumb'> " +
+                            "<a href='/profile?id=" + obj[i].userID + "' class='profPic'>" +
+                            "<figure class='profile-thumb-small'> " +
+                            "<img src='" + obj[i].picturePath + "' alt='profile picture'> " +
+                            "</figure> " +
+                            "</a> " +
+                            "</div>" +
+                            "<div class='posted-author'> " +
+                            "<h6 class='author posted-author'> " +
+                            "<a class='followerName' href='/profile?id=" + obj[i].userID + "'>" + obj[i].firstName + " " + obj[i].lastName + "</a>" +
+                            "</h6>" +
+                            "</div> " +
+                            "<div class='posted-author'> " +
+                            "<button class='add-frnd follwers-left' style='float: right; border:none' id='" + obj[i].userID + "'>" + ButtonText +
+                            "</button>" +
+                            "</div> " +
+                            " </li>";
+
+                    }
+                    $("#" + $travelerType).html(disp);
+                },
+                error: function () {
+                    alert('error');
+                }
+            });
+       */ });
+    });
+
+
+</script>
+
 <main>
     <div class="main-wrapper">
         <!-- BANNER START -->
@@ -20,7 +78,7 @@
         <!-- BANNER END -->
         <!-- OPTIONS BAR START -->
         <div class="profile-menu-area bg-white">
-            <div class="container">
+            <div class="container" id="container">
                 <div class="row align-items-center">
                     <div class="col-lg-3 col-md-3">
                         <div class="profile-picture-box">
@@ -39,7 +97,9 @@
                                         <li><a href="profile?id=${prof.userId}">timeline</a></li>
                                         <li><a href="about.jsp">about</a></li>
                                         <li><a href="photos.jsp">photos</a></li>
-                                        <li><a id="main-menu-people" href="<%=request.getContextPath()%>/allpeople">People</a></li>                                        <!-- <li class="d-inline-block d-md-none"><a href="profile.jsp">edit profile</a></li> -->
+                                     <li><a id="main-menu-people" href="/allTraveller?id=${prof.userId}">Travellers</a></li>
+                                    <li class="d-inline-block d-md-none"><a href="profile.jsp">edit profile</a></li>
+<%--                                        <li><a id="main-menu-people"  href="javascript:void(0)">  Travellers</a></li>--%>
                                     </ul>
                                 </nav>
                             </div>
@@ -48,6 +108,7 @@
                     <div class="col-lg-2 col-md-3 d-none d-md-block">
                         <div class="profile-edit-panel">
                             <button onclick="window.location.href='editprofile?id=${prof.userId}'" class="edit-btn">EDIT PROFILE</button>
+                            <%--    ======================================================== Session Analysis Here =======================================--%>
                         </div>
                     </div>
                 </div>
