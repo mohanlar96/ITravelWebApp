@@ -26,10 +26,11 @@ public class EditProfileServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String sessionid = request.getParameter("id"); //CHANGE FOR SESSION ID
         String userid = request.getParameter("id");
         try {
             String filepath = "aaaaaaaaa";
-            if(userid != null && userid.length()>0 && userid.chars().mapToObj(c -> (char) c).allMatch(Character::isDigit)){
+            if(sessionid!=null && sessionid.equals(userid) && userid.length()>0 && userid.chars().mapToObj(c -> (char) c).allMatch(Character::isDigit)){
                 // get whatever from db util
                 Profile profile = getProfile(userid);
                 HashMap<String,List<String>> locations = getLocations();
@@ -84,7 +85,6 @@ public class EditProfileServlet extends HttpServlet {
                 profile.setUserId(String.valueOf(myRs.getInt("id")));
                 profile.setEmail(myRs.getString("email"));
                 profile.setPassword(myRs.getString("password"));
-                profile.setUsername(myRs.getString("username"));
                 profile.setBiography(myRs.getString("biography"));
 
                 profile.setFirstName(myRs.getString("fname"));

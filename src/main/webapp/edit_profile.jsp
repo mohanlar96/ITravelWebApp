@@ -36,9 +36,6 @@
         text-transform: uppercase;
         background-color: #dc4734;
     }
-    .gender{
-        padding-right: 1px;
-    }
 </style>
 <script>
     $(document).ready(function(){
@@ -46,7 +43,7 @@
         console.log('${locs}');
         const mapSC = JSON.parse('${locs}');
         console.log(mapSC);
-        var statesSel = $("state_m");
+        /*var statesSel = $("state_m");
         var citiesSel = $("city_m");
         statesSel.children().remove().end();
         for (var st in mapSC) {
@@ -61,7 +58,7 @@
                 console.log(this.value+": "+ci);
                 citiesSel.options[citiesSel.options.length] = new Option(ci, ci);
             }
-        }
+        }*/
         //UPDATING GENDER TO FORM
         $("#gender_m").on('change', function(){
             $("#gender").text($('#gender_m').val());
@@ -69,7 +66,6 @@
         //MODAL FOR USER SECTION
         $("#users").on('show.bs.modal', function(){
             $("#email_m").val($("#email").text());
-            $("#usern_m").val($("#usern").text());
             $("#passw_m").val($ ("#passw").text());
             $("#bio_m").val($("#bio").text());
         });
@@ -109,7 +105,6 @@
             return;
         }
         $("#email").text($("#email_m").val());
-        $("#usern").text($("#usern_m").val());
         $("#passw").text($("#passw_m").val());
         $("#bio").text($("#bio_m").val());
     }
@@ -136,7 +131,7 @@
         $("#fname").text($("#fname_m").val());
         $("#mname").text($("#mname_m").val());
         $("#lname").text($("#lname_m").val());
-        $("#gender").text($('#gender_m').val()); //$("#gender_m option:selected").val() //$('#gender option').filter(':selected').val()
+        $("#gender").text($('#gender_m').val());
         $("#job").text($("#job_m").val());
         $("#cityb").text($("#cityb_m").val());
         $("#dateb").text(dateb);
@@ -165,7 +160,6 @@
             id : "${prof.userId}",
             section : "user",
             email : $("#email").text(),
-            username : $("#usern").text(),
             passw : $("#passw").text(),
             bio : $("#bio").text()
         }).done(success).fail(error);
@@ -273,9 +267,6 @@
                                         <div id="passw_s" class="share-text-field" aria-disabled="true">
                                             <label class="refname">Password</label><span id="passw" class="answer">${prof.password}</span>
                                         </div>
-                                        <div id="usern_s" class="share-text-field" aria-disabled="true">
-                                            <label class="refname">Username</label><span id="usern" class="answer">${prof.username}</span>
-                                        </div>
                                         <div id="bio_s" class="share-text-field" aria-disabled="true">
                                             <label class="refname">Biography</label><span id="bio" class="answer">${prof.biography}</span>
                                         </div>
@@ -298,7 +289,6 @@
                                             <!-- UPDATING PART START -->
                                             <label for="email_m" class="refname">Email</label><input type="text" id="email_m" name="email_m" maxlength="50" required class="top-search-field lightred"/>
                                             <label for="passw_m" class="refname">Password</label><input type="text" id="passw_m" name="passw_m" maxlength="50" required class="top-search-field lightred"/>
-                                            <label for="usern_m" class="refname">Username</label><input type="text" id="usern_m" name="usern_m" maxlength="20" required class="top-search-field lightred"/>
                                             <label for="bio_m" class="refname">Biography</label><textarea id="bio_m" name="bio_m" maxlength="200" placeholder="Describe yourself briefly..." rows="4" class="top-search-field lightred"></textarea>
                                             <!-- UPDATING PART END   -->
                                         </div>
@@ -367,7 +357,7 @@
                                             <label for="mname_m" class="refname">Middle name</label><input type="text" id="mname_m" name="mname_m" maxlength="50" class="top-search-field lightred"/>
                                             <label for="lname_m" class="refname">Last name</label><input type="text" id="lname_m" name="lname_m" maxlength="50" class="top-search-field lightred"/>
                                             <label for="gender_m" class="refname">Gender</label>
-                                            <select id="gender_m" name="gender_m" class="top-search-field lightred gender">
+                                            <select id="gender_m" name="gender_m" class="top-search-field lightred">
                                                 <option value="M">M</option>
                                                 <option value="F">F</option>
                                             </select>
@@ -379,7 +369,7 @@
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="post-share-btn" data-dismiss="modal">cancel</button>
-                                            <button type="button" class="post-share-btn" onclick="xNames()" data-dismiss="modal">next</button><!--inside func: ('#fname_m','#fname')-->
+                                            <button type="button" class="post-share-btn" onclick="xNames()" data-dismiss="modal">next</button>
                                         </div>
                                     </div>
                                 </div>
@@ -432,14 +422,14 @@
                                         </div>
                                         <div class="modal-body custom-scroll">
                                             <!-- UPDATING PART START -->
-                                            <select id="state_m" name="state_m" class="top-search-field lightred">
+                                            <!--<select id="state_m" name="state_m" class="top-search-field lightred">
                                                 <option value="">--Select State--</option>
                                             </select>
                                             <div> </div>
                                             <select id="city_m" name="city_m" class="top-search-field lightred">
                                                 <option value="">--Select State, then City--</option>
                                             </select>
-                                            <div> </div>
+                                            <div> </div>-->
                                             <label for="stre1_m" class="refname">Street 1</label><input type="text" id="stre1_m" name="stre1_m" maxlength="50" class="top-search-field lightred"/>
                                             <label for="stre2_m" class="refname">Street 2</label><input type="text" id="stre2_m" name="stre2_m" maxlength="50" class="top-search-field lightred"/>
                                             <label for="zipc_m" class="refname">ZIP Code</label><input type="text" id="zipc_m" name="zipc_m" maxlength="10" required class="top-search-field lightred"/>

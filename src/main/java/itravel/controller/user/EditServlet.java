@@ -67,13 +67,12 @@ public class EditServlet extends HttpServlet {
             case "user":
                 // ... , u.password=? ...
                 statement = myConn.prepareStatement("UPDATE itraveldb.user u " +
-                        "SET u.email=?, u.username=?, u.Biography=?, u.password=? " +
+                        "SET u.email=?, u.Biography=?, u.password=? " +
                         "WHERE u.id=?");
                 statement.setString(1, request.getParameter("email"));
-                statement.setString(2, request.getParameter("username"));
-                statement.setString(3, request.getParameter("bio"));
-                statement.setString(4, request.getParameter("passw")); //if this uncommented, change next line to (5, ...)
-                statement.setInt(5, Integer.parseInt(request.getParameter("id")));
+                statement.setString(2, request.getParameter("bio"));
+                statement.setString(3, request.getParameter("passw")); //if this uncommented, change next line to (4, ...)
+                statement.setInt(4, Integer.parseInt(request.getParameter("id")));
                 break;
             case "person":
                 statement = myConn.prepareStatement("UPDATE itraveldb.person p INNER JOIN itraveldb.user u ON p.id=u.Person_id " +

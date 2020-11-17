@@ -81,27 +81,6 @@
                             </div>
                         </div>
                         <!-- widget single item end -->
-                        <!-- widget single item start -->
-                        <div class="card widget-item">
-                            <h4 class="widget-title">LAST IMAGES</h4>
-                            <div class="widget-body">
-                                <div class="sweet-galley img-gallery">
-                                    <div class="row row-5">
-                                        <%for(int i=0; i<9; i++){%>
-                                        <div class="col-4">
-                                            <div class="gallery-tem">
-                                                <figure class="post-thumb">
-                                                    <a class="gallery-selector" href="images/gallery/gallery-2.jpg">
-                                                        <img src="images/gallery/gallery-2.jpg" alt="sweet memory">
-                                                    </a>
-                                                </figure>
-                                            </div>
-                                        </div>
-                                        <%}%>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </aside>
                 </div>
                 <!-- LEFT ASIDE END -->
@@ -112,7 +91,6 @@
                     <c:set var="avator" value="${avator}" scope="request"/>
                     <c:import url="partial/posts.jsp" />
                     <c:import url="partial/modal.jsp" />
-
                     <!-- POST END -->
                 </div>
                 <!-- CENTRAL PART END -->
