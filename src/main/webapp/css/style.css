@@ -2234,6 +2234,10 @@ textarea:focus {
   cursor: pointer;
 
 }
+.pac-container, .pac-item {
+  width: inherit !important;
+  z-index: 10000;
+}
 
 
 

@@ -4,7 +4,6 @@
 <html>
 <head>
   <title>Place Autocomplete Address Form</title>
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
   <script
           src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCneh1NGoaH33EkKQ6SltmLoqNtwbLqZ7U&callback=initAutocomplete&libraries=places&v=weekly"
           defer
