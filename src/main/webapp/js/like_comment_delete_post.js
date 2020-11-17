@@ -170,6 +170,91 @@ $(document).ready(function() {
 
 
     });
+    var weatherObj;
+    function fetchWeather(weatherData){
+        for (let i=0; i<5; i++) {
+            // console.log(weatherData[i]);
+            let tempDay = getDayText(new Date(weatherData[i].dt * 1000).getDay());
+            console.log(tempDay);
+            $('#day'+(i+1)+' h3').text(tempDay);
+            $('#day'+(i+1)+' p.dayTemp').text(weatherData[i].temp.max+'°');
+            $('#day'+(i+1)+' p.nightTemp').text(weatherData[i].temp.min+'°');
+            $('#day'+(i+1)+' i').removeClass();
+            let faClass = getWeatherPic((weatherData[i].weather)[0].main);
+            console.log(faClass);
+            $('#day'+(i+1)+' i').addClass('fas '+faClass+' fa-2x');
+
+        }
+        // for (const singleData of weatherData) {
+        //   //console.log(new Date(singleData.dt * 1000));
+        //   console.log(singleData);
+        // }
+    }
+
+    function getDayText(day) {
+        var weekday = new Array(7);
+        weekday[0] = "Sunday";
+        weekday[1] = "Monday";
+        weekday[2] = "Tuesday";
+        weekday[3] = "Wednesday";
+        weekday[4] = "Thursday";
+        weekday[5] = "Friday";
+        weekday[6] = "Saturday";
+        return weekday[day];
+    }
+
+    function getWeatherPic(weatherDesc) {
+        var faClassName = "fa-sun";
+        console.log(weatherDesc);
+        switch (weatherDesc) {
+            case "Thunderstorm":
+                faClassName = "fa-cloud-showers";
+                break;
+            case "Drizzle":
+                faClassName = "fa-cloud-showers";
+                break
+            case "Rain":
+                faClassName = "fa-cloud-showers";
+                break
+            case "Snow":
+                faClassName = "fa-snowflake";
+                break
+            case "Clear":
+                faClassName = "fa-sun";
+                break
+            case "Clouds":
+                faClassName = "fa-cloud";
+                break
+            default:
+                faClassName = "fa-cloud-sun";
+                break;
+        }
+        return faClassName;
+    }
+
+
+    $('u.weather').unbind().click(function(){
+        $("#weather-modal").text($(this).text());
+        let city = $.trim($(this).text()).split(",")[0];
+        console.log(city);
+        $.ajax({
+            url: "http://api.openweathermap.org/data/2.5/forecast/daily",
+            data: { q: city, appid: "77be4c8a3f4f50b485fd140c1ab4d87d",units: "metric"},
+            success: function (response) {
+                weatherObj = response.list;
+                console.log(weatherObj);
+                fetchWeather(weatherObj);
+                $("#weatherModal").modal('show');
+                // console.log(obj.longitude);
+            },
+            error: function (xhr) {
+                console.log(xhr);
+                window.alert("Error : Weather need to be clicked on city");
+
+            }
+        });
+
+    });
     pageForPostScroll=1; // page number
 
     $(window).on("scroll", function() {
@@ -239,6 +324,8 @@ $(document).ready(function() {
     // }).fail(function() {
     //     alert( "error" );
     // });
+
+
 
 
 });
