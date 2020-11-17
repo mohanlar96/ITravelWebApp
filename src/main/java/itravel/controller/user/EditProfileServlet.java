@@ -1,70 +1,44 @@
 package itravel.controller.user;
 
 import itravel.dao.DbUtil;
-import itravel.dao.HomeDao;
 import itravel.model.Address;
-import itravel.model.HomeAvator;
-import itravel.model.Post;
 import itravel.model.Profile;
-import javax.annotation.Resource;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.sql.DataSource;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
-import static itravel.dao.HomeDao.postItems;
-
-@WebServlet(value = "/profile")
-public class ProfileServlet extends HttpServlet {
-
-    private DbUtil myDbUtil;
-
-    @Resource(name="jdbc/travelDb")
-    private DataSource dataSource;
-
-    @Override
-    public void init() throws ServletException {
-        super.init();
-        // create out student db util ... and pass in the conn pool / datasource
-        try {
-            //myDbUtil = new DbUtil(dataSource);
-        }
-        catch (Exception exc) {
-            throw new ServletException(exc);
-        }
-    }
-
+@WebServlet(value = "/editprofile")
+public class EditProfileServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        this.doGet(request, response);
+
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException{
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String userid = request.getParameter("id");
         try {
             String filepath = "aaaaaaaaa";
             if(userid != null && userid.length()>0 && userid.chars().mapToObj(c -> (char) c).allMatch(Character::isDigit)){
                 // get whatever from db util
                 Profile profile = getProfile(userid);
+                //HashMap<String,List<String>> locations = getLocations();
 
                 // add students to the request
                 request.setAttribute("prof", profile);
+                //request.setAttribute("locs", locations);
                 System.out.println("Id is: " + profile.getUserId());
-                if (profile.getUserId() != null) filepath = "/profile.jsp";
+                if (profile.getUserId() != null) filepath = "/edit_profile.jsp";
             }
-            List<Post> posts = getProfilePosts(Integer.parseInt(userid),1); //10 posts // hershw ...
-            HomeAvator avator= HomeDao.getAvator(Integer.parseInt(userid));
-            List<String> placeVisited=HomeDao.getVisitedPlace(Integer.parseInt(userid));
-            request.setAttribute("avator",avator );
-            request.setAttribute("posts", posts);
-            request.setAttribute("places",placeVisited);
             // send to JSP page (view)
             RequestDispatcher dispatcher = request.getRequestDispatcher(filepath);
             dispatcher.forward(request, response);
@@ -74,7 +48,6 @@ public class ProfileServlet extends HttpServlet {
         }
     }
 
-    // example
     public static Profile getProfile(String id) throws Exception {
         Profile profile = new Profile();
 
@@ -89,7 +62,7 @@ public class ProfileServlet extends HttpServlet {
             // get a connection
             myConn = DbUtil.connectDb();
 
-            // create sql statement
+            // create sql statement //SELECT * FROM profileNoPics WHERE id=
             String sql = "SELECT * FROM profileNoPics WHERE id="+id;
             String getImgs = "SELECT image.link, user_image.sizeimg FROM image INNER JOIN user_image ON image.id=user_image.Image_id WHERE user_image.User_id="+id;
             info = myConn.createStatement();
@@ -101,7 +74,6 @@ public class ProfileServlet extends HttpServlet {
 
             // process resultset
             while(myRs.next()) {
-
                 // retrieve data from result set row
                 profile.setUserId(String.valueOf(myRs.getInt("id")));
                 profile.setEmail(myRs.getString("email"));
@@ -153,15 +125,37 @@ public class ProfileServlet extends HttpServlet {
         }
         return profile;
     }
-    public  static  List<Post> getProfilePosts(int UserId ,int page) throws Exception {
-        String offset=(page>1)?" offset "+(page-1)*10:"";
-        String sql = "" +
-                "SELECT post.*, person.fname, person.lname, image.link " +
-                "FROM post INNER JOIN user ON post.User_id=user.id " +
-                "INNER JOIN person ON user.Person_id=person.id " +
-                "INNER JOIN user_image ON user.id=user_image.User_id " +
-                "INNER JOIN image ON user_image.Image_id=image.id " +
-                "WHERE user_image.sizeimg='M' AND user.id="+UserId+"  order by post.datetime limit "+page*10+offset;
-        return postItems(sql);
+    //END getProfile
+    //getLocations
+    public static HashMap<String,List<String>> getLocations() throws Exception {
+        HashMap<String,List<String>> towns = new HashMap<>();
+
+        Connection myConn = null;
+        Statement infoci = null;
+        ResultSet rsci = null;
+
+        try {
+            // get a connection
+            myConn = DbUtil.connectDb();
+
+            // create sql statement
+            String getCities = "SELECT city.name AS city, state.name AS state FROM city INNER JOIN state ON city.State_id=state.id"; // SELECT city.id FROM city INNER JOIN state ON city.State_id=state.id WHERE city.name="Dallas" AND state.name="Texas";
+            infoci = myConn.createStatement();
+            // execute query
+            rsci = infoci.executeQuery(getCities);
+
+            // process resultset
+            while(rsci.next()) {
+                // retrieve data from result set row
+                String state = rsci.getString("state");
+                if(!towns.containsKey(state)) towns.put(state,new ArrayList<String>());
+                towns.get(state).add(rsci.getString("city"));
+            }
+        }
+        finally {
+            // close JDBC objects
+            DbUtil.close(myConn, infoci, rsci);
+        }
+        return towns;
     }
 }
