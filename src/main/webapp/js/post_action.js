@@ -41,7 +41,7 @@ $(document).ready(function() {
                     if(totoalLiked==0){
                         likeListContainer.text("");
                         textShow="You like it";
-                       likedBox= post.children('.hidden-liked-box').addClass('liked-box').slideDown();
+                        likeListContainer=post.children('.hidden-liked-box').addClass('liked-box').slideDown().find('ul');
                      }else if(totoalLiked==1){
                         textShow="You and 1 people liked this";
                     }else if(totoalLiked>1){
