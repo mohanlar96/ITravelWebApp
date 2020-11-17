@@ -67,7 +67,10 @@
                         </button>
                     </c:if>
                     <button class="like-button show-liked-dialog">
-                        <span > <c:if test="${isLiked}">You and </c:if>${fn:length(post.reactions)} people like this</span>
+                        <span> <c:if test="${isLiked && fn:length(post.reactions)==1}">You liked it</c:if>
+                                <c:if test="${isLiked && fn:length(post.reactions)!=1}">You and ${fn:length(post.reactions)} people liked this</c:if>
+                                <c:if test="${!isLiked}">${fn:length(post.reactions)} people liked this </c:if>
+                        </span>
                         <strong  >${fn:length(post.reactions)}</strong>
                     </button>
                 </button>
@@ -156,8 +159,15 @@
                 <h4 class="widget-title"> Liked By </h4>
                 <ul>
                     <c:forEach var="reaction" items="${post.reactions}">
+                        <c:if test="${reaction.avator.id==requestScope.avator.id}">
+                            <li class="d-flex align-items-center profile-active myLikeList">
 
-                        <li class="d-flex align-items-center profile-active">
+                        </c:if>
+                        <c:if test="${reaction.avator.id!=requestScope.avator.id}">
+                            <li class="d-flex align-items-center profile-active ">
+
+                        </c:if>
+
                             <!-- profile picture end -->
                             <div class="profile-thumb ">
                                 <a href="/profile?id=${reaction.avator.id}">
@@ -180,7 +190,7 @@
                     <div class="ps__thumb-y" tabindex="0" style="top: 81px; height: 269px;"></div>
                 </div>
             </div>
-            <!-- List of like list box end -->
+        <!-- List of like list box end -->
 
 
         <!-- Commant Box Start -->

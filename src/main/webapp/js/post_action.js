@@ -18,19 +18,40 @@ $(document).ready(function() {
             }).done(function(response){
                 likeBtn.data("isliked",!(isLiked));
                 likeBtn.children('.heart-color').toggleClass('liked');
-                    var val=likeBtn.siblings(".show-liked-dialog").children('strong').text();
+                  var val=likeBtn.siblings(".show-liked-dialog").children('strong').text();
                   var totoalLiked= parseInt(val);
+                  var post=likeBtn.parents(".card.post");
+                  var likedBox=post.children('.liked-box');
 
                 if(isLiked){ // if already liked so we are going to dislike
 
                     totoalLiked= totoalLiked-1;
                     likeBtn.siblings('.show-liked-dialog').children('span').text(totoalLiked+" people like this");
+                    likedBox.find("li.myLikeList").remove();
+                    if(totoalLiked==0){
 
+                        likedBox.find('ul').text('No Body, Be the like first');
+                    }
 
                 }else{ //if diskliked ,, now going to like
-                    totoalLiked= totoalLiked+1;
 
-                    likeBtn.siblings('.show-liked-dialog').children('span').text("You and "+ totoalLiked+" people like this");
+                    var likedTemplate = Handlebars.compile($("#commentTemplate").html());
+                    var likeListContainer=likedBox.find("ul");
+
+                    if(totoalLiked==0){
+                        likeListContainer.text("");
+                        textShow="You like it";
+                       likedBox= post.children('.hidden-liked-box').addClass('liked-box').slideDown();
+                     }else if(totoalLiked==1){
+                        textShow="You and 1 people liked this";
+                    }else if(totoalLiked>1){
+                        textShow="You and "+ totoalLiked+" people liked this"
+                    }
+                    totoalLiked++;
+                    likeListContainer.append(likedTemplate({id:post.data("userid"),fullName:post.data("fullname"),url:post.data("avatorurl") }));
+                    likeBtn.siblings('.show-liked-dialog').children('span').text(textShow);
+
+
                 }
                  likeBtn.siblings('.show-liked-dialog').children('strong').text(totoalLiked);
 
@@ -44,9 +65,10 @@ $(document).ready(function() {
     $("button.btn-comment").unbind().on('click',function(){
         const comment=$(this).siblings("textarea").val();
         const userID=$(this).parents(".card.post").data("userid");
-        const postId=$(this).parents(".card.post").data("id");
         const fullName=$(this).parents(".card.post").data("fullname") ;
         const avatorUrl=$(this).parents(".card.post").data("avatorurl") ;
+        const postId=$(this).parents(".card.post").data("id");
+
 
         console.log("Comment btn userID,postID ,comment  ="+userID+" "+postId+" " +comment+"  "+fullName+" " +avatorUrl);
         $.post('/post/interact',
@@ -318,12 +340,55 @@ $(document).ready(function() {
     //     console.log(data);
     //
     //     var template = Handlebars.compile($("#postTemplate").html());
+    //
     //     Handlebars.registerHelper('fullName', function (avator) {
     //         return avator.firstName + " "+avator.lastName;
     //     });
-    //     Handlebars.registerHelper('loginUser', function (obj) {
-    //         console.log(obj);
-    //         console.log(data.loginAvator);
+    //     Handlebars.registerHelper('isMyPost', function(block) {
+    //         if (this.title === "Apply Now")
+    //             return block.fn(this);
+    //         // else
+    //         //     return block.inverse(this);
+    //     });
+    //     Handlebars.registerHelper('isAnyReaction', function(block) {
+    //         if (this.comments.length >0)
+    //             return block.fn(this);
+    //         // else
+    //         //     return block.inverse(this);
+    //     });
+    //
+    //     Handlebars.registerHelper('isAnyComment', function(block) {
+    //         if (this.comments.length >0)
+    //             return block.fn(this);
+    //         // else
+    //         //     return block.inverse(this);
+    //     });
+    //     Handlebars.registerHelper('isAnyImage', function(block) {
+    //         if (this.title === "Apply Now")
+    //             return block.fn(this);
+    //         // else
+    //         //     return block.inverse(this);
+    //     });
+    //     Handlebars.registerHelper('isLiked', function(block) {
+    //         if (this.title === "Apply Now")
+    //             return block.fn(this);
+    //         // else
+    //         //     return block.inverse(this);
+    //     });
+    //     Handlebars.registerHelper('isMyComment', function(block) {
+    //         if (this.title === "Apply Now")
+    //             return block.fn(this);
+    //         // else
+    //         //     return block.inverse(this);
+    //     });
+    //     Handlebars.registerHelper('commentCount', function(comment) {
+    //        return comment.length;
+    //     });
+    //     Handlebars.registerHelper('likeCount', function(reaction) {
+    //         return reaction.length;
+    //     });
+    //     Handlebars.registerHelper('largeImage', function(url) {
+    //         return url.length;
     //     });
     //
     //     $(".card.post").first().after(template(data));

@@ -21,6 +21,7 @@
                 <span class="post-time">{{fullName avator}}</span>
             </div>
 <%--            <c:if test="{{isMyPost}}">--%>
+            {{#isMyPost}}
                 <div class="post-settings-bar">
                     <span></span>
                     <span></span>
@@ -32,6 +33,8 @@
                         </ul>
                     </div>
                 </div>
+            {{/isMyPost}}
+
 <%--            </c:if>--%>
 
         </div>
@@ -43,6 +46,7 @@
             <p class="post-desc">
                 <b>Travelling</b> From : <b> <u class="weather" id="post-departureAddress-{{postID}}"> {{depAddress}}</u></b> To :  <b> <u class="weather" id="post-destAddress-{{postID}}"> {{desAddress}}</u></b>
             </p>
+            {{#isAnyImage}}
 
             <div class="post-thumb-gallery img-gallery">
                 <div class="row no-gutters">
@@ -62,6 +66,9 @@
                     {{/each}}
                 </div>
             </div>
+
+            {{#isAnyImage}}
+
 
 
 
@@ -231,4 +238,21 @@
             </div>
             <!-- post status end -->
     {{/each}}
+</script>
+
+<script id="commentTemplate" type="text/x-handlebars-template">
+    <li class="d-flex align-items-center profile-active myLikeList">
+        <!-- profile picture end -->
+        <div class="profile-thumb ">
+            <a href="/profile?id={{id}}">
+                <figure class="profile-thumb-small">
+                    <img src="{{url}}" alt="profile picture">
+                </figure>
+            </a>
+        </div>
+        <!-- profile picture end -->
+        <div class="posted-author">
+            <h6 class="author">{{fullName}}</h6>
+        </div>
+    </li>
 </script>
