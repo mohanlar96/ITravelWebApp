@@ -3,13 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
-<script>
-
-
-
-
-</script>
-
+<script type="text/javascript" src ="js/footer.js">   </script>
 
 <div class="scroll-top not-visible">
     <i class="bi bi-finger-index"></i>
@@ -27,6 +21,15 @@
                                 <input type="hidden" id="hidden-session-user-id"
                                     value="2">
                                 <%--   Session needed here in the hidden-button value--%>
+
+<%--                                <%--%>
+<%--                                    String hiddenVal = "2";--%>
+<%--                                    if (request.getParameter("id").toString() != null && request.getParameter("id").toString() != "")--%>
+<%--                                    {--%>
+<%--                                        hiddenVal = request.getParameter("id").toString();--%>
+
+<%--                                    }--%>
+<%--                                %>--%>
 
                                 <input type="hidden" id="avatar-id-hidden"
                                        value="<%=request.getParameter("id")%>">

@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8"%>
+         pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <!doctype html>
 <html class="no-js" lang="en">
 <!-- Mirrored from demo.hasthemes.com/ITravel-preview/ITravel/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 11 Nov 2020 03:42:57 GMT -->
@@ -10,7 +10,7 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <title>ITravel - Travelling To the World</title>
-    <meta name="robots" content="noindex, follow" />
+    <meta name="robots" content="noindex, follow"/>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Favicon -->
@@ -19,7 +19,8 @@
     <!-- CSS
     ============================================ -->
     <!-- google fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,700,700i,900" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,700,700i,900"
+          rel="stylesheet">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="css/vendor/bootstrap.min.css">
     <!-- Icon Font CSS -->
@@ -38,7 +39,7 @@
     <link rel="stylesheet" href="css/plugins/lightgallery.min.css">
     <!-- Main Style CSS -->
     <link rel="stylesheet" href="css/style.css">
-
+    <script src="js/vendor/jquery-3.3.1.min.js"></script>
 
 </head>
 
@@ -65,26 +66,27 @@
                                         <ul class="dropdown-msg-list">
                                             <c:forEach var="notification" items="${notifications}">
 
-                                            <li class="msg-list-item d-flex justify-content-between">
-                                                <!-- profile picture end -->
-                                                <div class="profile-thumb">
-                                                    <figure class="profile-thumb-middle">
-                                                        <img src="${notification.avator.profileUrl}" alt="profile picture">
-                                                    </figure>
-                                                </div>
-                                                <!-- profile picture end -->
-                                                <!-- message content start -->
-                                                <div class="msg-content notification-content">
-                                                    <a href="profile.html">${notification.avator.firstName} ${notification.avator.lastName}</a>,
-                                                    <p>${notification.message}</p>
-                                                </div>
-                                                <!-- message content end -->
-                                                <!-- message time start -->
-                                                <div class="msg-time">
-                                                    <p>${notification.datetime}</p>
-                                                </div>
-                                                <!-- message time end -->
-                                            </li>
+                                                <li class="msg-list-item d-flex justify-content-between">
+                                                    <!-- profile picture end -->
+                                                    <div class="profile-thumb">
+                                                        <figure class="profile-thumb-middle">
+                                                            <img src="${notification.avator.profileUrl}"
+                                                                 alt="profile picture">
+                                                        </figure>
+                                                    </div>
+                                                    <!-- profile picture end -->
+                                                    <!-- message content start -->
+                                                    <div class="msg-content notification-content">
+                                                        <a href="profile.html">${notification.avator.firstName} ${notification.avator.lastName}</a>,
+                                                        <p>${notification.message}</p>
+                                                    </div>
+                                                    <!-- message content end -->
+                                                    <!-- message time start -->
+                                                    <div class="msg-time">
+                                                        <p>${notification.datetime}</p>
+                                                    </div>
+                                                    <!-- message time end -->
+                                                </li>
                                             </c:forEach>
 
                                         </ul>
@@ -110,8 +112,8 @@
                     <div class="header-top-right d-flex align-items-center justify-content-end">
                         <!-- header top search start -->
                         <div class="header-top-search">
-                            <form  type="post" class="top-search-box" id="search">
-                                <input type="text"  placeholder="Search" class="top-search-field">
+                            <form type="post" class="top-search-box" id="search">
+                                <input type="text" placeholder="Search" class="top-search-field">
                                 <button class="top-search-btn"><i class="flaticon-search"></i></button>
                             </form>
                         </div>
@@ -252,7 +254,8 @@
                             <div class="message-list-inner">
                                 <ul class="message-list custom-scroll">
                                     <li class="text-friends">
-                                        <p>Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text</p>
+                                        <p>Many desktop publishing packages and web page editors now use Lorem Ipsum as
+                                            their default model text</p>
                                         <div class="message-time">10 minute ago</div>
                                     </li>
                                     <li class="text-author">
@@ -264,7 +267,8 @@
                                         <div class="message-time">2 minute ago</div>
                                     </li>
                                     <li class="text-friends">
-                                        <p>Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text</p>
+                                        <p>Many desktop publishing packages and web page editors now use Lorem Ipsum as
+                                            their default model text</p>
                                         <div class="message-time">10 minute ago</div>
                                     </li>
                                     <li class="text-author">
