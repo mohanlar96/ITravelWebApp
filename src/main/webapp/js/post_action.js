@@ -318,6 +318,13 @@ $(document).ready(function() {
     //     console.log(data);
     //
     //     var template = Handlebars.compile($("#postTemplate").html());
+    //     Handlebars.registerHelper('fullName', function (avator) {
+    //         return avator.firstName + " "+avator.lastName;
+    //     });
+    //     Handlebars.registerHelper('loginUser', function (obj) {
+    //         console.log(obj);
+    //         console.log(data.loginAvator);
+    //     });
     //
     //     $(".card.post").first().after(template(data));
     //

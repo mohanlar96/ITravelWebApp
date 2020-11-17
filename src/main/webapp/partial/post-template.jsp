@@ -1,18 +1,15 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%--    handlebar.js for handling the infinite scroll templating html--%>
 <script src="js/vendor/handlebars.js"></script>
-
-
 <script id="postTemplate" type="text/x-handlebars-template">
     {{#each this.posts}}
-
-    <div class="card post" data-id="{{postID}}" data-userid="{{this.loginAvator.id}}" data-avatorurl="{{this.loginAvator.profileUrl}}"
-         data-fullname="{{avator.firstName}} {{avator.lastName}}">
+    <!-- post status start -->
+    <div class="card post" data-id="{{postID}}" data-userid="{{../this.loginAvator.id}}" data-avatorurl="{{../this.loginAvator.profileUrl}}" data-fullname="{{../this.loginAvator.firstName}} {{../this.loginAvator.lastName}}" >
         <!-- post title start -->
         <div class="post-title d-flex align-items-center">
             <!-- profile picture end -->
             <div class="profile-thumb">
-                <a href="profile?id=2">
+                <a href="profile?id={{avator.id}}">
                     <figure class="profile-thumb-middle">
                         <img src="{{avator.profileUrl}}" alt="profile picture">
                     </figure>
@@ -21,167 +18,217 @@
             <!-- profile picture end -->
             <div class="posted-author">
                 <h6 class="author"><a href="profile?id={{avator.id}}">{{avator.firstName}} {{avator.lastName}}</a></h6>
-                <span class="post-time">{{postDate}}</span>
+                <span class="post-time">{{fullName avator}}</span>
             </div>
-
-            <div class="post-settings-bar">
-                <span></span>
-                <span></span>
-                <span></span>
-                <div class="post-settings arrow-shape">
-                    <ul>
-                        <li>
-                            <button class="edit-post" data-id="{{postID}}">edit post</button>
-                        </li>
-                        <li>
-                            <button class="delete-post" data-id="{{postID}}">delete post</button>
-                        </li>
-                    </ul>
+<%--            <c:if test="{{isMyPost}}">--%>
+                <div class="post-settings-bar">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <div class="post-settings arrow-shape">
+                        <ul>
+                            <li><button class="edit-post" data-id="{{postID}}">edit post</button></li>
+                            <li><button class="delete-post" data-id="{{postID}}">delete post</button></li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
-
+<%--            </c:if>--%>
 
         </div>
         <!-- post title start -->
-        <div class="post-content ">
-            <p class="post-desc " id="post-description-15">
+        <div class="post-content " >
+            <p class="post-desc " id="post-description-{{postID}}">
                 {{description}}
             </p>
             <p class="post-desc">
-                <b>Travelling</b> From : <b> <u class="weather" id="post-departureAddress-{{postID}} > {{depAddress}}</u></b> To :
-                <b> <u class="weather" id="post-destAddress-{{postID}}"> {{desAddress}} </u> </b>
+                <b>Travelling</b> From : <b> <u class="weather" id="post-departureAddress-{{postID}}"> {{depAddress}}</u></b> To :  <b> <u class="weather" id="post-destAddress-{{postID}}"> {{desAddress}}</u></b>
             </p>
+
             <div class="post-thumb-gallery img-gallery">
                 <div class="row no-gutters">
-                    <figure class="post-thumb img-popup">
-                        <a href="images/post/post-large-1.jpg">
-                            <img src="images/post/post-1.jpg" alt="post image">
-                        </a>
-                    </figure>
+                    {{#each this.images}}
+<%--                        <c:if test="${fn:length(images)>=2 && fn:length(images)<=6}">--%>
+<%--                            <div class="col-6">--%>
+<%--                        </c:if>--%>
+                        <figure class="post-thumb img-popup">
+<%--                            <c:set var="imgBig" value="${fn:split(img.url,'-')[1]}"/>--%>
+                            <a href="images/post/post-large-{{imgBig}}">
+                                <img src="{{img.url}}" alt="post image">
+                            </a>
+                        </figure>
+<%--                        <c:if test="${fn:length(images)>=2 && fn:length(images)<=6}">--%>
+<%--                            </div>--%>
+<%--                        </c:if>--%>
+                    {{/each}}
                 </div>
             </div>
+
+
+
             <div class="post-meta">
                 <button class="post-meta-like">
+<%--                    <c:if test="{{isLiked}}">--%>
+                        <button class="like-button click-on-like"  style="margin-left: 0; padding: 0 10px; float: left" data-isliked="true" >
+                            <img class="heart" src="/images/icons/heart.png" alt="">
+                            <img class="heart-color liked " src="/images/icons/heart-color.png" alt="" style="margin-left: 12px;">
+                        </button>
+<%--                    </c:if>--%>
+<%--                    <c:if test="{{!isLiked}}">--%>
+<%--                        <button class="like-button click-on-like"   style="margin-left: 0; padding: 0 10px; float: left" data-isliked="false" >--%>
+<%--                            <img class="heart" src="/images/icons/heart.png" alt="">--%>
+<%--                            <img class="heart-color " src="/images/icons/heart-color.png" alt="" style="margin-left: 12px;">--%>
+<%--                        </button>--%>
+<%--                    </c:if>--%>
+                    <button class="like-button show-liked-dialog">
+                        <span >
+<%--                            <c:if test="{{isLiked}}">You and </c:if>--%>
+<%--                            {{fn:length(reactions)}}--%> 10
+                            people like this</span>
+                        <strong>
+<%--                            {{fn:length(reactions)}}--%>
+                        </strong>
+                    </button>
                 </button>
-                <button class="like-button click-on-like" style="margin-left: 0; padding: 0 10px; float: left"
-                        data-isliked="false">
-                    <img class="heart" src="/images/icons/heart.png" alt="">
-                    <img class="heart-color " src="/images/icons/heart-color.png" alt="" style="margin-left: 12px;">
-                </button>
-
-
-                <button class="like-button show-liked-dialog">
-                    <span> 0 people like this</span>
-                    <strong>0</strong>
-                </button>
-
-
                 <ul class="comment-share-meta">
                     <li>
                         <button class="post-comment">
                             <i class="bi bi-chat-bubble"></i>
-                            <span class="total-comment-15">0</span>
+                            <span class="total-comment-{{postID}}">
+<%--                                {{fn:length(comments)}}--%>
+                            </span>
                         </button>
                     </li>
-
                 </ul>
             </div>
         </div>
         <!-- List of commant Box Start  -->
 
+<%--        <c:if test="{{fn:length(comments)==0}}" >--%>
+<%--        <div class="hidden-commant-box hide frnd-search-inner custom-scroll ps ps--active-y" style="height: auto; display: none;">--%>
+<%--            </c:if>--%>
 
-        <div class="hidden-commant-box hide frnd-search-inner custom-scroll ps" style="height: auto; display: none;">
+<%--            <c:if test="{{fn:length(comments)!=0}}" >--%>
+            <div class="commant-box hide frnd-search-inner custom-scroll ps ps--active-y" style="height: auto;">
+<%--                </c:if>--%>
+                <h4 class="widget-title"> Comments </h4>
+                <ul class="comment-box-{{postID}}">
+                    <li class="d-flex align-items-center profile-active comment-item-{{postID}}" style="display: none!important;">
+                        <!-- profile picture end -->
+                        <div class="profile-thumb ">
+                            <a href="/">
+                                <figure class="profile-thumb-small">
+                                    <img src="/" alt="profile picture">
+                                </figure>
+                            </a>
+                        </div>
+                        <!-- profile picture end -->
+                        <div class="posted-author">
+                            <h6 class="author"><span></span>
+                                <button class="deletecomment" data-commentid="{{comment.id}}">
+                                    delete
+                                </button>
+                            </h6>
+                            <p>Nth</p>
+                        </div>
+                    </li>
+                    {{#each this.comments}}
 
+                        <li class="d-flex align-items-center profile-active">
+                            <!-- profile picture end -->
+                            <div class="profile-thumb ">
+                                <a href="/profile?id={{comment.avator.id}}">
+                                    <figure class="profile-thumb-small">
+                                        <img src="{{comment.avator.profileUrl}}" alt="profile picture">
+                                    </figure>
+                                </a>
+                            </div>
+                            <!-- profile picture end -->
+                            <div class="posted-author">
+                                <h6 class="author">{{comment.avator.firstName}} {{comment.avator.lastName}}
+<%--                                    <c:if test="{{comment.avator.id==../this.loginAvator.id}}">--%>
+                                        <button class="deletecomment" data-commentid="{{comment.id}}">
+                                            delete
+                                        </button>
+<%--                                    </c:if>--%>
+                                </h6>
+                                <p>{{comment.commentContent}}</p>
+                            </div>
+                        </li>
+                    {{/each}}
 
-            <h4 class="widget-title"> Comments </h4>
-            <ul class="comment-box-15">
-                <li class="d-flex align-items-center profile-active comment-item-15" style="display: none!important;">
-                    <!-- profile picture end -->
-                    <div class="profile-thumb ">
-                        <a href="/">
-                            <figure class="profile-thumb-small">
-                                <img src="/" alt="profile picture">
-                            </figure>
-                        </a>
-                    </div>
-                    <!-- profile picture end -->
-                    <div class="posted-author">
-                        <h6 class="author"><span></span>
-                            <button class="deletecomment" data-commentid="">
-                                delete
-                            </button>
-                        </h6>
-                        <p>Nth</p>
-                    </div>
-                </li>
-
-            </ul>
-            <div class="ps__rail-x" style="left: 0px; bottom: -101px;">
-                <div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div>
-            </div>
-            <div class="ps__rail-y" style="top: 104px; height: 350px; right: 2px;">
-                <div class="ps__thumb-y" tabindex="0" style="top: 81px; height: 269px;"></div>
-            </div>
-            <div class="ps__rail-x" style="left: 0px; bottom: 3px;">
-                <div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div>
-            </div>
-            <div class="ps__rail-y" style="top: 0px; right: 2px;">
-                <div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 0px;"></div>
-            </div>
-        </div>
-        <!-- End List of commant Box  -->
-
-        <div class="hidden-liked-box frnd-search-inner custom-scroll ps" style="height: auto;display: none;">
-
-
-            <!-- List of like list box start -->
-            <h4 class="widget-title"> Liked By </h4>
-            <ul>
-
-            </ul>
-            <div class="ps__rail-x" style="left: 0px; bottom: -101px;">
-                <div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div>
-            </div>
-            <div class="ps__rail-y" style="top: 104px; height: 350px; right: 2px;">
-                <div class="ps__thumb-y" tabindex="0" style="top: 81px; height: 269px;"></div>
-            </div>
-            <div class="ps__rail-x" style="left: 0px; bottom: 3px;">
-                <div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div>
-            </div>
-            <div class="ps__rail-y" style="top: 0px; right: 2px;">
-                <div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 0px;"></div>
-            </div>
-        </div>
-        <!-- List of like list box end -->
-
-
-        <!-- Commant Box Start -->
-        <div class="card card-small">
-            <div class="share-box-inner">
-                <!-- profile picture end -->
-                <div class="profile-thumb">
-                    <a href="profile?id=2">
-                        <figure class="profile-thumb-middle">
-                            <img src="images/profile/profile-midle-2.jpg" alt="profile picture">
-                        </figure>
-                    </a>
+                </ul>
+                <div class="ps__rail-x" style="left: 0px; bottom: -101px;">
+                    <div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div>
                 </div>
-                <!-- profile picture end -->
-                <!-- share content box start -->
-                <div class="share-content-box w-100">
-                    <form class="share-text-box" method="post">
-                        <textarea name="share" class="share-text-field txt-comment" placeholder="Write a comment"
-                                  spellcheck="false"></textarea>
-                        <grammarly-extension
-                                style="position: absolute; top: 0px; left: 0px; pointer-events: none; z-index: auto;"
-                                class="_1KJtL"></grammarly-extension>
-                        <button class="btn-share btn-comment" type="button">Comment</button>
-                    </form>
+                <div class="ps__rail-y" style="top: 104px; height: 350px; right: 2px;">
+                    <div class="ps__thumb-y" tabindex="0" style="top: 81px; height: 269px;"></div>
                 </div>
             </div>
-        </div>
-        <!-- Commant Box End -->
-    </div>
+            <!-- End List of commant Box  -->
+<%--            <c:if test="{{fn:length(reactions)==0}}" >--%>
+<%--            <div class="hidden-liked-box frnd-search-inner custom-scroll ps ps--active-y" style="height: auto;display: none;">--%>
+<%--                </c:if>--%>
+<%--                <c:if test="{{fn:length(reactions)!=0}}" >--%>
+                <div class="liked-box frnd-search-inner custom-scroll ps ps--active-y" style="height: auto;">
+<%--                    </c:if>--%>
 
+                    <!-- List of like list box start -->
+                    <h4 class="widget-title"> Liked By </h4>
+                    <ul>
+                        {{#each this.reactions}}
+<%--                        <c:forEach var="reaction" items="{{reactions}}">--%>
+
+                            <li class="d-flex align-items-center profile-active">
+                                <!-- profile picture end -->
+                                <div class="profile-thumb ">
+                                    <a href="/profile?id={{reaction.avator.id}}">
+                                        <figure class="profile-thumb-small">
+                                            <img src="{{reaction.avator.profileUrl}}" alt="profile picture">
+                                        </figure>
+                                    </a>
+                                </div>
+                                <!-- profile picture end -->
+                                <div class="posted-author">
+                                    <h6 class="author">{{reaction.avator.firstName}} {{reaction.avator.lastName}}</h6>
+                                </div>
+                            </li>
+                        {{/each}}
+<%--                        </c:forEach>--%>
+                    </ul>
+                    <div class="ps__rail-x" style="left: 0px; bottom: -101px;">
+                        <div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div>
+                    </div>
+                    <div class="ps__rail-y" style="top: 104px; height: 350px; right: 2px;">
+                        <div class="ps__thumb-y" tabindex="0" style="top: 81px; height: 269px;"></div>
+                    </div>
+                </div>
+                <!-- List of like list box end -->
+
+
+                <!-- Commant Box Start -->
+                <div class="card card-small">
+                    <div class="share-box-inner">
+                        <!-- profile picture end -->
+                        <div class="profile-thumb">
+                            <a href="profile?id={{../this.loginAvator.id}}">
+                                <figure class="profile-thumb-middle">
+                                    <img src="{{../this.loginAvator.profielUrl}}" alt="profile picture">
+                                </figure>
+                            </a>
+                        </div>
+                        <!-- profile picture end -->
+                        <!-- share content box start -->
+                        <div class="share-content-box w-100">
+                            <form class="share-text-box" method="post">
+                                <textarea name="share" class="share-text-field txt-comment" placeholder="Write a comment" spellcheck="false"></textarea>
+                                <grammarly-extension style="position: absolute; top: 0px; left: 0px; pointer-events: none; z-index: auto;" class="_1KJtL"></grammarly-extension>
+                                <button class="btn-share btn-comment" type="button" >Comment</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!-- Commant Box End -->
+            </div>
+            <!-- post status end -->
     {{/each}}
 </script>

@@ -576,7 +576,7 @@
 <!-- isotope filter js -->
 <script src="js/plugins/isotope.pkgd.min.js"></script>
 <%--just  custom for posts --%>
-<script src="js/like_comment_delete_post.js"></script>
+<script src="js/post_action.js"></script>
 
 <!-- Main JS -->
 <script src="js/main.js"></script>

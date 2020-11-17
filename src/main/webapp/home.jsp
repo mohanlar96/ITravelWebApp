@@ -72,81 +72,32 @@
                             <h4 class="widget-title">Recent Notifications</h4>
                             <div class="widget-body">
                                 <ul class="like-page-list-wrapper">
+                                <c:forEach var="notification" items="${notifications}">
+
                                     <li class="unorder-list">
                                         <!-- profile picture end -->
                                         <div class="profile-thumb">
-                                            <a href="#">
+                                            <a href="/profile?id=${notification.avator.id}">
                                                 <figure class="profile-thumb-small">
-                                                    <img src="images/profile/profile-small-9.jpg" alt="profile picture">
+                                                    <img src="${notification.avator.profileUrl}" alt="profile picture">
                                                 </figure>
                                             </a>
                                         </div>
                                         <!-- profile picture end -->
                                         <div class="unorder-list-info">
-                                            <h3 class="list-title"><a href="#">Any one can join with us if you want</a></h3>
-                                            <p class="list-subtitle">5 min ago</p>
+                                            <h3 class="list-title"><a href="#">${notification.message}</a></h3>
+                                            <p class="list-subtitle">${notification.avator.datetime}</p>
                                         </div>
                                     </li>
-                                    <li class="unorder-list">
-                                        <!-- profile picture end -->
-                                        <div class="profile-thumb">
-                                            <a href="#">
-                                                <figure class="profile-thumb-small">
-                                                    <img src="images/profile/profile-small-35.jpg" alt="profile picture">
-                                                </figure>
-                                            </a>
-                                        </div>
-                                        <!-- profile picture end -->
-                                        <div class="unorder-list-info">
-                                            <h3 class="list-title"><a href="#">Any one can join with us if you want</a></h3>
-                                            <p class="list-subtitle">10 min ago</p>
-                                        </div>
-                                    </li>
-                                    <li class="unorder-list">
-                                        <!-- profile picture end -->
-                                        <div class="profile-thumb">
-                                            <a href="#">
-                                                <figure class="profile-thumb-small">
-                                                    <img src="images/profile/profile-small-15.jpg" alt="profile picture">
-                                                </figure>
-                                            </a>
-                                        </div>
-                                        <!-- profile picture end -->
-                                        <div class="unorder-list-info">
-                                            <h3 class="list-title"><a href="#">Any one can join with us if you want</a></h3>
-                                            <p class="list-subtitle">18 min ago</p>
-                                        </div>
-                                    </li>
-                                    <li class="unorder-list">
-                                        <!-- profile picture end -->
-                                        <div class="profile-thumb">
-                                            <a href="#">
-                                                <figure class="profile-thumb-small">
-                                                    <img src="images/profile/profile-small-6.jpg" alt="profile picture">
-                                                </figure>
-                                            </a>
-                                        </div>
-                                        <!-- profile picture end -->
-                                        <div class="unorder-list-info">
-                                            <h3 class="list-title"><a href="#">Any one can join with us if you want</a></h3>
-                                            <p class="list-subtitle">25 min ago</p>
-                                        </div>
-                                    </li>
-                                    <li class="unorder-list">
-                                        <!-- profile picture end -->
-                                        <div class="profile-thumb">
-                                            <a href="#">
-                                                <figure class="profile-thumb-small">
-                                                    <img src="images/profile/profile-small-34.jpg" alt="profile picture">
-                                                </figure>
-                                            </a>
-                                        </div>
-                                        <!-- profile picture end -->
-                                        <div class="unorder-list-info">
-                                            <h3 class="list-title"><a href="#">Any one can join with us if you want</a></h3>
-                                            <p class="list-subtitle">39 min ago</p>
-                                        </div>
-                                    </li>
+                                     </c:forEach>
+                                    <c:if test="${fn:length(notifications)==0}">
+                                             <li class="unorder-list">
+                                                 <div class="unorder-list-info">
+                                                     <h3 class="list-title"> No notification Yet ...  </h3>
+                                                 </div>
+
+                                             </li>
+                                    </c:if>
                                 </ul>
                             </div>
                         </div>

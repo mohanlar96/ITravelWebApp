@@ -4,7 +4,7 @@
 <!-- post status start -->
 <c:forEach var="post" items="${requestScope.posts}">
 
-    <c:set var="isLiked" scope="application" value="${(post.reactions.stream().filter(x->x.getAvator().getId()==requestScope.avator.id).count()>=1)}"/>
+   <c:set var="isLiked" scope="application" value="${(post.reactions.stream().filter(x->x.getAvator().getId()==requestScope.avator.id).count()>=1)}"/>
     <c:set var="isMyPost" scope="application" value="${(post.avator.id==requestScope.avator.id)}"/>
 
 
@@ -55,7 +55,7 @@
             <div class="post-meta">
                 <button class="post-meta-like">
                     <c:if test="${isLiked}">
-                        <button class="like-button click-on-like" i style="margin-left: 0; padding: 0 10px; float: left" data-isliked="true" >
+                        <button class="like-button click-on-like"  style="margin-left: 0; padding: 0 10px; float: left" data-isliked="true" >
                             <img class="heart" src="/images/icons/heart.png" alt="">
                             <img class="heart-color liked " src="/images/icons/heart-color.png" alt="" style="margin-left: 12px;">
                         </button>
@@ -66,12 +66,10 @@
                             <img class="heart-color " src="/images/icons/heart-color.png" alt="" style="margin-left: 12px;">
                         </button>
                     </c:if>
-
                     <button class="like-button show-liked-dialog">
                         <span > <c:if test="${isLiked}">You and </c:if>${fn:length(post.reactions)} people like this</span>
                         <strong  >${fn:length(post.reactions)}</strong>
                     </button>
-
                 </button>
                 <ul class="comment-share-meta">
                     <li>
