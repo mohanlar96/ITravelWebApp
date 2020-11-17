@@ -77,7 +77,7 @@ public class EditProfileServlet extends HttpServlet {
                 // retrieve data from result set row
                 profile.setUserId(String.valueOf(myRs.getInt("id")));
                 profile.setEmail(myRs.getString("email"));
-                //profile.setPassword(myRs.getString("password"));
+                profile.setPassword(myRs.getString("password"));
                 profile.setUsername(myRs.getString("username"));
                 profile.setBiography(myRs.getString("biography"));
 

@@ -49,14 +49,15 @@
         $("#users").on('show.bs.modal', function(){
             $("#email_m").val($("#email").text());
             $("#usern_m").val($("#usern").text());
-            //$ ("#passw_m").val($ ("#passw").text());
+            $("#passw_m").val($ ("#passw").text());
             $("#bio_m").val($("#bio").text());
         });
         $("#names").on('show.bs.modal', function(){
             $("#fname_m").val($("#fname").text());
             $("#mname_m").val($("#mname").text());
             $("#lname_m").val($("#lname").text());
-            $("#gender").text() === "M" ? $("#gender_m").val("M") : $("#gender_m").val("F");
+            if($("#gender").text() === "M") $("#gender_m").val("M").change();
+            else $("#gender_m").val("F").change();
             $("#job_m").val($("#job").text());
             $("#cityb_m").val($("#cityb").text());
             $("#dateb_m").val($("#dateb").text());
@@ -70,82 +71,117 @@
         });
     });
     function xUsers(){
+        if($("#email_m").val().length<1){
+            alert("Email cannot be empty");
+            return;
+        }
+        if($("#passw_m").val().length<1){
+            alert("Password cannot be empty");
+            return;
+        }
+        if($("#bio_m").val().length<1){
+            alert("Biography cannot be empty");
+            return;
+        }
         $("#email").text($("#email_m").val());
         $("#usern").text($("#usern_m").val());
-        //$("#passw").text($("#passw_m").val());
+        $("#passw").text($("#passw_m").val());
         $("#bio").text($("#bio_m").val());
     }
     function xNames(){
+        let dateb = $("#dateb_m").val();
+        if(dateb.length!==10 || dateb.charAt(4)!=="-"  || dateb.charAt(7)!=="-"){
+            alert("Please enter a valid date");
+            return;
+        }
+        if(!/^[0-9]+$/.test(dateb.substring(0,4)) || !/^[0-9]+$/.test(dateb.substring(5,7)) || !/^[0-9]+$/.test(dateb.substring(8))){
+            alert("Please enter ONLY numeric data on days, months and years");
+            return;
+        }
+        let year = parseInt(dateb.substring(0,4));
+        if(year>2020 || year<1880){
+            alert("The year must be between 1880 and 2020");
+            return;
+        }
+        if($("#fname_m").val().length<1){
+            alert("First name cannot be empty");
+            return;
+        }
         $("#fname").text($("#fname_m").val());
         $("#mname").text($("#mname_m").val());
         $("#lname").text($("#lname_m").val());
-        $("#gender").text($("#gender_m").val());
+        $("#gender").text($('#gender_m').val()); //$("#gender_m option:selected").val() //$('#gender option').filter(':selected').val()
         $("#job").text($("#job_m").val());
         $("#cityb").text($("#cityb_m").val());
-        $("#dateb").text(validYear($("#dateb_m").val()));
+        $("#dateb").text(dateb);
     }
     function xAddresses(){
+        if($("#stre1_m").val().length<1){
+            alert("Steet 1 cannot be empty");
+            return;
+        }
+        if($("#zipc_m").val().length<1){
+            alert("ZIP cannot be empty");
+            return;
+        }
         //$("#state").text($("#state_m").val());
         //$("#city").text($("#city_m").val());
         $("#stre1").text($("#stre1_m").val());
         $("#stre2").text($("#stre2_m").val());
         $("#zipc").text($("#zipc_m").val());
     }
-    function validYear(newdate){
+    /*function validYear(newdate){
         if(parseInt(newdate.substring(0,4))>2100) return "2100-12-31";
         else if(parseInt(newdate.substring(0,4))<1880) return "1880-01-01";
         else return newdate;
-    }
+    }*/
     //SUBMITTING USER INFO
-    $("#userinfo").submit(function(e){
+    $(document).on("submit", "#userinfo", function(e){
         e.preventDefault();
-        $.post("edit",{
-            "data" : {
-                "id" : ${prof.userId},
-                "section" : "user",
-                "email" : $("#email").text(),
-                "username" : $("#usern").text(),
-                //"passw" : $("#passw").text(),
-                "bio" : $("#bio").text()
-            }
+        console.log("After prevent, Before ajax for user");
+        $.post("/edit",{
+            id : "${prof.userId}",
+            section : "user",
+            email : $("#email").text(),
+            username : $("#usern").text(),
+            passw : $("#passw").text(),
+            bio : $("#bio").text()
         }).done(success).fail(error);
     });
     //SUBMITTING PERSON INFO
-    $("#persinfo").submit(function(e){
+    $(document).on("submit", "#persinfo", function(e){
         e.preventDefault();
-        $.post("edit",{
-            "data" : {
-                "id" : ${prof.userId},
-                "section" : "person",
-                "fname" : $("#fname").text(),
-                "mname" : $("#mname").text(),
-                "lname" : $("#lname").text(),
-                "gender" : $("#gender").text(),
-                "job" : $("#job").text(),
-                "cityb" : $("#cityb").text(),
-                "dateb" : $("#dateb").text(),
-            }
+        console.log("After prevent, Before ajax for person");
+        $.post("/edit",{
+            id : "${prof.userId}",
+            section : "person",
+            fname : $("#fname").text(),
+            mname : $("#mname").text(),
+            lname : $("#lname").text(),
+            gender : $("#gender").text(),
+            job : $("#job").text(),
+            cityb : $("#cityb").text(),
+            dateb : $("#dateb").text(),
         }).done(success).fail(error);
     });
     //SUBMITTING ADDRESS INFO
-    $("#addrinfo").submit(function(e){
+    $(document).on("submit", "#addrinfo", function(e){
         e.preventDefault();
-        $.post("edit",{
-            "data" : {
-                "id" : ${prof.userId},
-                "section" : "address",
-                //"state" : $("#state").text();
-                //"city" : $("#city").text();
-                "street1" : $("#stre1").text(),
-                "street2" : $("#stre2").text(),
-                "zip" : $("#zipc").text()
-            }
+        console.log("After prevent, Before ajax for address");
+        $.post("/edit",{
+            id : "${prof.userId}",
+            section : "address",
+            state : "California", //$("#state").text(),
+            city : "Sacramento", //$("#city").text(),
+            street1 : $("#stre1").text(),
+            street2 : $("#stre2").text(),
+            zip : $("#zipc").text()
         }).done(success).fail(error);
     });
 
-    function success(data){
-        alert("Information was successfully sent to the server.");
-        alert(data);
+    function success(response){
+        alert("Information was successfully sent to the server.\n"+response);
+        $("#uname").text($("#fname").text()+" "+$("#lname").text());
     }
     function error(){
         alert("Information was not sent to the server.");
@@ -187,7 +223,7 @@
                     <aside class="widget-area profile-sidebar">
                         <!-- widget single item start -->
                         <div class="card widget-item">
-                            <h4 class="widget-title">EDIT PROFILE: ${prof.firstName} ${prof.lastName}</h4>
+                            <h4 class="widget-title">EDIT PROFILE: <span id="uname" name="uname">${prof.firstName} ${prof.lastName}</span></h4>
                             <div class="widget-body">
                                 Remember to press 'Save' button in the section(s) you update information.
                             </div>
@@ -203,18 +239,23 @@
                         <div class="share-box-inner">
                             <!-- info start -->
                             <div class="share-content-box w-100">
-                                <form id="userinfo" data-toggle="modal" data-target="#users">
+                                <form id="userinfo" method="get" action="home">
                                     <div class="share-text-field" aria-disabled="true">
                                         <label class="refname">ACCOUNT INFORMATION</label>
                                     </div>
-                                    <div id="email_s" class="share-text-field" aria-disabled="true">
-                                        <label class="refname">Email</label><span id="email" class="answer">${prof.email}</span>
-                                    </div>
-                                    <div id="usern_s" class="share-text-field" aria-disabled="true">
-                                        <label class="refname">Username</label><span id="usern" class="answer">${prof.username}</span>
-                                    </div>
-                                    <div id="bio_s" class="share-text-field" aria-disabled="true">
-                                        <label class="refname">Biography</label><span id="bio" class="answer">${prof.biography}</span>
+                                    <div data-toggle="modal" data-target="#users">
+                                        <div id="email_s" class="share-text-field" aria-disabled="true">
+                                            <label class="refname">Email</label><span id="email" class="answer">${prof.email}</span>
+                                        </div>
+                                        <div id="passw_s" class="share-text-field" aria-disabled="true">
+                                            <label class="refname">Password</label><span id="passw" class="answer">${prof.password}</span>
+                                        </div>
+                                        <div id="usern_s" class="share-text-field" aria-disabled="true">
+                                            <label class="refname">Username</label><span id="usern" class="answer">${prof.username}</span>
+                                        </div>
+                                        <div id="bio_s" class="share-text-field" aria-disabled="true">
+                                            <label class="refname">Biography</label><span id="bio" class="answer">${prof.biography}</span>
+                                        </div>
                                     </div>
                                     <input type="submit" value="save" class="btn-sec"/>
                                 </form>
@@ -233,6 +274,7 @@
                                         <div class="modal-body custom-scroll">
                                             <!-- UPDATING PART START -->
                                             <label for="email_m" class="refname">Email</label><input type="text" id="email_m" name="email_m" maxlength="50" required class="top-search-field lightred"/>
+                                            <label for="passw_m" class="refname">Password</label><input type="text" id="passw_m" name="passw_m" maxlength="50" required class="top-search-field lightred"/>
                                             <label for="usern_m" class="refname">Username</label><input type="text" id="usern_m" name="usern_m" maxlength="20" required class="top-search-field lightred"/>
                                             <label for="bio_m" class="refname">Biography</label><textarea id="bio_m" name="bio_m" maxlength="200" placeholder="Describe yourself briefly..." rows="4" class="top-search-field lightred"></textarea>
                                             <!-- UPDATING PART END   -->
@@ -254,30 +296,32 @@
                         <div class="share-box-inner">
                             <!-- info start -->
                             <div class="share-content-box w-100">
-                                <form id="persinfo" data-toggle="modal" data-target="#names">
+                                <form id="persinfo" method="get" action="home">
                                     <div class="share-text-field" aria-disabled="true">
                                         <label class="refname">PERSONAL INFORMATION</label>
                                     </div>
-                                    <div id="fname_s" class="share-text-field" aria-disabled="true">
-                                        <label class="refname">First Name</label><span id="fname" class="answer">${prof.firstName}</span>
-                                    </div>
-                                    <div id="mname_s" class="share-text-field" aria-disabled="true">
-                                        <label class="refname">Middle Name</label><span id="mname" class="answer">${prof.midName}</span>
-                                    </div>
-                                    <div id="lname_s" class="share-text-field" aria-disabled="true">
-                                        <label class="refname">Last Name</label><span id="lname" class="answer">${prof.lastName}</span>
-                                    </div>
-                                    <div id="gender_s" class="share-text-field" aria-disabled="true">
-                                        <label class="refname">Gender</label><span id="gender" class="answer">${prof.gender}</span>
-                                    </div>
-                                    <div id="job_s" class="share-text-field" aria-disabled="true">
-                                        <label class="refname">Job</label><span id="job" class="answer">${prof.job}</span>
-                                    </div>
-                                    <div id="cityb_s" class="share-text-field" aria-disabled="true">
-                                        <label class="refname">City of Birth</label><span id="cityb" class="answer">${prof.cityBirth}</span>
-                                    </div>
-                                    <div id="dateb_s" class="share-text-field" aria-disabled="true">
-                                        <label class="refname">Date of Birth</label><span id="dateb" class="answer">${prof.dateBirth}</span>
+                                    <div data-toggle="modal" data-target="#names">
+                                        <div id="fname_s" class="share-text-field" aria-disabled="true">
+                                            <label class="refname">First Name</label><span id="fname" class="answer">${prof.firstName}</span>
+                                        </div>
+                                        <div id="mname_s" class="share-text-field" aria-disabled="true">
+                                            <label class="refname">Middle Name</label><span id="mname" class="answer">${prof.midName}</span>
+                                        </div>
+                                        <div id="lname_s" class="share-text-field" aria-disabled="true">
+                                            <label class="refname">Last Name</label><span id="lname" class="answer">${prof.lastName}</span>
+                                        </div>
+                                        <div id="gender_s" class="share-text-field" aria-disabled="true">
+                                            <label class="refname">Gender</label><span id="gender" class="answer">${prof.gender}</span>
+                                        </div>
+                                        <div id="job_s" class="share-text-field" aria-disabled="true">
+                                            <label class="refname">Job</label><span id="job" class="answer">${prof.job}</span>
+                                        </div>
+                                        <div id="cityb_s" class="share-text-field" aria-disabled="true">
+                                            <label class="refname">City of Birth</label><span id="cityb" class="answer">${prof.cityBirth}</span>
+                                        </div>
+                                        <div id="dateb_s" class="share-text-field" aria-disabled="true">
+                                            <label class="refname">Date of Birth</label><span id="dateb" class="answer">${prof.dateBirth}</span>
+                                        </div>
                                     </div>
                                     <input type="submit" value="save" class="btn-sec"/>
                                 </form>
@@ -301,7 +345,7 @@
                                             <label for="gender_m" class="refname">Gender</label>
                                             <select id="gender_m" name="gender_m" class="top-search-field lightred">
                                                 <option value="M">M</option>
-                                                <option value="F" selected>F</option>
+                                                <option value="F">F</option>
                                             </select>
                                             <div> </div>
                                             <label for="job_m" class="refname">Job</label><input type="text" id="job_m" name="job_m" maxlength="80" class="top-search-field lightred"/>
@@ -326,24 +370,26 @@
                         <div class="share-box-inner">
                             <!-- info start -->
                             <div class="share-content-box w-100">
-                                <form id="addrinfo" data-toggle="modal" data-target="#addresses">
+                                <form id="addrinfo" method="post" action="home">
                                     <div class="share-text-field" aria-disabled="true">
                                         <label class="refname">ADDRESS</label>
                                     </div>
-                                    <div id="state_s" class="share-text-field" aria-disabled="true">
-                                        <label class="refname">State</label><span id="state" class="answer">${prof.address.state}</span>
-                                    </div>
-                                    <div id="city_s" class="share-text-field" aria-disabled="true">
-                                        <label class="refname">City</label><span id="city" class="answer">${prof.address.city}</span>
-                                    </div>
-                                    <div id="stre1_s" class="share-text-field" aria-disabled="true">
-                                        <label class="refname">Street 1</label><span id="stre1" class="answer">${prof.address.street1}</span>
-                                    </div>
-                                    <div id="stre2_s" class="share-text-field" aria-disabled="true">
-                                        <label class="refname">Street2</label><span id="stre2" class="answer">${prof.address.street2}</span>
-                                    </div>
-                                    <div id="zipc_s" class="share-text-field" aria-disabled="true">
-                                        <label class="refname">ZIP Code</label><span id="zipc" class="answer">${prof.address.zipCode}</span>
+                                    <div data-toggle="modal" data-target="#addresses">
+                                        <div id="state_s" class="share-text-field" aria-disabled="true">
+                                            <label class="refname">State</label><span id="state" class="answer">${prof.address.state}</span>
+                                        </div>
+                                        <div id="city_s" class="share-text-field" aria-disabled="true">
+                                            <label class="refname">City</label><span id="city" class="answer">${prof.address.city}</span>
+                                        </div>
+                                        <div id="stre1_s" class="share-text-field" aria-disabled="true">
+                                            <label class="refname">Street 1</label><span id="stre1" class="answer">${prof.address.street1}</span>
+                                        </div>
+                                        <div id="stre2_s" class="share-text-field" aria-disabled="true">
+                                            <label class="refname">Street2</label><span id="stre2" class="answer">${prof.address.street2}</span>
+                                        </div>
+                                        <div id="zipc_s" class="share-text-field" aria-disabled="true">
+                                            <label class="refname">ZIP Code</label><span id="zipc" class="answer">${prof.address.zipCode}</span>
+                                        </div>
                                     </div>
                                     <input type="submit" value="save" class="btn-sec"/>
                                 </form>
