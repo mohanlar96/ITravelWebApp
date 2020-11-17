@@ -198,7 +198,7 @@ public class HomeDao {
                 "        INNER JOIN itraveldb.image i ON ui.Image_id=i.id " +
                 "        INNER JOIN itraveldb.post ps ON u.id=ps.User_id " +
                 "        INNER JOIN itraveldb.follower f ON u.id=f.User_id " +
-                "        WHERE f.Follower1_id=? AND ps.notified=1 AND ui.sizeimg='S' ";
+                "        WHERE f.Follower1_id=? AND p.notified=1 AND ui.sizeimg='S' ";
 
 
         con=DbUtil.connectDb();

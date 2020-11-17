@@ -169,7 +169,8 @@ public class PostRelativeController extends HttpServlet {
         Double latitude=Double.valueOf(request.getParameter("latitude"));
         Double longitude=Double.valueOf(request.getParameter("longitude"));
         Integer userID = Integer.parseInt(request.getParameter("userID"));
-        Integer notify = Integer.parseInt(request.getParameter("notify"));
+        String notify = request.getParameter("notify");
+        Integer isNotify=(notify=="on")?1:0;
 
 
         int unhealthy=isUnhealthy(description);
@@ -199,7 +200,7 @@ public class PostRelativeController extends HttpServlet {
             state.setString(5,departureAddress);
             state.setString(6,destinationAddress);
             state.setInt(7,unhealthy);//unhealthy
-            state.setInt(8,notify);
+            state.setInt(8,isNotify);
             state.setInt(9,userID);
             // execute SQL statement
             int postID = 0;
