@@ -188,11 +188,11 @@ $(document).ready(function() {
                 }).done(function(response){
                 const data=JSON.parse(response);
 
-                    // console.log(data);
+                    console.log(data);
 
                     var template = Handlebars.compile($("#postTemplate").html());
 
-                    $(".card.post").last().after(template(data));
+                    $(".card.post").last().after(template(data)).slideDown('slow');
 
             }).fail(function() {
                 alert( "error" );
@@ -200,6 +200,28 @@ $(document).ready(function() {
 
         }
     });
+    $("form#search").unbind().on('submit',function(e){
+        e.preventDefault();
+        var userID=$(".card.post").eq(0).data("userid");
+        var keywords=$(this).find('input').val();
+
+        $.post("/post/interact",
+            {functionRequest:'SEARCH',
+                userID:userID,
+                keywords:keywords
+
+            }).done(function(response){
+                const data=JSON.parse(response);
+                console.log(data);
+                var template = Handlebars.compile($("#postTemplate").html());
+                $(".card.post").first().before(template(data)).slideDown('slow');
+
+        }).fail(function() {
+            alert( "error" );
+        });
+    });
+
+
 
     // $.post("/post/interact",
     //     {functionRequest:'SCROLL',

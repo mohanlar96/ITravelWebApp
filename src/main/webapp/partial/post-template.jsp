@@ -5,6 +5,7 @@
 
 <script id="postTemplate" type="text/x-handlebars-template">
     {{#each this.posts}}
+
     <div class="card post" data-id="{{postID}}" data-userid="{{this.loginAvator.id}}" data-avatorurl="{{this.loginAvator.profileUrl}}"
          data-fullname="{{avator.firstName}} {{avator.lastName}}">
         <!-- post title start -->
@@ -13,13 +14,13 @@
             <div class="profile-thumb">
                 <a href="profile?id=2">
                     <figure class="profile-thumb-middle">
-                        <img src="images/profile/profile-midle-2.jpg" alt="profile picture">
+                        <img src="{{avator.profileUrl}}" alt="profile picture">
                     </figure>
                 </a>
             </div>
             <!-- profile picture end -->
             <div class="posted-author">
-                <h6 class="author"><a href="profile?id=2">{{avator.firstName}} {{avator.lastName}}</a></h6>
+                <h6 class="author"><a href="profile?id={{avator.id}}">{{avator.firstName}} {{avator.lastName}}</a></h6>
                 <span class="post-time">{{postDate}}</span>
             </div>
 
@@ -30,10 +31,10 @@
                 <div class="post-settings arrow-shape">
                     <ul>
                         <li>
-                            <button class="edit-post" data-id="15">edit post</button>
+                            <button class="edit-post" data-id="{{postID}}">edit post</button>
                         </li>
                         <li>
-                            <button class="delete-post" data-id="15">delete post</button>
+                            <button class="delete-post" data-id="{{postID}}">delete post</button>
                         </li>
                     </ul>
                 </div>
@@ -44,33 +45,23 @@
         <!-- post title start -->
         <div class="post-content ">
             <p class="post-desc " id="post-description-15">
-                Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text,
-                and a search for 'lorem ipsum' will uncover many web sites still in their infancy.
+                {{description}}
             </p>
             <p class="post-desc">
-                <b>Travelling</b> From : <b> <u id="post-departureAddress-15"> CA,United States</u></b> To : <b> <u
-                    id="post-destinationAddress-15"> CA,United States</u></b>
+                <b>Travelling</b> From : <b> <u id="post-departureAddress-{{postID}}"> {{desAddress}}</u></b> To : <b> <u
+                    id="post-destinationAddress-{{postID}}"> {{desAddress}}</u></b>
             </p>
-
-
             <div class="post-thumb-gallery img-gallery">
                 <div class="row no-gutters">
                     <figure class="post-thumb img-popup">
-
                         <a href="images/post/post-large-1.jpg">
                             <img src="images/post/post-1.jpg" alt="post image">
                         </a>
                     </figure>
-
-
                 </div>
             </div>
-
-
             <div class="post-meta">
                 <button class="post-meta-like">
-
-
                 </button>
                 <button class="like-button click-on-like" style="margin-left: 0; padding: 0 10px; float: left"
                         data-isliked="false">

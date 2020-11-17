@@ -60,6 +60,8 @@ public class PostRelativeController extends HttpServlet {
             case "SCROLL":
                    scrollDown(request, response);
                 break;
+            case "SEARCH":
+                searchPost(request,response);
 
         }
         } catch (Exception e) {
@@ -68,6 +70,7 @@ public class PostRelativeController extends HttpServlet {
 
 
     }
+
     private void toggleLike(HttpServletRequest request, HttpServletResponse response) throws Exception {
         con=DbUtil.connectDb();
         Integer userID = Integer.parseInt(request.getParameter("userID"));
@@ -503,6 +506,23 @@ public class PostRelativeController extends HttpServlet {
 
         response.getWriter().println(jsonString);
 
+    }
+    private void searchPost(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+        String keyword = request.getParameter("keywords");
+        Integer userID = Integer.parseInt(request.getParameter("userID"));
+        List<Post> postItems = HomeDao.searchPosts(userID,1,keyword); //10 posts // hershw ...
+        HomeAvator avator= HomeDao.getAvator(userID);
+
+        HashMap<String, Object> data = new HashMap<String, Object>();
+        data.put("loginAvator",avator);
+        data.put("posts",postItems);
+        //Creating the ObjectMapper object
+        ObjectMapper mapper = new ObjectMapper();
+        //Converting the Object to JSONString
+        String jsonString = mapper.writeValueAsString(data);
+
+        response.getWriter().println(jsonString);
     }
 
 

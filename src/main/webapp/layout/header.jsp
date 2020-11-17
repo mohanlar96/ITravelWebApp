@@ -149,8 +149,8 @@
                     <div class="header-top-right d-flex align-items-center justify-content-end">
                         <!-- header top search start -->
                         <div class="header-top-search">
-                            <form class="top-search-box">
-                                <input type="text" placeholder="Search" class="top-search-field">
+                            <form  type="post" class="top-search-box" id="search">
+                                <input type="text"  placeholder="Search" class="top-search-field">
                                 <button class="top-search-btn"><i class="flaticon-search"></i></button>
                             </form>
                         </div>
