@@ -125,11 +125,11 @@ $(document).ready(function() {
         const model=$('#textbox');
         const description=$.trim($("#post-description-"+postId).text());
         const depatureAddress=$.trim($("#post-departureAddress-"+postId).text());
-        const destinationAddress=$.trim($("#post-departureAddress-"+postId).text());
-        model.find("textarea").eq(0).text(description);
-        model.find("textarea").eq(1).text(depatureAddress);
-        model.find("textarea").eq(2).text(destinationAddress);
-        model.find(".list-title , input").hide();
+        const destinationAddress=$.trim($("#post-destAddress-"+postId).text());
+        model.find("textarea").eq(0).val(description);
+        model.find("input").eq(0).val(depatureAddress);
+        model.find("input").eq(1).val(destinationAddress);
+        model.find("span.list-title , input[type='file'] , input[type='checkbox']").hide();
         model.find("[type='submit']").text("Update");
         model.find("h5.modal-title").text("Update Your Travel Info");
 
@@ -144,19 +144,19 @@ $(document).ready(function() {
                 {functionRequest:'UPDATE',
                     postID:postId,
                     description: $.trim(model.find("textarea").eq(0).val()),
-                    departureAddress: $.trim(model.find("textarea").eq(1).val()),
-                    destinationAddress:$.trim(model.find("textarea").eq(2).val()),
+                    departureAddress: $.trim(model.find("input").eq(0).val()),
+                    destinationAddress:$.trim(model.find("input").eq(1).val()),
                 }).done(function(response){
                 console.log(response);
                  $("#post-description-"+postId).text(model.find("textarea").eq(0).val());
-                 $("#post-departureAddress-"+postId).text(model.find("textarea").eq(1).val());
-                 $("#post-departureAddress-"+postId).text(model.find("textarea").eq(2).val());
+                 $("#post-departureAddress-"+postId).text(model.find("input").eq(0).val());
+                 $("#post-destAddress-"+postId).text(model.find("input").eq(1).val());
 
                 model.modal("hide");
                 model.find("textarea").eq(0).text("");
-                model.find("textarea").eq(1).text("");
-                model.find("textarea").eq(2).text("");
-                model.find(".list-title , input").hide();
+                model.find("input").eq(0).val("");
+                model.find("input").eq(1).val("");
+                model.find("span.list-title , input[type='file'] , input[type='checkbox']").show();
                 model.find("[type='submit']").text("Post");
                 model.find("h5.modal-title").text("Share Your Travel Info");
 
@@ -249,7 +249,7 @@ $(document).ready(function() {
             },
             error: function (xhr) {
                 console.log(xhr);
-                window.alert("Error : Weather need to be clicked on city");
+                window.alert("Sorry : City or State not found in the System");
 
             }
         });

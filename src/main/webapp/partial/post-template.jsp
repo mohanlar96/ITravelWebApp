@@ -48,8 +48,8 @@
                 {{description}}
             </p>
             <p class="post-desc">
-                <b>Travelling</b> From : <b> <u class="weather" > {{desAddress}}</u></b> To : <b> <u
-                    class="weather"> {{desAddress}}</u></b>
+                <b>Travelling</b> From : <b> <u class="weather" id="post-departureAddress-{{postID}} > {{depAddress}}</u></b> To :
+                <b> <u class="weather" id="post-destAddress-{{postID}}"> {{desAddress}} </u> </b>
             </p>
             <div class="post-thumb-gallery img-gallery">
                 <div class="row no-gutters">

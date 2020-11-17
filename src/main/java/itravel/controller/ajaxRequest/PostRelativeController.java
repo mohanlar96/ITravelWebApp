@@ -169,6 +169,8 @@ public class PostRelativeController extends HttpServlet {
         Double latitude=Double.valueOf(request.getParameter("latitude"));
         Double longitude=Double.valueOf(request.getParameter("longitude"));
         Integer userID = Integer.parseInt(request.getParameter("userID"));
+        Integer notify = Integer.parseInt(request.getParameter("notify"));
+
 
         int unhealthy=isUnhealthy(description);
         if(unhealthy==1){
@@ -182,7 +184,7 @@ public class PostRelativeController extends HttpServlet {
 
 
         try{
-            String sql = "insert  into post(datetime,latitude,longitude,description,departureAddress,destinationAddress,unhealthy,User_id) VALUES( ? , ? , ? , ? , ? , ? , ? , ? )";
+            String sql = "insert  into post(datetime,latitude,longitude,description,departureAddress,destinationAddress,unhealthy,notified,User_id) VALUES( ? , ? , ? , ? , ? , ? , ? , ? , ? )";
 
             // prepare statement
             state = con.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
@@ -197,7 +199,8 @@ public class PostRelativeController extends HttpServlet {
             state.setString(5,departureAddress);
             state.setString(6,destinationAddress);
             state.setInt(7,unhealthy);//unhealthy
-            state.setInt(8,userID);
+            state.setInt(8,notify);
+            state.setInt(9,userID);
             // execute SQL statement
             int postID = 0;
             state.executeUpdate();

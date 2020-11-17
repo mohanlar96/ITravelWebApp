@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
 <!doctype html>
 <html class="no-js" lang="en">
 <!-- Mirrored from demo.hasthemes.com/ITravel-preview/ITravel/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 11 Nov 2020 03:42:57 GMT -->
@@ -7,7 +9,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>ITravel - Social Network HTML Template</title>
+    <title>ITravel - Travelling To the World</title>
     <meta name="robots" content="noindex, follow" />
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -61,69 +63,30 @@
                                             </button>
                                         </div>
                                         <ul class="dropdown-msg-list">
+                                            <c:forEach var="notification" items="${notifications}">
+
                                             <li class="msg-list-item d-flex justify-content-between">
                                                 <!-- profile picture end -->
                                                 <div class="profile-thumb">
                                                     <figure class="profile-thumb-middle">
-                                                        <img src="images/profile/profile-small-3.jpg" alt="profile picture">
+                                                        <img src="${notification.avator.profileUrl}" alt="profile picture">
                                                     </figure>
                                                 </div>
                                                 <!-- profile picture end -->
                                                 <!-- message content start -->
                                                 <div class="msg-content notification-content">
-                                                    <a href="profile.html">Robert Faul</a>,
-                                                    <a href="profile.html">william jhon</a>
-                                                    <p>and 35 other people reacted to your photo</p>
+                                                    <a href="profile.html">${notification.avator.firstName} ${notification.avator.lastName}</a>,
+                                                    <p>${notification.message}</p>
                                                 </div>
                                                 <!-- message content end -->
                                                 <!-- message time start -->
                                                 <div class="msg-time">
-                                                    <p>25 Apr 2019</p>
+                                                    <p>${notification.datetime}</p>
                                                 </div>
                                                 <!-- message time end -->
                                             </li>
-                                            <li class="msg-list-item d-flex justify-content-between">
-                                                <!-- profile picture end -->
-                                                <div class="profile-thumb">
-                                                    <figure class="profile-thumb-middle">
-                                                        <img src="images/profile/profile-small-4.jpg" alt="profile picture">
-                                                    </figure>
-                                                </div>
-                                                <!-- profile picture end -->
-                                                <!-- message content start -->
-                                                <div class="msg-content notification-content">
-                                                    <a href="profile.html">Robert mushkil</a>,
-                                                    <a href="profile.html">Terry jhon</a>
-                                                    <p>and 20 other people reacted to your photo</p>
-                                                </div>
-                                                <!-- message content end -->
-                                                <!-- message time start -->
-                                                <div class="msg-time">
-                                                    <p>20 May 2019</p>
-                                                </div>
-                                                <!-- message time end -->
-                                            </li>
-                                            <li class="msg-list-item d-flex justify-content-between">
-                                                <!-- profile picture end -->
-                                                <div class="profile-thumb">
-                                                    <figure class="profile-thumb-middle">
-                                                        <img src="images/profile/profile-small-6.jpg" alt="profile picture">
-                                                    </figure>
-                                                </div>
-                                                <!-- profile picture end -->
-                                                <!-- message content start -->
-                                                <div class="msg-content notification-content">
-                                                    <a href="profile.html">Horijon Mbala</a>,
-                                                    <a href="profile.html">Bashu jhon</a>
-                                                    <p>and 55 other people reacted to your post</p>
-                                                </div>
-                                                <!-- message content end -->
-                                                <!-- message time start -->
-                                                <div class="msg-time">
-                                                    <p>15 Jan 2019</p>
-                                                </div>
-                                                <!-- message time end -->
-                                            </li>
+                                            </c:forEach>
+
                                         </ul>
                                         <div class="msg-dropdown-footer">
                                             <button>See all in messenger</button>

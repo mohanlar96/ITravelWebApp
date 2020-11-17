@@ -1,6 +1,7 @@
 package itravel.controller.user;
 import itravel.dao.HomeDao;
 import itravel.model.HomeAvator;
+import itravel.model.Notification;
 import itravel.model.Post;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -26,6 +27,8 @@ public class HomeController extends HttpServlet {
             List<Post> posts = HomeDao.getPosts(currentLoginUserID,1); //10 posts // hershw ...
             HomeAvator avator= HomeDao.getAvator(currentLoginUserID);
             List<String> placeVisited=HomeDao.getVisitedPlace(currentLoginUserID);
+            List<Notification> notifications=HomeDao.getNotifications(currentLoginUserID);
+            request.setAttribute("notifications",notifications );
             request.setAttribute("avator",avator );
             request.setAttribute("posts", posts);
             request.setAttribute("places",placeVisited);

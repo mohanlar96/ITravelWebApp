@@ -46,7 +46,7 @@
                     ${post.description}
             </p>
             <p class="post-desc">
-                <b>Travelling</b> From : <b> <u class="weather"> ${post.depAddress}</u></b> To :  <b> <u class="weather"> ${post.desAddress}</u></b>
+                <b>Travelling</b> From : <b> <u class="weather" id="post-departureAddress-${post.postID}"> ${post.depAddress}</u></b> To :  <b> <u class="weather" id="post-destAddress-${post.postID}"> ${post.desAddress}</u></b>
             </p>
 
             <c:set var="images" value="${post.images}" scope="request"/>

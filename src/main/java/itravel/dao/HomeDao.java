@@ -173,7 +173,7 @@ public class HomeDao {
             String sql="" +
                     "select post.destinationAddress " +
                     "from post " +
-                    "where User_id=? ";
+                    "where User_id=? order by id desc";
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1,avatorID);
             ResultSet row = ps.executeQuery();
@@ -187,6 +187,41 @@ public class HomeDao {
             throwables.printStackTrace();
         }
         return visitedPlaces;
+
+    }
+
+    public static List<Notification> getNotifications(int loginUserId){
+        String sql="" +
+                "SELECT p.id, p.fname, p.lname, i.link,post.datetime FROM itraveldb.person p " +
+                "        INNER JOIN itraveldb.user u ON p.id=u.Person_id " +
+                "        INNER JOIN itraveldb.user_image ui ON u.id=ui.User_id " +
+                "        INNER JOIN itraveldb.image i ON ui.Image_id=i.id " +
+                "        INNER JOIN itraveldb.post ps ON u.id=ps.User_id " +
+                "        INNER JOIN itraveldb.follower f ON u.id=f.User_id " +
+                "        WHERE f.Follower1_id=? AND ps.notified=1 AND ui.sizeimg='S' ";
+
+
+        con=DbUtil.connectDb();
+        Avator avator=null;
+        List<Notification> notifications=new ArrayList<>();
+        Notification notification=new Notification();
+        try {
+
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, loginUserId);
+            ResultSet row = ps.executeQuery();
+            while (row.next()) {
+                 avator = new Avator(row.getInt("id"), row.getString("fname"), row.getString("lname"),row.getString("link"));
+                 notification.setAvator(avator);
+                 notification.setPostDate(row.getString("datetime"));
+                 notification.setMessage("Added a post");
+                 notifications.add(notification);
+            }
+            DbUtil.close(con, ps, row);
+        }  catch (SQLException throwables) {
+        throwables.printStackTrace();
+         }
+        return notifications;
 
 
     }
