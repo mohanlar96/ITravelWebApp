@@ -163,8 +163,8 @@
                                 </a>
                                 <div class="profile-dropdown">
                                     <div class="profile-head">
-                                        <h5 class="name"><a href="#">Madison Howard</a></h5>
-                                        <a class="mail" href="#">mailnam@mail.com</a>
+                                        <h5 class="name"><a href="#">${username}</a></h5>
+                                        <a class="mail" href="#">${username}</a>
                                     </div>
                                     <div class="profile-body">
                                         <ul>
@@ -172,10 +172,13 @@
                                             <li><a href="#"><i class="flaticon-message"></i>Inbox</a></li>
                                             <li><a href="#"><i class="flaticon-document"></i>Activity</a></li>
                                         </ul>
+                                        <form action="<%=request.getContextPath()%>/Logout">
                                         <ul>
                                             <li><a href="#"><i class="flaticon-settings"></i>Setting</a></li>
-                                            <li><a href="signup.html"><i class="flaticon-unlock"></i>Sing out</a></li>
+                                         <!--   <li><a href="signup.html"><i class="flaticon-unlock"></i>Sign out</a></li>-->
                                         </ul>
+                                            <input type="submit" value="logout">
+                                        </form>
                                     </div>
                                 </div>
                             </div>

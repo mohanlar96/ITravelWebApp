@@ -62,13 +62,16 @@
                                 <div class="login-area">
                                     <div class="row align-items-center">
                                         <div class="col-12 col-sm">
-                                            <input type="text" placeholder="Email or Userame" class="single-field">
+                                            <form action="login" method="post">
+                                            <input name="username" type="text" placeholder="Email or Userame" class="single-field">
                                         </div>
                                         <div class="col-12 col-sm">
-                                            <input type="password" placeholder="Password" class="single-field">
+                                            <input name="password"  type="password" placeholder="Password" class="single-field">
                                         </div>
                                         <div class="col-12 col-sm-auto">
-                                            <button class="login-btn">Login</button>
+                                           <!-- <button class="login-btn">Login</button>-->
+                                            <input type="submit" value="login">
+                                            </form>
                                         </div>
                                     </div>
                                 </div>

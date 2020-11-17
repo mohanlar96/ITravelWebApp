@@ -6,6 +6,13 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
 <main>
+    <%
+        if(session.getAttribute("username")==null){
+            try{ response.sendRedirect("signup.jsp");}
+            catch (Exception e){e.printStackTrace();}
+
+        }
+    %>
     <div class="main-wrapper pt-80">
         <div class="container">
             <div class="row">
@@ -23,7 +30,7 @@
                                     </a>
                                 </figure>
                                 <div class="profile-desc text-center">
-                                    <h6 class="author"><a href="profile.html">Dimbel Lebmid</a></h6>
+                                    <h6 class="author"><a href="profile.html">welcome   ${username}</a></h6>
                                     <p>Any one can join with but Social network us if you want Any one can join with us if you want</p>
                                 </div>
                             </div>
