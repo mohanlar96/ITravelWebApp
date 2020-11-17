@@ -36,32 +36,56 @@
         text-transform: uppercase;
         background-color: #dc4734;
     }
+    .gender{
+        padding-right: 1px;
+    }
 </style>
 <script>
     $(document).ready(function(){
-        /*var statesSel = document.getElementById("state_m");
-        var citiesSel = document.getElementById("city_m");
+        //PREPARING FOR STATE AND CITY
+        console.log('${locs}');
+        const mapSC = JSON.parse('${locs}');
+        console.log(mapSC);
+        var statesSel = $("state_m");
+        var citiesSel = $("city_m");
+        statesSel.children().remove().end();
+        for (var st in mapSC) {
+            console.log('st:'+st);
+            statesSel.append('<option value='+st+'>'+st+'</option>');
+            //statesSel.options[statesSel.options.length] = new Option(st, st);
+        }
         statesSel.onchange = function(){
-            citiesSel = 1;
-            if(this.selectedIndex<0) return;
-            s;
-        }*/
+            citiesSel.length = 1;
+            if(this.selectedIndex<1) return;
+            for (var ci in mapSC[this.value]) {
+                console.log(this.value+": "+ci);
+                citiesSel.options[citiesSel.options.length] = new Option(ci, ci);
+            }
+        }
+        //UPDATING GENDER TO FORM
+        $("#gender_m").on('change', function(){
+            $("#gender").text($('#gender_m').val());
+        });
+        //MODAL FOR USER SECTION
         $("#users").on('show.bs.modal', function(){
             $("#email_m").val($("#email").text());
             $("#usern_m").val($("#usern").text());
             $("#passw_m").val($ ("#passw").text());
             $("#bio_m").val($("#bio").text());
         });
+        //MODAL FOR PERSON SECTION
         $("#names").on('show.bs.modal', function(){
             $("#fname_m").val($("#fname").text());
             $("#mname_m").val($("#mname").text());
             $("#lname_m").val($("#lname").text());
             if($("#gender").text() === "M") $("#gender_m").val("M").change();
             else $("#gender_m").val("F").change();
+            console.log("val for gender: "+$("#gender_m").val());
             $("#job_m").val($("#job").text());
             $("#cityb_m").val($("#cityb").text());
             $("#dateb_m").val($("#dateb").text());
         });
+        //MODAL FOR ADDRESS SECTION
         $("#addresses").on('show.bs.modal', function(){
             //$ ("#state_m").val($ ("#state").text());
             //$ ("#city_m").val($ ("#city").text());
@@ -70,6 +94,7 @@
             $("#zipc_m").val($("#zipc").text());
         });
     });
+    //UPDATING USER INFO CHANGES TO FORM
     function xUsers(){
         if($("#email_m").val().length<1){
             alert("Email cannot be empty");
@@ -88,6 +113,7 @@
         $("#passw").text($("#passw_m").val());
         $("#bio").text($("#bio_m").val());
     }
+    //UPDATING PERSONAL INFO CHANGES TO FORM
     function xNames(){
         let dateb = $("#dateb_m").val();
         if(dateb.length!==10 || dateb.charAt(4)!=="-"  || dateb.charAt(7)!=="-"){
@@ -115,6 +141,7 @@
         $("#cityb").text($("#cityb_m").val());
         $("#dateb").text(dateb);
     }
+    //UPDATING ADDRESS CHANGES TO FORM
     function xAddresses(){
         if($("#stre1_m").val().length<1){
             alert("Steet 1 cannot be empty");
@@ -130,11 +157,6 @@
         $("#stre2").text($("#stre2_m").val());
         $("#zipc").text($("#zipc_m").val());
     }
-    /*function validYear(newdate){
-        if(parseInt(newdate.substring(0,4))>2100) return "2100-12-31";
-        else if(parseInt(newdate.substring(0,4))<1880) return "1880-01-01";
-        else return newdate;
-    }*/
     //SUBMITTING USER INFO
     $(document).on("submit", "#userinfo", function(e){
         e.preventDefault();
@@ -178,7 +200,7 @@
             zip : $("#zipc").text()
         }).done(success).fail(error);
     });
-
+    //SUCCESS AND ERROR FOR AJAX FUNCTIONS
     function success(response){
         alert("Information was successfully sent to the server.\n"+response);
         $("#uname").text($("#fname").text()+" "+$("#lname").text());
@@ -243,6 +265,7 @@
                                     <div class="share-text-field" aria-disabled="true">
                                         <label class="refname">ACCOUNT INFORMATION</label>
                                     </div>
+                                    <hr>
                                     <div data-toggle="modal" data-target="#users">
                                         <div id="email_s" class="share-text-field" aria-disabled="true">
                                             <label class="refname">Email</label><span id="email" class="answer">${prof.email}</span>
@@ -300,6 +323,7 @@
                                     <div class="share-text-field" aria-disabled="true">
                                         <label class="refname">PERSONAL INFORMATION</label>
                                     </div>
+                                    <hr>
                                     <div data-toggle="modal" data-target="#names">
                                         <div id="fname_s" class="share-text-field" aria-disabled="true">
                                             <label class="refname">First Name</label><span id="fname" class="answer">${prof.firstName}</span>
@@ -343,7 +367,7 @@
                                             <label for="mname_m" class="refname">Middle name</label><input type="text" id="mname_m" name="mname_m" maxlength="50" class="top-search-field lightred"/>
                                             <label for="lname_m" class="refname">Last name</label><input type="text" id="lname_m" name="lname_m" maxlength="50" class="top-search-field lightred"/>
                                             <label for="gender_m" class="refname">Gender</label>
-                                            <select id="gender_m" name="gender_m" class="top-search-field lightred">
+                                            <select id="gender_m" name="gender_m" class="top-search-field lightred gender">
                                                 <option value="M">M</option>
                                                 <option value="F">F</option>
                                             </select>
@@ -374,6 +398,7 @@
                                     <div class="share-text-field" aria-disabled="true">
                                         <label class="refname">ADDRESS</label>
                                     </div>
+                                    <hr>
                                     <div data-toggle="modal" data-target="#addresses">
                                         <div id="state_s" class="share-text-field" aria-disabled="true">
                                             <label class="refname">State</label><span id="state" class="answer">${prof.address.state}</span>
@@ -407,6 +432,14 @@
                                         </div>
                                         <div class="modal-body custom-scroll">
                                             <!-- UPDATING PART START -->
+                                            <select id="state_m" name="state_m" class="top-search-field lightred">
+                                                <option value="">--Select State--</option>
+                                            </select>
+                                            <div> </div>
+                                            <select id="city_m" name="city_m" class="top-search-field lightred">
+                                                <option value="">--Select State, then City--</option>
+                                            </select>
+                                            <div> </div>
                                             <label for="stre1_m" class="refname">Street 1</label><input type="text" id="stre1_m" name="stre1_m" maxlength="50" class="top-search-field lightred"/>
                                             <label for="stre2_m" class="refname">Street 2</label><input type="text" id="stre2_m" name="stre2_m" maxlength="50" class="top-search-field lightred"/>
                                             <label for="zipc_m" class="refname">ZIP Code</label><input type="text" id="zipc_m" name="zipc_m" maxlength="10" required class="top-search-field lightred"/>
@@ -425,33 +458,6 @@
                     <!-- ADDRESS END -->
                     <a href="deactivate?id=${prof.userId}">Deactivate User</a>
                 </div>
-                <!-- CENTRAL PART END -->
-                <!--<div>
-                    <table>
-                        <forEach var="loc" items="$ {locs}">
-                            <tr>
-                                <td><out value="$ {loc.key}"/></td>
-                                <forEach var="cits" items="$ {loc.value}">
-                                    <td><out value="$ {cits}"/></td>
-                                </forEach>
-                            </tr>
-                        <forEach>
-                    </table>
-                </div>-->
-                <script>
-                    console.log('${locs}');
-                    var e = JSON.parse('${locs}');
-                    $(document).ready(function() {
-                        $("#id").text(e);
-                    });
-                    /*e = e.substring(1,e.length-2).split("], ");
-                    var arrs = e.map(s => s.split("=["));
-                    var cs = {
-                        "Dallas": ["75201", "75202"],
-                        "Austin": ["73301", "73344"]
-                    }*/
-                </script>
-                <textarea id="tt"></textarea>
                 <!-- CENTRAL PART END -->
             </div>
         </div>

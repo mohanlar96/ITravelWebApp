@@ -1,5 +1,6 @@
 package itravel.controller.user;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import itravel.dao.DbUtil;
 import itravel.model.Address;
 import itravel.model.Profile;
@@ -33,9 +34,14 @@ public class EditProfileServlet extends HttpServlet {
                 Profile profile = getProfile(userid);
                 HashMap<String,List<String>> locations = getLocations();
 
-                // add students to the request
+                // add profile to attributes
                 request.setAttribute("prof", profile);
-                request.setAttribute("locs", (locations));
+
+                //Creating the ObjectMapper object, converting the Object to JSONString
+                ObjectMapper mapper = new ObjectMapper();
+                String jsonString = mapper.writeValueAsString(locations);
+                request.setAttribute("locs", jsonString);
+
                 System.out.println("Id is: " + profile.getUserId());
                 if (profile.getUserId() != null) filepath = "/edit_profile.jsp";
             }
