@@ -437,16 +437,21 @@
                             </tr>
                         <forEach>
                     </table>
-                </div>
+                </div>-->
                 <script>
-                    var e = '$ {locs}';
-                    e = e.substring(1,e.length-2).split("], ");
+                    console.log('${locs}');
+                    var e = JSON.parse('${locs}');
+                    $(document).ready(function() {
+                        $("#id").text(e);
+                    });
+                    /*e = e.substring(1,e.length-2).split("], ");
                     var arrs = e.map(s => s.split("=["));
                     var cs = {
                         "Dallas": ["75201", "75202"],
                         "Austin": ["73301", "73344"]
-                    }
-                </script>-->
+                    }*/
+                </script>
+                <textarea id="tt"></textarea>
                 <!-- CENTRAL PART END -->
             </div>
         </div>

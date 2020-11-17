@@ -31,11 +31,11 @@ public class EditProfileServlet extends HttpServlet {
             if(userid != null && userid.length()>0 && userid.chars().mapToObj(c -> (char) c).allMatch(Character::isDigit)){
                 // get whatever from db util
                 Profile profile = getProfile(userid);
-                //HashMap<String,List<String>> locations = getLocations();
+                HashMap<String,List<String>> locations = getLocations();
 
                 // add students to the request
                 request.setAttribute("prof", profile);
-                //request.setAttribute("locs", locations);
+                request.setAttribute("locs", (locations));
                 System.out.println("Id is: " + profile.getUserId());
                 if (profile.getUserId() != null) filepath = "/edit_profile.jsp";
             }
@@ -62,7 +62,7 @@ public class EditProfileServlet extends HttpServlet {
             // get a connection
             myConn = DbUtil.connectDb();
 
-            // create sql statement //SELECT * FROM profileNoPics WHERE id=
+            // create sql statement
             String sql = "SELECT * FROM profileNoPics WHERE id="+id;
             String getImgs = "SELECT image.link, user_image.sizeimg FROM image INNER JOIN user_image ON image.id=user_image.Image_id WHERE user_image.User_id="+id;
             info = myConn.createStatement();
