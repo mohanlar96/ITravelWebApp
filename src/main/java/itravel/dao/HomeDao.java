@@ -18,7 +18,7 @@ public class HomeDao {
                 "INNER JOIN person ON user.Person_id=person.id " +
                 "INNER JOIN user_image ON user.id=user_image.User_id " +
                 "INNER JOIN image ON user_image.Image_id=image.id " +
-                "WHERE user_image.sizeimg='M' order by post.datetime limit "+page*10+offset;
+                "WHERE user_image.sizeimg='M' order by post.datetime asc limit "+page*10+offset;
 
 
         return postItems(sql);
@@ -80,6 +80,7 @@ public class HomeDao {
 
 
             }
+
             return posts;
         } finally {
             // close JDBC objects

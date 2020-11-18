@@ -20,7 +20,7 @@ public class LoginFilter implements Filter {
 
         String action = req.getServletPath();
 
-        System.out.println("URL:"+action);
+        //System.out.println("URL:"+action);
         // let it pass if wants to access admin panel
         if (action.startsWith("/admin")) {
             filterChain.doFilter(servletRequest, servletResponse);
@@ -33,7 +33,7 @@ public class LoginFilter implements Filter {
         }
 
         //it should not block css, jpg ...
-        if (action.startsWith("/css") || action.startsWith("/js") || action.startsWith("/images") || action.startsWith("/layout")) {
+        if (action.startsWith("/css") || action.startsWith("/js") || action.startsWith("/images") || action.startsWith("/post")|| action.startsWith("/layout")) {
             filterChain.doFilter(servletRequest, servletResponse);
             return;
         }

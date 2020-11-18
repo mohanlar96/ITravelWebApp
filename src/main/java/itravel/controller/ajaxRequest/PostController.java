@@ -1,8 +1,10 @@
 package itravel.controller.ajaxRequest;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import itravel.dao.DbUtil;
 
 import java.io.File;
+import java.net.UnknownServiceException;
 import java.sql.Date;
 import java.util.*;
 import javax.servlet.RequestDispatcher;
@@ -18,21 +20,23 @@ import itravel.model.BanWord;
 import itravel.model.HomeAvator;
 import itravel.model.Post;
 import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileItemFactory;
+import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 @WebServlet(value = "/myPost")
 @MultipartConfig
 public class PostController extends HttpServlet {
-        Connection con = null;
-        PreparedStatement state = null;
-        ResultSet row = null;
-        Statement statement = null;
+    Connection con = null;
+    PreparedStatement state = null;
+    ResultSet row = null;
+    Statement statement = null;
 
-        @Override
-        public void init() throws ServletException {
-            super.init();
-        }
+    @Override
+    public void init() throws ServletException {
+        super.init();
+    }
 
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -44,6 +48,7 @@ public class PostController extends HttpServlet {
         Double latitude = Double.valueOf(request.getParameter("latitude"));
         Double longitude = Double.valueOf(request.getParameter("longitude"));
         Integer UserID = Integer.parseInt(request.getParameter("UserID"));
+        System.out.println("USer ID"+ UserID);
         String notify = request.getParameter("notify");
         Integer isNotify = (notify == "on") ? 1 : 0;
 
@@ -55,7 +60,7 @@ public class PostController extends HttpServlet {
         }
 
 
-        response.getWriter().println("Server=>" + UserID + " " + description + "<br> " + latitude + " " + longitude + "  " + departureAddress + " " + destinationAddress);
+        // response.getWriter().println("Server=>" + UserID + " " + description + "<br> " + latitude + " " + longitude + "  " + departureAddress + " " + destinationAddress);
 
 
         try {
@@ -85,44 +90,56 @@ public class PostController extends HttpServlet {
             }
 
 
-            response.getWriter().println("POST ID => " + postID);//post-str.jpg and post-large-str.jpg
-            boolean isFileUploaded = ServletFileUpload.isMultipartContent(request);
-            if (!isFileUploaded) { //if no file
-                DbUtil.close(con, state, row);
-                response.getWriter().println("Successfully Added the post  without image!");
-                return; //end
+            DiskFileItemFactory factory = new DiskFileItemFactory();
 
-            }
+            factory.setSizeThreshold(1024 * 1024 * 5 );
+            factory.setRepository(new File(System.getProperty("java.io.tmpdir")));
+
+            ServletFileUpload fileUpload = new ServletFileUpload(factory);
+
+            fileUpload.setFileSizeMax(1024 * 1024 * 50);
+            fileUpload.setSizeMax(1024 * 1024 * 50);
+
+
+
             Timestamp timestamp = new Timestamp(System.currentTimeMillis());
             String myTimeStamp = timestamp.getTime() + "";
             String filePath = getServletContext().getRealPath("") + "images\\post\\";
 
-            Part part = request.getPart("file");
-            String fileName = part.getSubmittedFileName();
-            String imageExtension = getImageExtension(fileName);
-            String newfileName = "post-" + myTimeStamp + "." + imageExtension;
-            String image1 = filePath + newfileName;
-            String dbFileURL = "images/post/" + newfileName;
-            part.write(image1);
-            //String image2 = filePath+"Large\\"+"post-large-"+myTimeStamp+"."+imageExtension;
+            List<FileItem> formItems = fileUpload.parseRequest(request);
+            System.out.println("sizeee "+formItems.size());
+            for (FileItem item : formItems)
+            {
 
-            //part.write(image2);
-            response.getWriter().println("url =>" + dbFileURL);
-            int imagePrimaryKey = insertAnImageIntoDbTable(dbFileURL);
+                String fileName = item.getName();
+                String imageExtension = getImageExtension(fileName);
+                String newfileName = "post-" + myTimeStamp + "." + imageExtension;
+                String image1 = filePath + newfileName;
+                String dbFileURL = "images/post/" + newfileName;
 
-            sql = "insert  into post_image VALUES(?,?)";
-            state = con.prepareStatement(sql);
-            state.setInt(1, postID);
-            state.setInt(2, imagePrimaryKey);
-            state.executeUpdate();
+                item.write(new File( image1 ));
+
+                int imagePrimaryKey = insertAnImageIntoDbTable(dbFileURL);
+
+                System.out.println("Testing..."+ postID+" "+imagePrimaryKey);
+
+                sql = "insert  into post_image VALUES(?,?)";
+                state = con.prepareStatement(sql);
+                state.setInt(1, postID);
+                state.setInt(2, imagePrimaryKey);
+                state.executeUpdate();
+            }
+
 
             DbUtil.close(con, state, row);
-            response.getWriter().println("Successfully Added the post with images !");
-            response.sendRedirect("/");
+//            response.getWriter().println("Successfully Added the post with images !");
+            response.sendRedirect("/home");
 
 
-        } catch (SQLException | IOException | ServletException throwables) {
+        } catch (SQLException | IOException | ServletException  throwables) {
             throwables.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -131,16 +148,17 @@ public class PostController extends HttpServlet {
             String sql = "insert  into image(name,link) VALUES(?,?)";
 
             // prepare statement
-            state = con.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
+            state = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             // set params
             state.setString(1, "post");
             state.setString(2, url);
 
             // execute SQL statement
 
+
+            int imgID = 0;
             state.executeUpdate();
             row = state.getGeneratedKeys();
-            int imgID=0;
             while (row.next()) {
                 imgID = row.getInt(1);
             }

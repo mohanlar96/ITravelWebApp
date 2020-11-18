@@ -33,9 +33,10 @@ public class HomeController extends HttpServlet {
             request.setAttribute("avator",avator );
             request.setAttribute("posts", posts);
             request.setAttribute("places",placeVisited);
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/home.jsp");
+           // response.getWriter().println(posts);
+         RequestDispatcher dispatcher = request.getRequestDispatcher("/home.jsp");
 
-            dispatcher.forward(request, response);
+         dispatcher.forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();
         }
