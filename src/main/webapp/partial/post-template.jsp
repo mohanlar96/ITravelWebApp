@@ -1,5 +1,4 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%--    handlebar.js for handling the infinite scroll templating html--%>
 <script src="js/vendor/handlebars.js"></script>
 <script id="postTemplate" type="text/x-handlebars-template">
     {{#each this.posts}}
@@ -18,9 +17,8 @@
             <!-- profile picture end -->
             <div class="posted-author">
                 <h6 class="author"><a href="profile?id={{avator.id}}">{{avator.firstName}} {{avator.lastName}}</a></h6>
-                <span class="post-time">{{fullName avator}}</span>
+                <span class="post-time">{{postDate}}</span>
             </div>
-<%--            <c:if test="{{isMyPost}}">--%>
             {{#isMyPost}}
                 <div class="post-settings-bar">
                     <span></span>
@@ -35,7 +33,6 @@
                 </div>
             {{/isMyPost}}
 
-<%--            </c:if>--%>
 
         </div>
         <!-- post title start -->
@@ -55,9 +52,8 @@
 <%--                            <div class="col-6">--%>
 <%--                        </c:if>--%>
                         <figure class="post-thumb img-popup">
-<%--                            <c:set var="imgBig" value="${fn:split(img.url,'-')[1]}"/>--%>
-                            <a href="images/post/post-large-{{imgBig}}">
-                                <img src="{{img.url}}" alt="post image">
+                            <a href="images/post/post-large-{{largeImage url}}">
+                                <img src="{{url}}" alt="post image">
                             </a>
                         </figure>
 <%--                        <c:if test="${fn:length(images)>=2 && fn:length(images)<=6}">--%>
@@ -67,32 +63,27 @@
                 </div>
             </div>
 
-            {{#isAnyImage}}
-
-
-
+            {{/isAnyImage}}
 
             <div class="post-meta">
                 <button class="post-meta-like">
-<%--                    <c:if test="{{isLiked}}">--%>
+                    {{#isLiked}}
                         <button class="like-button click-on-like"  style="margin-left: 0; padding: 0 10px; float: left" data-isliked="true" >
                             <img class="heart" src="/images/icons/heart.png" alt="">
                             <img class="heart-color liked " src="/images/icons/heart-color.png" alt="" style="margin-left: 12px;">
                         </button>
-<%--                    </c:if>--%>
-<%--                    <c:if test="{{!isLiked}}">--%>
-<%--                        <button class="like-button click-on-like"   style="margin-left: 0; padding: 0 10px; float: left" data-isliked="false" >--%>
-<%--                            <img class="heart" src="/images/icons/heart.png" alt="">--%>
-<%--                            <img class="heart-color " src="/images/icons/heart-color.png" alt="" style="margin-left: 12px;">--%>
-<%--                        </button>--%>
-<%--                    </c:if>--%>
+                    {{else}}
+                        <button class="like-button click-on-like"   style="margin-left: 0; padding: 0 10px; float: left" data-isliked="false" >
+                            <img class="heart" src="/images/icons/heart.png" alt="">
+                            <img class="heart-color " src="/images/icons/heart-color.png" alt="" style="margin-left: 12px;">
+                        </button>
+                    {{/isLiked}}
                     <button class="like-button show-liked-dialog">
-                        <span >
-<%--                            <c:if test="{{isLiked}}">You and </c:if>--%>
-<%--                            {{fn:length(reactions)}}--%> 10
-                            people like this</span>
+                        <span>
+                            {{displayLikedMessage this}}
+                        </span>
                         <strong>
-<%--                            {{fn:length(reactions)}}--%>
+                             {{likeCount this}}
                         </strong>
                     </button>
                 </button>
@@ -101,7 +92,7 @@
                         <button class="post-comment">
                             <i class="bi bi-chat-bubble"></i>
                             <span class="total-comment-{{postID}}">
-<%--                                {{fn:length(comments)}}--%>
+                                {{commentCount this}}
                             </span>
                         </button>
                     </li>
@@ -109,29 +100,27 @@
             </div>
         </div>
         <!-- List of commant Box Start  -->
+            {{#isAnyComment}}
+                 <div class="commant-box hide frnd-search-inner custom-scroll ps ps--active-y" style="height: auto;">
+            {{else}}
+                <div class="hidden-commant-box hide frnd-search-inner custom-scroll ps ps--active-y" style="height: auto; display: none;">
+            {{/isAnyComment}}
 
-<%--        <c:if test="{{fn:length(comments)==0}}" >--%>
-<%--        <div class="hidden-commant-box hide frnd-search-inner custom-scroll ps ps--active-y" style="height: auto; display: none;">--%>
-<%--            </c:if>--%>
-
-<%--            <c:if test="{{fn:length(comments)!=0}}" >--%>
-            <div class="commant-box hide frnd-search-inner custom-scroll ps ps--active-y" style="height: auto;">
-<%--                </c:if>--%>
                 <h4 class="widget-title"> Comments </h4>
                 <ul class="comment-box-{{postID}}">
                     <li class="d-flex align-items-center profile-active comment-item-{{postID}}" style="display: none!important;">
                         <!-- profile picture end -->
                         <div class="profile-thumb ">
-                            <a href="/">
+                            <a href="/profile?id={{avator}}">
                                 <figure class="profile-thumb-small">
-                                    <img src="/" alt="profile picture">
+                                    <img src="{{avator.profileUrl}}" alt="profile picture">
                                 </figure>
                             </a>
                         </div>
                         <!-- profile picture end -->
                         <div class="posted-author">
                             <h6 class="author"><span></span>
-                                <button class="deletecomment" data-commentid="{{comment.id}}">
+                                <button class="deletecomment" data-commentid="{{id}}">
                                     delete
                                 </button>
                             </h6>
@@ -143,22 +132,23 @@
                         <li class="d-flex align-items-center profile-active">
                             <!-- profile picture end -->
                             <div class="profile-thumb ">
-                                <a href="/profile?id={{comment.avator.id}}">
+                                <a href="/profile?id={{avator.id}}">
                                     <figure class="profile-thumb-small">
-                                        <img src="{{comment.avator.profileUrl}}" alt="profile picture">
+                                        <img src="{{avator.profileUrl}}" alt="profile picture">
                                     </figure>
                                 </a>
                             </div>
                             <!-- profile picture end -->
                             <div class="posted-author">
-                                <h6 class="author">{{comment.avator.firstName}} {{comment.avator.lastName}}
-<%--                                    <c:if test="{{comment.avator.id==../this.loginAvator.id}}">--%>
+                                <h6 class="author">{{fullName avator}}
+
+                                    {{#isMyComment}}
                                         <button class="deletecomment" data-commentid="{{comment.id}}">
                                             delete
                                         </button>
-<%--                                    </c:if>--%>
+                                    {{/isMyComment}}
                                 </h6>
-                                <p>{{comment.commentContent}}</p>
+                                <p>{{commentContent}}</p>
                             </div>
                         </li>
                     {{/each}}
@@ -172,35 +162,33 @@
                 </div>
             </div>
             <!-- End List of commant Box  -->
-<%--            <c:if test="{{fn:length(reactions)==0}}" >--%>
-<%--            <div class="hidden-liked-box frnd-search-inner custom-scroll ps ps--active-y" style="height: auto;display: none;">--%>
-<%--                </c:if>--%>
-<%--                <c:if test="{{fn:length(reactions)!=0}}" >--%>
-                <div class="liked-box frnd-search-inner custom-scroll ps ps--active-y" style="height: auto;">
-<%--                    </c:if>--%>
 
-                    <!-- List of like list box start -->
+            <!-- Start Liked Box  -->
+
+            {{#isAnyReaction}}
+            <div class="liked-box frnd-search-inner custom-scroll ps ps--active-y" style="height: auto;">
+            {{else}}
+            <div class="hidden-liked-box frnd-search-inner custom-scroll ps ps--active-y" style="height: auto;display: none;">
+            {{/isAnyReaction}}
                     <h4 class="widget-title"> Liked By </h4>
                     <ul>
                         {{#each this.reactions}}
-<%--                        <c:forEach var="reaction" items="{{reactions}}">--%>
 
                             <li class="d-flex align-items-center profile-active">
                                 <!-- profile picture end -->
                                 <div class="profile-thumb ">
-                                    <a href="/profile?id={{reaction.avator.id}}">
+                                    <a href="/profile?id={{avator.id}}">
                                         <figure class="profile-thumb-small">
-                                            <img src="{{reaction.avator.profileUrl}}" alt="profile picture">
+                                            <img src="{{avator.profileUrl}}" alt="profile picture">
                                         </figure>
                                     </a>
                                 </div>
                                 <!-- profile picture end -->
                                 <div class="posted-author">
-                                    <h6 class="author">{{reaction.avator.firstName}} {{reaction.avator.lastName}}</h6>
+                                    <h6 class="author">{{fullName avator}}</h6>
                                 </div>
                             </li>
                         {{/each}}
-<%--                        </c:forEach>--%>
                     </ul>
                     <div class="ps__rail-x" style="left: 0px; bottom: -101px;">
                         <div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div>
@@ -217,9 +205,9 @@
                     <div class="share-box-inner">
                         <!-- profile picture end -->
                         <div class="profile-thumb">
-                            <a href="profile?id={{../this.loginAvator.id}}">
+                            <a href="profile?id={{../loginAvator.id}}">
                                 <figure class="profile-thumb-middle">
-                                    <img src="{{../this.loginAvator.profielUrl}}" alt="profile picture">
+                                    <img src="{{../loginAvator.profileUrl}}" alt="profile picture">
                                 </figure>
                             </a>
                         </div>
@@ -238,6 +226,7 @@
             </div>
             <!-- post status end -->
     {{/each}}
+
 </script>
 
 <script id="commentTemplate" type="text/x-handlebars-template">

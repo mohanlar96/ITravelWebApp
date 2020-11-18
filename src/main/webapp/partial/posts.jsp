@@ -99,9 +99,9 @@
                     <li class="d-flex align-items-center profile-active comment-item-${post.postID}" style="display: none!important;">
                         <!-- profile picture end -->
                         <div class="profile-thumb ">
-                            <a href="/">
+                            <a href="/profile?id=${post.avator.id}">
                                 <figure class="profile-thumb-small">
-                                    <img src="/" alt="profile picture">
+                                    <img src="/${post.avator.profileUrl}" alt="profile picture">
                                 </figure>
                             </a>
                         </div>
@@ -219,8 +219,9 @@
     </div>
     <!-- post status end -->
 </c:forEach>
-<c:import url="partial/post-template.jsp" />
 <c:import url="partial/weather-focus.jsp" />
+<c:import url="partial/post-template.jsp" />
+
 
 
 
