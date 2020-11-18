@@ -163,7 +163,7 @@ $(document).ready(function() {
         model.find("span.list-title , input[type='file'] , input[type='checkbox']").hide();
         model.find("[type='submit']").text("Update");
         model.find("h5.modal-title").text("Update Your Travel Info");
-        $('#textbox').parent("form").attr("action","post/interact");
+        // $('#textbox').parent("form").attr("action","post/interact");
 
         model.modal();//show dialog
 
@@ -190,7 +190,7 @@ $(document).ready(function() {
                 model.find("span.list-title , input[type='file'] , input[type='checkbox']").show();
                 model.find("[type='submit']").text("Post");
                 model.find("h5.modal-title").text("Share Your Travel Info");
-                $('#textbox').parent("form").attr("action","post");
+                // $('#textbox').parent("form").attr("action","post");
 
 
             }).fail(function() {

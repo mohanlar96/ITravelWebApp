@@ -1,3 +1,9 @@
 .form-control {
   border-radius: 0;
 }
+.timeline-bg-title {
+  background: #dc4734;
+}
+.timeline-bg-title span {
+  color: #000000;
+}

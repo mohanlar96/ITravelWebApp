@@ -12,23 +12,23 @@ public class HomeDao {
     // scroll 10th to 20 ths
     public  static  List<Post> getPosts(int UserId ,int page) throws Exception {
         String offset=(page>1)?" OFFSET "+(page-1)*10:"";
-//        String sql = "" +
-//                "SELECT post.*, person.fname, person.lname, image.link " +
-//                "FROM post INNER JOIN user ON post.User_id=user.id " +
-//                "INNER JOIN person ON user.Person_id=person.id " +
-//                "INNER JOIN user_image ON user.id=user_image.User_id " +
-//                "INNER JOIN image ON user_image.Image_id=image.id " +
-//                "WHERE user_image.sizeimg='M' order by post.datetime limit 10";
-
         String sql = "" +
-                "SELECT ps.*, p.fname, p.lname, i.link " +
-                "FROM itraveldb.post ps INNER JOIN itraveldb.user u ON ps.User_id=u.id " +
-                "INNER JOIN itraveldb.person p ON u.Person_id=p.id " +
-                "INNER JOIN itraveldb.follower f ON u.id=f.User_id " +
-                "INNER JOIN itraveldb.user_image ui ON u.id=ui.User_id " +
-                "INNER JOIN itraveldb.image i ON ui.Image_id=i.id " +
-                "WHERE f.Follower1_id="+UserId+" AND ui.sizeimg='L' " +
-                "ORDER BY ps.datetime DESC LIMIT "+(page*10)+offset;
+                "SELECT post.*, person.fname, person.lname, image.link " +
+                "FROM post INNER JOIN user ON post.User_id=user.id " +
+                "INNER JOIN person ON user.Person_id=person.id " +
+                "INNER JOIN user_image ON user.id=user_image.User_id " +
+                "INNER JOIN image ON user_image.Image_id=image.id " +
+                "WHERE user_image.sizeimg='M' order by post.datetime limit 10"; //not deepin
+
+//        String sql = "" +
+//                "SELECT ps.*, p.fname, p.lname, i.link " +
+//                "FROM itraveldb.post ps INNER JOIN itraveldb.user u ON ps.User_id=u.id " +
+//                "INNER JOIN itraveldb.person p ON u.Person_id=p.id " +
+//                "INNER JOIN itraveldb.follower f ON u.id=f.User_id " +
+//                "INNER JOIN itraveldb.user_image ui ON u.id=ui.User_id " +
+//                "INNER JOIN itraveldb.image i ON ui.Image_id=i.id " +
+//                "WHERE f.Follower1_id="+UserId+" AND ui.sizeimg='L' " +
+//                "ORDER BY ps.datetime DESC LIMIT "+(page*10)+offset;
 
         return postItems(sql);
 
@@ -208,7 +208,7 @@ public class HomeDao {
                 "INNER JOIN itraveldb.image i ON ui.Image_id=i.id " +
                 "INNER JOIN itraveldb.post ps ON u.id=ps.User_id " +
                 "INNER JOIN itraveldb.follower f ON u.id=f.User_id " +
-                "WHERE f.Follower1_id="+loginUserId+" AND ps.notified=1 AND ui.sizeimg='L' " +
+                "WHERE f.Follower1_id=? AND ps.notified=1 AND ui.sizeimg='L' " +
                 "ORDER BY ps.datetime DESC";
 
 

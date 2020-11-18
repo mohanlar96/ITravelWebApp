@@ -20,7 +20,7 @@ public class HomeController extends HttpServlet {
     }
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-
+//            request.getSession().setAttribute("userId",4);
             Object userId = request.getSession().getAttribute("userId");
             Integer currentLoginUserID = (int)userId;
             // need to connect with session .

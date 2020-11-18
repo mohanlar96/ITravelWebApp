@@ -10,7 +10,7 @@
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCneh1NGoaH33EkKQ6SltmLoqNtwbLqZ7U&callback=initAutocomplete&libraries=places&v=weekly" defer></script>
 <script src="js/geolocation.js"></script>
 <!-- Modal start -->
-<form action = "post" method ="post" enctype="multipart/form-data">
+<form action = "post/interact" method ="post" enctype="multipart/form-data">
     <%--                            <form action = "post/interact" method ="post" >--%>
     <input type="hidden" name="userID" value="${requestScope.avator.id}">
     <input type="hidden" name="latitude"  value="41.02" id="latitude">
