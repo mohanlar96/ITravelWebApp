@@ -29,6 +29,7 @@ $(document).ready(function(){
     });
     $("form#search").unbind().on('submit',function(e){
         e.preventDefault();
+        console.log("searching ...");
         var userID=$(".card.post").eq(0).data("userid");
         var keywords=$(this).find('input').val();
 
@@ -36,9 +37,14 @@ $(document).ready(function(){
             {functionRequest:'SEARCH',
                 userID:userID,
                 keywords:keywords
-
             }).done(function(response){
             const data=JSON.parse(response);
+            console.log(data);
+            if(data.posts.length==0){
+                alert("no data relative with follower with this keyword=> "+keywords);
+                alert("Try with keyword  OK with user sandy grey to work this feature");
+            }
+
 
             generatePostFromTemplate(data,'search');
 
@@ -130,6 +136,7 @@ $(document).ready(function(){
             return url.split('-')[1];
         });
         if(templateType=="search"){
+            console.log("searching is working ");
             $(".card.post").first().before(template(data));
         }else if(templateType=="scroll"){
             $(".card.post").last().after(template(data));
