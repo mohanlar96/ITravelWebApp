@@ -2,7 +2,9 @@ package itravel.controller.user;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import itravel.dao.DbUtil;
+import itravel.dao.HomeDao;
 import itravel.model.Address;
+import itravel.model.HomeAvator;
 import itravel.model.Profile;
 
 import javax.servlet.RequestDispatcher;
@@ -44,7 +46,11 @@ public class EditProfileServlet extends HttpServlet {
                 //Creating the ObjectMapper object, converting the Object to JSONString
                 ObjectMapper mapper = new ObjectMapper();
                 String jsonString = mapper.writeValueAsString(locations);
+                HomeAvator avator= HomeDao.getAvator(currentLoginUserID);
+
                 request.setAttribute("locs", jsonString);
+                request.setAttribute("avator",avator );
+
 
                 System.out.println("Id is: " + profile.getUserId());
                 if (profile.getUserId() != null) filepath = "/edit_profile.jsp";

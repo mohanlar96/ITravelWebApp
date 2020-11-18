@@ -31,7 +31,7 @@ $(document).ready(function () {
         e.preventDefault();
         const $travelerType = $(this).attr('name').toString().trim(); // Follower or Followee
         var $userID = $('#avatar-id-hidden').val().toString().trim();  //Comes from Footer Holding the ID of the Opened Profile
-         if ($userID.length > 3) ; // if current avatar is null, consider the current session
+         if ($userID.length > 3)  // if current avatar is null, consider the current session
          $userID = $('#hidden-session-user-id').val().toString().trim();
         $.ajax({
             type: "GET",
