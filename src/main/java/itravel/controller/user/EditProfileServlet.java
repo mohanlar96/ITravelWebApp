@@ -26,9 +26,10 @@ public class EditProfileServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String sessionid = request.getParameter("id"); //CHANGE FOR SESSION ID
+        String sessionid = (String) request.getSession().getAttribute("userId"); //CHANGE FOR SESSION ID
         String userid = request.getParameter("id");
         try {
+
             String filepath = "aaaaaaaaa";
             if(sessionid!=null && sessionid.equals(userid) && userid.length()>0 && userid.chars().mapToObj(c -> (char) c).allMatch(Character::isDigit)){
                 // get whatever from db util

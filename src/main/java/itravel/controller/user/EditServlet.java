@@ -20,7 +20,7 @@ public class EditServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int state = -1;
-        String userid = request.getParameter("id");
+        String userid = (String) request.getSession().getAttribute("userId");
 
         state = updateInfo(state, request);
         System.out.println("Going out of update part");

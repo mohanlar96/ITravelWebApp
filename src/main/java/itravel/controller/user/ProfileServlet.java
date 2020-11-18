@@ -48,7 +48,7 @@ public class ProfileServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException{
-        String sessionid = request.getParameter("id"); //CHANGE FOR SESSION ID
+        String sessionid = (String) request.getSession().getAttribute("userId"); //CHANGE FOR SESSION ID
         String userid = request.getParameter("id");
         List<Post> posts = new ArrayList<>();
         HomeAvator avator = new HomeAvator(0, "", "", "");
