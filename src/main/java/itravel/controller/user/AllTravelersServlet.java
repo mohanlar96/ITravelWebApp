@@ -44,12 +44,6 @@ public class AllTravelersServlet extends HttpServlet {
         RequestDispatcher dispatcher = request.getRequestDispatcher("Traveller.jsp");
         dispatcher.forward(request, response);
 
-
-
-
-//      PrintWriter out = response.getWriter();
-//     out.println("Hiii" + request.getAttribute("PeopleList").toString());
-
     }
 
 }

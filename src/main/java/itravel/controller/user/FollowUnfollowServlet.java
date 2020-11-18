@@ -14,14 +14,11 @@ import java.io.PrintWriter;
 @WebServlet("/FollowUnfollowServlet")
 public class FollowUnfollowServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-       // doPost(request, response);
         Object userId = request.getSession().getAttribute("userId");
         int currentUser = (int)userId;
-//        request.setAttribute("userID",currentLoginUserID );
-       // int currentUser = Integer.parseInt(request.getParameter("SessionUser"));
+
         int travellerID = Integer.parseInt(request.getParameter("TravellerID"));
         String followingStatus = request.getParameter("FollowingStatus").toString();
-        // System.oxut.println(currentUser + " " + travellerID + " " + followingStatus);
         try {
             String newStatus = FollowerDao.followUnfollow(currentUser, travellerID, followingStatus);
             response.setContentType("text/plain");
@@ -32,22 +29,6 @@ public class FollowUnfollowServlet extends HttpServlet {
         }
 
     }
-
-   /* public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        //int currentUser = Integer.parseInt(request.getParameter("currentUser"));
-        int currentUser=2;
-        int travellerID = Integer.parseInt(request.getParameter("travellerID"));
-        String followingStatus = request.getParameter("followingStatus").toString();
-       // System.oxut.println(currentUser + " " + travellerID + " " + followingStatus);
-        try {
-            int newStatus = FollowerDao.followUnfollow(currentUser, travellerID, followingStatus);
-            response.setContentType("text/plain");
-            response.setCharacterEncoding("UTF-8");
-            response.getWriter().println(newStatus);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    } */
 }
 
 

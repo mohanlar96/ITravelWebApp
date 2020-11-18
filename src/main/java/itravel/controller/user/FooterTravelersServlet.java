@@ -26,8 +26,7 @@ public class FooterTravelersServlet extends HttpServlet {
         Integer currentLoginUserID = (int)userId;
         request.setAttribute("userID",currentLoginUserID );
 
-        int sessionUser = 2;
-//        session.setAttribute("currntUser",currentUser);
+        int sessionUser = currentLoginUserID;
 
         FollowerDao dbu = new FollowerDao();
 
@@ -42,8 +41,6 @@ public class FooterTravelersServlet extends HttpServlet {
         } catch (Exception e) {
             e.printStackTrace();
         }
-       // session.setAttribute("myFollowersList", myFollowersList);
-       // session.setAttribute("myFolloweesList", myFolloweesList);
         ObjectMapper mapper = new ObjectMapper();
         String jsonString = mapper.writeValueAsString(myTravllerLists);
         response.getWriter().println(jsonString);

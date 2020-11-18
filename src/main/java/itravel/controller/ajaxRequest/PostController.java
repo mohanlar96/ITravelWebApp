@@ -100,8 +100,6 @@ public class PostController extends HttpServlet {
             fileUpload.setFileSizeMax(1024 * 1024 * 50);
             fileUpload.setSizeMax(1024 * 1024 * 50);
 
-
-
             Timestamp timestamp = new Timestamp(System.currentTimeMillis());
             String myTimeStamp = timestamp.getTime() + "";
             String filePath = getServletContext().getRealPath("") + "images\\post\\";
