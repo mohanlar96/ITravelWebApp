@@ -19,7 +19,9 @@ public class HomeController extends HttpServlet {
     }
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            Integer currentLoginUserID=2;
+            Object userId = request.getSession().getAttribute("userId");
+            System.out.println("logged in userid:"+(int)userId);
+            Integer currentLoginUserID = (int)userId;
             // need to connect with session .
 
             List<Post> posts = HomeDao.getPosts(); //10 posts

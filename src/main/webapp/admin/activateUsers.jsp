@@ -75,7 +75,7 @@
               </a>
             </li> 
             <li>
-              <a href="bannedPosts.jsp">
+              <a href="bannedPosts">
                 <i class="fa fa-th"></i> <span>Banned Posts</span> <span class="badge" id="badgeBannedPost"></span>
               </a>
             </li>
@@ -200,6 +200,8 @@
         });
       });
     </script> --%>
-    <script src='js/myCustom2.js'></script>
+    <script src='js/myCustomJs/myUtil.js'></script>
+    <script src='js/myCustomJs/deactivatedUsers.js'></script>
+
   </body>
 </html>

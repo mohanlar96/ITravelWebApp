@@ -1,5 +1,6 @@
 package itravel.dao;
 
+import itravel.model.Avator;
 import itravel.model.Post;
 import itravel.model.User;
 
@@ -86,11 +87,15 @@ public class AdminPostDao {
 
             int selectOffset = (selectedPageN-1)*10;
             // create sql statement
-            String sql = "select a.fname, a.lname, b.email, b.id " +
-                    "from person a INNER JOIN user b " +
-                    "ON a.id = b.Person_id where b.isDeactivated = 1 " +
-                    "limit 10 offset "+selectOffset;
-
+//            String sql = "select a.fname, a.lname, b.email, b.id " +
+//                    "from person a INNER JOIN user b " +
+//                    "ON a.id = b.Person_id where b.isDeactivated = 1 " +
+//                    "limit 10 offset "+selectOffset;
+//
+            String sql = "select a.User_id , c.fname, c.lname, a.id, a.datetime, a.description " +
+                    "from (itraveldb.post a INNER JOIN user b on a.User_id=b.id) " +
+                    "INNER JOIN person c on b.Person_id = c.id " +
+                    "where a.unhealthy = 1 limit 10 offset "+selectOffset;
 
             myStmt = myConn.createStatement();
 
@@ -100,15 +105,20 @@ public class AdminPostDao {
             // process resultset
             while(myRs.next()) {
                 // retrieve data from result set row
-                int id = myRs.getInt("id");
+                int userId = myRs.getInt("User_id");
                 String fName = myRs.getString("fname");
                 String lName = myRs.getString("lname");
-                String email = myRs.getString("email");
+                int postId = myRs.getInt("id");
+                String postDate = myRs.getString("datetime");
+                String postDesc = myRs.getString("description");
 
-                // create new user object
-                Post thePost = new Post(id, fName, lName, email, 0);
+                // create new avatar object
+                Avator theAvator = new Avator(userId, fName, lName);
 
-                // add it to the list of students
+                // create new post object
+                Post thePost = new Post(postId, postDate, postDesc, theAvator);
+
+                // add it to the list of posts
                 thePosts.add(thePost);
             }
             return thePosts;

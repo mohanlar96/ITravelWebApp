@@ -25,7 +25,14 @@ public class Post {
         this.desAddress = desAddress;
         this.avator = avator;
     }
-    
+
+    public Post(int postID, String postDate, String description, Avator avator) {
+        this.postID = postID;
+        this.postDate = postDate;
+        this.description = description;
+        this.avator = avator;
+    }
+
     public void setImages(List<PostImage> images) {
         this.images = images;
     }

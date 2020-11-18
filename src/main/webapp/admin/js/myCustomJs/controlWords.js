@@ -1,27 +1,7 @@
-function getDeactivatedUserCnt() {
-    $.post("deactivatedUsers", {cmdUserServlet: "GET_CNT"},function(data){
-        console.log(data);
-        let jsonResp = JSON.parse(data);
-        $('#badgeDeactivatedUsers').text(jsonResp.count);
-    });
-}
 $(document).ready(function () {
 
-    //when load, it sets the current page list item active
-    //it sets the left, right button appear disabled depend on the page number
-    var currPage = $('#myPagination').data("page");
-    var totalPage = $('#myPagination').data("totalpage");
-    //console.log(currPage);
-    if (currPage==1) {
-        $("ul.pagination>li:nth-child("+(currPage)+")").addClass('disabled');
-    }
-    if (currPage==totalPage) {
-        $("ul.pagination>li:nth-child("+(currPage+2)+")").addClass("disabled");
-    }
-    $("ul.pagination>li:nth-child("+(currPage+1)+")").addClass("active");
-
-    getDeactivatedUserCnt();
-    setInterval(getDeactivatedUserCnt, 10*1000);
+    // it sets the pagination value and notifications badges
+    paginateAndBadgeCnt();
 
     //******************************Modal fillup START*******************************
     // All Edit button modal fillup before show

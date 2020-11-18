@@ -174,7 +174,7 @@
                                         </ul>
                                         <ul>
                                             <li><a href="#"><i class="flaticon-settings"></i>Setting</a></li>
-                                            <li><a href="signup.html"><i class="flaticon-unlock"></i>Sing out</a></li>
+                                            <li><a href="logout"><i class="flaticon-unlock"></i>Sing out</a></li>
                                         </ul>
                                     </div>
                                 </div>

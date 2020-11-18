@@ -113,11 +113,14 @@ public class BannedPostsServlet extends HttpServlet {
         }
 
         List<Post> thePosts = AdminPostDao.getUnhealthyPosts(selectedPageN);
+
+
+
         // add users to the request
         request.setAttribute("POST_LIST", thePosts);
         request.setAttribute("PAGE", selectedPageN);
         request.setAttribute("TOTAL_LENGTH", totalPageN);
-        request.setAttribute("TOTAL_USER_CNT", rowCnt);
+        request.setAttribute("TOTAL_POST_CNT", rowCnt);
 
         // send to JSP page (view)
         RequestDispatcher dispatcher = request.getRequestDispatcher("/admin/bannedPosts.jsp");

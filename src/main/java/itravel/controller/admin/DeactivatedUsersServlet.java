@@ -112,6 +112,7 @@ public class DeactivatedUsersServlet extends HttpServlet {
         }
 
         List<User> theUsers = AdminDeactivatedUserDao.getDeactivatedUser(selectedPageN);
+
         // add users to the request
         request.setAttribute("USER_LIST", theUsers);
         request.setAttribute("PAGE", selectedPageN);
