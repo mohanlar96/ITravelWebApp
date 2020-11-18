@@ -1,24 +1,16 @@
 package itravel.controller.ajaxRequest;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import itravel.dao.DbUtil;
 
-import java.io.File;
+import java.awt.*;
+import java.io.IOException;
 import java.sql.Date;
-import java.util.*;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
-import java.io.IOException;
 import java.sql.*;
+import java.util.Collection;
 
-import itravel.dao.HomeDao;
-import itravel.model.BanWord;
-import itravel.model.HomeAvator;
-import itravel.model.Post;
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 @WebServlet(value = "/post")
@@ -35,9 +27,9 @@ public class PostController extends HttpServlet {
         }
 
 
-    private void post(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        Connection con = DbUtil.connectDb();
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+        Connection con = DbUtil.connectDb();
         String description = request.getParameter("description");
         String departureAddress = request.getParameter("departureAddress");
         String destinationAddress = request.getParameter("destinationAddress");
@@ -60,7 +52,6 @@ public class PostController extends HttpServlet {
 
         try {
             String sql = "insert  into post(datetime,latitude,longitude,description,departureAddress,destinationAddress,unhealthy,notified,User_id) VALUES( ? , ? , ? , ? , ? , ? , ? , ? , ? )";
-
             // prepare statement
             state = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             long time = new java.util.Date().getTime();
@@ -85,44 +76,36 @@ public class PostController extends HttpServlet {
             }
 
 
-            response.getWriter().println("POST ID => " + postID);//post-str.jpg and post-large-str.jpg
-            boolean isFileUploaded = ServletFileUpload.isMultipartContent(request);
-            if (!isFileUploaded) { //if no file
-                DbUtil.close(con, state, row);
-                response.getWriter().println("Successfully Added the post  without image!");
-                return; //end
+            response.getWriter().println("POST ID => " + postID);
 
+
+            Collection<Part> parts = request.getParts();
+
+            for(Part p:parts){
+                System.out.println(p.getSubmittedFileName());
+                Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+                String myTimeStamp = timestamp.getTime() + "";
+                String filePath = getServletContext().getRealPath("") + "images\\post\\";
+                String fileName = p.getSubmittedFileName();
+                String imageExtension = getImageExtension(fileName);
+                String newfileName = "post-" + myTimeStamp + "." + imageExtension;
+                String image1 = filePath + newfileName;
+                String dbFileURL = "images/post/" + newfileName;
+                System.out.println("url =>" + dbFileURL+newfileName);
+                p.write(image1);
+                int imagePrimaryKey = insertAnImageIntoDbTable(dbFileURL);
+                sql = "insert  into post_image VALUES(?,?)";
+                state = con.prepareStatement(sql);
+                state.setInt(1, postID);
+                state.setInt(2, imagePrimaryKey);
+                state.executeQuery();
             }
-            Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-            String myTimeStamp = timestamp.getTime() + "";
-            String filePath = getServletContext().getRealPath("") + "images\\post\\";
-
-            Part part = request.getPart("file");
-            String fileName = part.getSubmittedFileName();
-            String imageExtension = getImageExtension(fileName);
-            String newfileName = "post-" + myTimeStamp + "." + imageExtension;
-            String image1 = filePath + newfileName;
-            String dbFileURL = "images/post/" + newfileName;
-            part.write(image1);
-            //String image2 = filePath+"Large\\"+"post-large-"+myTimeStamp+"."+imageExtension;
-
-            //part.write(image2);
-            response.getWriter().println("url =>" + dbFileURL);
-            int imagePrimaryKey = insertAnImageIntoDbTable(dbFileURL);
-
-            sql = "insert  into post_image VALUES(?,?)";
-            state = con.prepareStatement(sql);
-            state.setInt(1, postID);
-            state.setInt(2, imagePrimaryKey);
-            state.executeUpdate();
-
-
             DbUtil.close(con, state, row);
             response.getWriter().println("Successfully Added the post with images !");
-//            response.sendRedirect("/");
+            response.sendRedirect("/");
 
 
-        } catch (SQLException throwables) {
+        } catch (SQLException | IOException | ServletException throwables) {
             throwables.printStackTrace();
         }
     }

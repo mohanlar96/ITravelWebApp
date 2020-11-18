@@ -28,7 +28,7 @@ public class HomeController extends HttpServlet {
             HomeAvator avator= HomeDao.getAvator(currentLoginUserID);
             List<String> placeVisited=HomeDao.getVisitedPlace(currentLoginUserID);
             List<Notification> notifications=null;
-//            =HomeDao.getNotifications(currentLoginUserID);
+            notifications=HomeDao.getNotifications(currentLoginUserID);
             request.setAttribute("notifications",notifications );
             request.setAttribute("avator",avator );
             request.setAttribute("posts", posts);

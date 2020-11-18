@@ -66,7 +66,7 @@
         //MODAL FOR USER SECTION
         $("#users").on('show.bs.modal', function(){
             $("#email_m").val($("#email").text());
-            $("#passw_m").val($ ("#passw").text());
+            //$("#passw_m").val($ ("#passw").text());
             $("#bio_m").val($("#bio").text());
         });
         //MODAL FOR PERSON SECTION
@@ -96,16 +96,16 @@
             alert("Email cannot be empty");
             return;
         }
-        if($("#passw_m").val().length<1){
+        /*if($("#passw_m").val().length<1){
             alert("Password cannot be empty");
             return;
-        }
+        }*/
         if($("#bio_m").val().length<1){
             alert("Biography cannot be empty");
             return;
         }
         $("#email").text($("#email_m").val());
-        $("#passw").text($("#passw_m").val());
+        //$("#passw").text($("#passw_m").val());
         $("#bio").text($("#bio_m").val());
     }
     //UPDATING PERSONAL INFO CHANGES TO FORM
@@ -160,7 +160,7 @@
             id : "${prof.userId}",
             section : "user",
             email : $("#email").text(),
-            passw : $("#passw").text(),
+            //passw : $("#passw").text(),
             bio : $("#bio").text()
         }).done(success).fail(error);
     });
@@ -264,9 +264,9 @@
                                         <div id="email_s" class="share-text-field" aria-disabled="true">
                                             <label class="refname">Email</label><span id="email" class="answer">${prof.email}</span>
                                         </div>
-                                        <div id="passw_s" class="share-text-field" aria-disabled="true">
-                                            <label class="refname">Password</label><span id="passw" class="answer">${prof.password}</span>
-                                        </div>
+                                        <!--<div id="passw_s" class="share-text-field" aria-disabled="true">
+                                            <label class="refname">Password</label><span id="passw" class="answer">$ {prof.password}</span>
+                                        </div>-->
                                         <div id="bio_s" class="share-text-field" aria-disabled="true">
                                             <label class="refname">Biography</label><span id="bio" class="answer">${prof.biography}</span>
                                         </div>
@@ -288,7 +288,7 @@
                                         <div class="modal-body custom-scroll">
                                             <!-- UPDATING PART START -->
                                             <label for="email_m" class="refname">Email</label><input type="text" id="email_m" name="email_m" maxlength="50" required class="top-search-field lightred"/>
-                                            <label for="passw_m" class="refname">Password</label><input type="text" id="passw_m" name="passw_m" maxlength="50" required class="top-search-field lightred"/>
+                                            <!--<label for="passw_m" class="refname">Password</label><input type="text" id="passw_m" name="passw_m" maxlength="50" required class="top-search-field lightred"/>-->
                                             <label for="bio_m" class="refname">Biography</label><textarea id="bio_m" name="bio_m" maxlength="200" placeholder="Describe yourself briefly..." rows="4" class="top-search-field lightred"></textarea>
                                             <!-- UPDATING PART END   -->
                                         </div>

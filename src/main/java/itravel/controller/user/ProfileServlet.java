@@ -114,7 +114,7 @@ public class ProfileServlet extends HttpServlet {
                 // retrieve data from result set row
                 profile.setUserId(String.valueOf(myRs.getInt("id")));
                 profile.setEmail(myRs.getString("email"));
-                profile.setPassword(myRs.getString("password"));
+                //profile.setPassword(myRs.getString("password"));
                 profile.setBiography(myRs.getString("biography"));
                 profile.setFirstName(myRs.getString("fname"));
                 profile.setMidName(myRs.getString("mname"));

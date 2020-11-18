@@ -333,7 +333,7 @@ public class PostActionController extends HttpServlet {
     private void scrollDown(HttpServletRequest request, HttpServletResponse response) throws Exception {
         con = DbUtil.connectDb();
         Integer page = Integer.parseInt(request.getParameter("page"));
-        Integer userID = Integer.parseInt(request.getParameter("userID"));
+        Integer userID = (int)request.getSession().getAttribute("userId"); //Integer.parseInt(request.getParameter("userID"));
 
         List<Post> postItems = HomeDao.getPosts(userID, page);
         HomeAvator avator = HomeDao.getAvator(userID);
@@ -353,7 +353,8 @@ public class PostActionController extends HttpServlet {
     private void searchPost(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         String keyword = request.getParameter("keywords");
-        Integer userID = Integer.parseInt(request.getParameter("userID"));
+        Integer userID = (int)request.getSession().getAttribute("userId");//Integer.parseInt(request.getParameter("userID"));
+
         List<Post> postItems = HomeDao.searchPosts(userID, 1, keyword); //10 posts // hershw ...
         HomeAvator avator = HomeDao.getAvator(userID);
 
