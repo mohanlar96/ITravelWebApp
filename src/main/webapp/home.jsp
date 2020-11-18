@@ -86,7 +86,7 @@
                                         <!-- profile picture end -->
                                         <div class="unorder-list-info">
                                             <h3 class="list-title"><a href="#">${notification.message}</a></h3>
-                                            <p class="list-subtitle">${notification.avator.datetime}</p>
+                                            <p class="list-subtitle">${notification.postDate}</p>
                                         </div>
                                     </li>
                                      </c:forEach>

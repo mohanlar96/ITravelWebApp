@@ -83,7 +83,7 @@
                                                     <!-- message content end -->
                                                     <!-- message time start -->
                                                     <div class="msg-time">
-                                                        <p>${notification.datetime}</p>
+                                                        <p>${notification.postDate}</p>
                                                     </div>
                                                     <!-- message time end -->
                                                 </li>

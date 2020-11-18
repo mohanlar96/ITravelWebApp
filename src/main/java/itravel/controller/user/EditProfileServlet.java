@@ -5,6 +5,7 @@ import itravel.dao.DbUtil;
 import itravel.dao.HomeDao;
 import itravel.model.Address;
 import itravel.model.HomeAvator;
+import itravel.model.Notification;
 import itravel.model.Profile;
 
 import javax.servlet.RequestDispatcher;
@@ -49,7 +50,10 @@ public class EditProfileServlet extends HttpServlet {
                 HomeAvator avator= HomeDao.getAvator(currentLoginUserID);
 
                 request.setAttribute("locs", jsonString);
-                request.setAttribute("avator",avator );
+                request.setAttribute("avator",avator ); //session
+                List<Notification> notifications=null;
+                notifications=HomeDao.getNotifications(currentLoginUserID);
+                request.setAttribute("notifications",notifications );
 
 
                 System.out.println("Id is: " + profile.getUserId());

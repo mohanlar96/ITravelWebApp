@@ -2,10 +2,8 @@ package itravel.controller.user;
 
 import itravel.dao.DbUtil;
 import itravel.dao.HomeDao;
-import itravel.model.Address;
-import itravel.model.HomeAvator;
-import itravel.model.Post;
-import itravel.model.Profile;
+import itravel.model.*;
+
 import javax.annotation.Resource;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -67,8 +65,11 @@ public class ProfileServlet extends HttpServlet {
                 if (profile.getUserId() != null) filepath = "profile.jsp";
 
                 posts = getProfilePosts(Integer.parseInt(userid),1); //10 posts // hershw ...
-                avator= HomeDao.getAvator(Integer.parseInt(userid));
+                avator= HomeDao.getAvator(currentLoginUserID);
                 placeVisited=HomeDao.getVisitedPlace(Integer.parseInt(userid));
+                List<Notification> notifications=null;
+                notifications=HomeDao.getNotifications(currentLoginUserID);
+                request.setAttribute("notifications",notifications );
 
                 request.setAttribute("avator",avator );
                 request.setAttribute("posts", posts);

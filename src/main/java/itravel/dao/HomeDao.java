@@ -12,28 +12,31 @@ public class HomeDao {
     // scroll 10th to 20 ths
     public  static  List<Post> getPosts(int UserId ,int page) throws Exception {
         String offset=(page>1)?" OFFSET "+(page-1)*10:"";
-        String sql = "" +
-                "SELECT post.*, person.fname, person.lname, image.link " +
-                "FROM post INNER JOIN user ON post.User_id=user.id " +
-                "INNER JOIN person ON user.Person_id=person.id " +
-                "INNER JOIN user_image ON user.id=user_image.User_id " +
-                "INNER JOIN image ON user_image.Image_id=image.id " +
-                "WHERE user_image.sizeimg='M' order by post.datetime limit 10";  // this one without Followers
+//        String sql = "" +
+//                "SELECT post.*, person.fname, person.lname, image.link " +
+//                "FROM post INNER JOIN user ON post.User_id=user.id " +
+//                "INNER JOIN person ON user.Person_id=person.id " +
+//                "INNER JOIN user_image ON user.id=user_image.User_id " +
+//                "INNER JOIN image ON user_image.Image_id=image.id " +
+//                "WHERE user_image.sizeimg='M' order by post.datetime limit 10";  // this one without Followers
 
-//        String sql = "" +                                                      // this one with Followers
-//                "SELECT ps.*, p.fname, p.lname, i.link " +
-//                "FROM itraveldb.post ps INNER JOIN itraveldb.user u ON ps.User_id=u.id " +
-//                "INNER JOIN itraveldb.person p ON u.Person_id=p.id " +
-//                "INNER JOIN itraveldb.follower f ON u.id=f.User_id " +
-//                "INNER JOIN itraveldb.user_image ui ON u.id=ui.User_id " +
-//                "INNER JOIN itraveldb.image i ON ui.Image_id=i.id " +
-//                "WHERE f.Follower1_id="+UserId+" AND ui.sizeimg='L' " +
-//                "ORDER BY ps.datetime DESC LIMIT "+(page*10)+offset;
+        String sql = "" +                                                      // this one with Followers
+                "SELECT ps.*, p.fname, p.lname, i.link " +
+                "FROM itraveldb.post ps INNER JOIN itraveldb.user u ON ps.User_id=u.id " +
+                "INNER JOIN itraveldb.person p ON u.Person_id=p.id " +
+                "INNER JOIN itraveldb.follower f ON u.id=f.User_id " +
+                "INNER JOIN itraveldb.user_image ui ON u.id=ui.User_id " +
+                "INNER JOIN itraveldb.image i ON ui.Image_id=i.id " +
+                "WHERE (f.Follower1_id="+UserId+" OR u.id="+UserId+") AND ui.sizeimg='L' " +
+                "ORDER BY ps.datetime DESC LIMIT 10"+offset;
+        System.out.println(sql);
 
         return postItems(sql);
 
     }
     public static List<Post> searchPosts(int UserId ,int page ,String searchString) throws Exception {
+        String offset=(page>1)?" OFFSET "+(page-1)*10:"";
+
         String sql = "" +
                 "SELECT ps.*, p.fname, p.lname, i.link " +
                 "FROM itraveldb.post ps INNER JOIN itraveldb.user u ON ps.User_id=u.id " +
@@ -41,8 +44,8 @@ public class HomeDao {
                 "INNER JOIN itraveldb.follower f ON u.id=f.User_id " +
                 "INNER JOIN itraveldb.user_image ui ON u.id=ui.User_id " +
                 "INNER JOIN itraveldb.image i ON ui.Image_id=i.id " +
-                "WHERE ui.sizeimg='L' AND f.Follower1_id="+UserId+" AND ps.description LIKE '%"+searchString+"%' " +
-                "ORDER BY ps.datetime DESC LIMIT "+(page*10); //searching in ps.description using LIKE keyword
+                "WHERE (f.Follower1_id="+UserId+" OR u.id="+UserId+") AND ps.description LIKE '%"+searchString+"%' AND ui.sizeimg='L' " +
+                "ORDER BY ps.datetime DESC LIMIT "+(page*10)+offset;
 
         return postItems(sql);
 
@@ -215,14 +218,15 @@ public class HomeDao {
         con=DbUtil.connectDb();
         Avator avator=null;
         List<Notification> notifications=new ArrayList<>();
-        Notification notification=new Notification();
         try {
 
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1, loginUserId);
             ResultSet row = ps.executeQuery();
             while (row.next()) {
-                 avator = new Avator(row.getInt("id"), row.getString("fname"), row.getString("lname"),row.getString("link"));
+                Notification notification=new Notification();
+
+                avator = new Avator(row.getInt("id"), row.getString("fname"), row.getString("lname"),row.getString("link"));
                  notification.setAvator(avator);
                  notification.setPostDate(row.getString("datetime"));
                  notification.setMessage("Added a post");

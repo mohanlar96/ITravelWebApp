@@ -42,14 +42,14 @@
 
                     <br>
                     <span class="list-title" style="padding: 10px">
-                                                    Upload Images
+                                                    Upload Imagesnotify
                                                 </span>
                     <input type = "file" name = "file" size = "10" multiple/>
                     <br>
-                    <span class="list-title" style="padding: 10px">
+                    <span class="list-title"  style="padding: 10px">
                                                     Notify to my follower
                                                 </span>
-                    <input type = "checkbox" name = "notify"  />
+                    <input type = "checkbox" value="off" name = "notify"  />
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="post-share-btn" data-dismiss="modal">cancel</button>

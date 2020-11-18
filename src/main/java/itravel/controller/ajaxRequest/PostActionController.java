@@ -78,7 +78,10 @@ public class PostActionController extends HttpServlet {
         String destinationAddress=request.getParameter("destinationAddress");
         Integer userID = Integer.parseInt(request.getParameter("userID"));
         String notify = request.getParameter("notify");
-        Integer isNotify = (notify.equals("on")) ? 1 : 0;
+        Integer isNotify=0;
+        if(notify!=null ){
+            isNotify = (notify.equals("on")) ? 1 : 0;
+        }
         System.out.println(notify+" is Notify" +isNotify);
 
         response.getWriter().println("Server=>"+userID +" "+description+"<br> "+latitude +" "+longitude+"  "+departureAddress+" "+destinationAddress );
@@ -519,13 +522,16 @@ public class PostActionController extends HttpServlet {
         List<Post> postItems = HomeDao.searchPosts(userID, 1, keyword); //10 posts // hershw ...
         HomeAvator avator = HomeDao.getAvator(userID);
 
+
         HashMap<String, Object> data = new HashMap<String, Object>();
         data.put("loginAvator", avator);
         data.put("posts", postItems);
+
         //Creating the ObjectMapper object
         ObjectMapper mapper = new ObjectMapper();
         //Converting the Object to JSONString
         String jsonString = mapper.writeValueAsString(data);
+        System.out.println("JUST STING "+jsonString); //set status 200
 
         response.getWriter().println(jsonString);
     }

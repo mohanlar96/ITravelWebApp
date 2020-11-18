@@ -29,7 +29,7 @@ public class AllTravelersServlet extends HttpServlet {
         try {
             allTravelers = dbu.getTraveller(sessionUser,currentUser,"All");
             profile = ProfileServlet.getProfile(request.getParameter("id"));
-            avator= HomeDao.getAvator(currentUser);
+            avator= HomeDao.getAvator(sessionUser);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -38,6 +38,9 @@ public class AllTravelersServlet extends HttpServlet {
         request.setAttribute("profile",profile );
         request.getParameter("id");
         request.setAttribute("avator",avator );
+        List<Notification> notifications=null;
+        notifications=HomeDao.getNotifications(sessionUser);
+        request.setAttribute("notifications",notifications );
         // Sesssion
         request.setAttribute("userID",sessionUser );
 

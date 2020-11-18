@@ -5,7 +5,6 @@
     <p style="font-size:120px;">500</p>
     <div style="font-size:30px;">
         <p style="color:#dc4734; font-weight:500;">Stuff happens, you know. We will be back soon!</p>
-        <p><a href="home.jsp">Go to Homepage</a></p>
     </div>
 </div>
 

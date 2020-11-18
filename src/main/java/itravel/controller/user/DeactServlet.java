@@ -39,7 +39,12 @@ public class DeactServlet extends HttpServlet {
                 ps = myConn.prepareStatement(upd);
                 state = ps.executeUpdate();
 
-                if(state > 0) System.out.println("DeactServlet: Record Updated Successfully");
+                if(state > 0){
+                    System.out.println("DeactServlet: Record Updated Successfully");
+                    request.getSession().invalidate();
+                    response.sendRedirect("login");
+
+                }
                 else System.out.println("DeactServlet: There is a problem in updating Record.");
 
             } catch (SQLException sql) {

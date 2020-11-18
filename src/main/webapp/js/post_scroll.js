@@ -1,5 +1,5 @@
 $(document).ready(function(){
-    pageForPostScroll=1; // page number
+    let pageForPostScroll=1; // page number
 
     $(window).on("scroll", function() {
         var scrollHeight = $(document).height();
@@ -15,6 +15,13 @@ $(document).ready(function(){
                     page:pageForPostScroll,
                 }).done(function(response){
                 const data=JSON.parse(response);
+                if(data.posts.length==0){
+                    alert("End of the Page, Thank you!");
+                    // alert("Try with keyword  OK with user sandy grey to work this feature");
+                }
+
+
+                console.log("page :"+pageForPostScroll);
 
                 console.log(data);
 
@@ -41,8 +48,8 @@ $(document).ready(function(){
             const data=JSON.parse(response);
             console.log(data);
             if(data.posts.length==0){
-                alert("no data relative with follower with this keyword=> "+keywords);
-                alert("Try with keyword  OK with user sandy grey to work this feature");
+                alert("Search Result Not Found => "+keywords);
+                // alert("Try with keyword  OK with user sandy grey to work this feature");
             }
 
 
@@ -143,21 +150,6 @@ $(document).ready(function(){
         }
         // $.getScript("js/post_action.js");
     }
-
-    // $.post("/post/interact",
-    //     {functionRequest:'SCROLL',
-    //         userID:1,
-    //         page:1,
-    //     }).done(function(response){ //list of
-    //     const data=JSON.parse(response);
-    //
-    //     generatePostFromTemplate(data,'scroll');
-    //
-    // }).fail(function() {
-    //     alert( "error" );
-    // });
-
-
 
 
 });
