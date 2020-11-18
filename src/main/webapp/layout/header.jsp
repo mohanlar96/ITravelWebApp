@@ -121,23 +121,22 @@
                             <div class="profile-thumb-small">
                                 <a href="javascript:void(0)" class="profile-triger">
                                     <figure>
-                                        <img src="images/profile/profile-small-1.jpg" alt="profile picture">
+                                        <img src="${avator.profileUrl}" alt="profile picture">
                                     </figure>
                                 </a>
                                 <div class="profile-dropdown">
                                     <div class="profile-head">
-                                        <h5 class="name"><a href="#">Madison Howard</a></h5>
-                                        <a class="mail" href="#">mailnam@mail.com</a>
+                                        <h5 class="name"><a href="profile?id=${avator.id}">${avator.firstName} ${avator.lastName} </a></h5>
+                                        <a class="mail" href="profile?id=${avator.id}">${avator.email} </a>
                                     </div>
                                     <div class="profile-body">
                                         <ul>
-                                            <li><a href="profile.html"><i class="flaticon-user"></i>Profile</a></li>
-                                            <li><a href="#"><i class="flaticon-message"></i>Inbox</a></li>
-                                            <li><a href="#"><i class="flaticon-document"></i>Activity</a></li>
+                                            <li><a href="profile?id=${avator.id}"><i class="flaticon-user"></i>Profile</a></li>
+
                                         </ul>
                                         <ul>
-                                            <li><a href="#"><i class="flaticon-settings"></i>Setting</a></li>
-                                            <li><a href="logout"><i class="flaticon-unlock"></i>Sing out</a></li>
+                                            <li><a href="/editprofile?id=${avator.id}"><i class="flaticon-settings"></i>Edit Profile</a></li>
+                                            <li><a href="logout"><i class="flaticon-unlock"></i>Sign Out</a></li>
                                         </ul>
                                     </div>
                                 </div>
