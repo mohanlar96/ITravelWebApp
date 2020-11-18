@@ -2,15 +2,12 @@ package itravel.controller.admin;
 
 import itravel.model.BanWord;
 import itravel.dao.AdminWordDao;
-
-import javax.annotation.Resource;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
@@ -18,40 +15,13 @@ import java.util.List;
 @WebServlet(value = "/admin/controlWords")
 public class ControlWordsServlet extends HttpServlet {
 
-//    private DbUtil AdminWordDao;
-
-
-//    @Resource(name="jdbc/travelDb")
-//    private DataSource dataSource;
-
-    @Override
-    public void init() throws ServletException {
-        super.init();
-        // create out student db util ... and pass in the conn pool / datasource
-        try {
-            //AdminWordDao = new DbUtil(dataSource);
-
-        }
-        catch (Exception exc) {
-            throw new ServletException(exc);
-        }
-    }
-
-
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-    }
-
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//        PrintWriter out = response.getWriter();
-//        out.println("<html><body>");
-//        out.println("Hello world");
-//        out.println("</html></body>");
+        // cmdWordServlet parameter stores the command
         String theCommand = request.getParameter("cmdWordServlet");
+
         if (theCommand == null) {
             theCommand = "LIST";
         }
-
         try {
             //listStudents(request,response);
             switch(theCommand) {
@@ -74,13 +44,12 @@ public class ControlWordsServlet extends HttpServlet {
         catch (Exception exc) {
             throw new ServletException(exc);
         }
-
-
     }
 
     private void deleteBanWord(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String tempStr = request.getParameter("newWord");
         String tempId = request.getParameter("currId");
+
         // if one of them is null, return
         if (tempStr==null || tempId==null) {
             return;
@@ -99,7 +68,6 @@ public class ControlWordsServlet extends HttpServlet {
     private void updateBanWord(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String tempStr = request.getParameter("newWord");
         String tempId = request.getParameter("currId");
-
         // if one of them is null, return
         if (tempStr==null || tempId==null) {
             return;
@@ -115,25 +83,23 @@ public class ControlWordsServlet extends HttpServlet {
         out.println("success");
         out.flush();
         out.close();
-
     }
 
+    // if unknown command is give, it will return this error html
     private void errorPage(HttpServletRequest request, HttpServletResponse response) throws Exception {
         PrintWriter out = response.getWriter();
-
         out.println("<html><body>");
         out.println("Error");
         out.println("</html></body>");
     }
 
+    // This command adds new word in the list.
     private void addBanWord(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        System.out.print("new add request:");
         // get the new Word
         String tempStr = request.getParameter("newWord");
-        System.out.println(tempStr);
+
         // create the new BanWord Object
         BanWord tempWord = new BanWord("0",tempStr);
-        System.out.println("it is ok");
 
         // add new record to the DB;
         AdminWordDao.addWord(tempWord);
@@ -143,12 +109,11 @@ public class ControlWordsServlet extends HttpServlet {
         out.println("success");
         out.flush();
         out.close();
-        //send back to control words page
-        //listBanWords(request,response);
     }
 
+    // get List of the banned words
     private void listBanWords(HttpServletRequest request, HttpServletResponse response) throws Exception{
-        int selectedPageN = 0;
+        int selectedPageN;
         String tempStr = request.getParameter("page");
         if (tempStr==null) {
             selectedPageN = 1;
@@ -156,21 +121,17 @@ public class ControlWordsServlet extends HttpServlet {
             selectedPageN = Integer.parseInt(tempStr);
         }
 
-        System.out.println("Page number is:"+selectedPageN);
-
         // get count of all words
         int rowCnt = AdminWordDao.getCntBanWords();
 
         // each page contains 10 words
         int totalPageN = ((rowCnt-1)/10)+1;
-        System.out.println("RowCnt:"+rowCnt);
-        System.out.println("TotalPageNumber:"+totalPageN);
+
         if (selectedPageN>totalPageN && selectedPageN<=0) {
             //selected page is out of range
             //change it to first page
             selectedPageN = 1;
         }
-
 
         List<BanWord> theBanWords = AdminWordDao.getBanWords(selectedPageN);
         // add students to the request
