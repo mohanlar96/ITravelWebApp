@@ -4,7 +4,7 @@
 <!-- post status start -->
 <c:forEach var="post" items="${requestScope.posts}">
 
-    <c:set var="isLiked" scope="application" value="${(post.reactions.stream().filter(x->x.getAvator().getId()==requestScope.avator.id).count()>=1)}"/>
+   <c:set var="isLiked" scope="application" value="${(post.reactions.stream().filter(x->x.getAvator().getId()==requestScope.avator.id).count()>=1)}"/>
     <c:set var="isMyPost" scope="application" value="${(post.avator.id==requestScope.avator.id)}"/>
 
 
@@ -46,7 +46,7 @@
                     ${post.description}
             </p>
             <p class="post-desc">
-                <b>Travelling</b> From : <b> <u id="post-departureAddress-${post.postID}"> ${post.desAddress}</u></b> To :  <b> <u id="post-destinationAddress-${post.postID}"> ${post.desAddress}</u></b>
+                <b>Travelling</b> From : <b> <u class="weather" id="post-departureAddress-${post.postID}"> ${post.depAddress}</u></b> To :  <b> <u class="weather" id="post-destAddress-${post.postID}"> ${post.desAddress}</u></b>
             </p>
 
             <c:set var="images" value="${post.images}" scope="request"/>
@@ -55,7 +55,7 @@
             <div class="post-meta">
                 <button class="post-meta-like">
                     <c:if test="${isLiked}">
-                        <button class="like-button click-on-like" i style="margin-left: 0; padding: 0 10px; float: left" data-isliked="true" >
+                        <button class="like-button click-on-like"  style="margin-left: 0; padding: 0 10px; float: left" data-isliked="true" >
                             <img class="heart" src="/images/icons/heart.png" alt="">
                             <img class="heart-color liked " src="/images/icons/heart-color.png" alt="" style="margin-left: 12px;">
                         </button>
@@ -66,12 +66,13 @@
                             <img class="heart-color " src="/images/icons/heart-color.png" alt="" style="margin-left: 12px;">
                         </button>
                     </c:if>
-
                     <button class="like-button show-liked-dialog">
-                        <span > <c:if test="${isLiked}">You and </c:if>${fn:length(post.reactions)} people like this</span>
+                        <span> <c:if test="${isLiked && fn:length(post.reactions)==1}">You liked it</c:if>
+                                <c:if test="${isLiked && fn:length(post.reactions)!=1}">You and ${fn:length(post.reactions)} people liked this</c:if>
+                                <c:if test="${!isLiked}">${fn:length(post.reactions)} people liked this </c:if>
+                        </span>
                         <strong  >${fn:length(post.reactions)}</strong>
                     </button>
-
                 </button>
                 <ul class="comment-share-meta">
                     <li>
@@ -98,9 +99,9 @@
                     <li class="d-flex align-items-center profile-active comment-item-${post.postID}" style="display: none!important;">
                         <!-- profile picture end -->
                         <div class="profile-thumb ">
-                            <a href="/">
+                            <a href="/profile?id=${post.avator.id}">
                                 <figure class="profile-thumb-small">
-                                    <img src="/" alt="profile picture">
+                                    <img src="/${post.avator.profileUrl}" alt="profile picture">
                                 </figure>
                             </a>
                         </div>
@@ -158,8 +159,15 @@
                 <h4 class="widget-title"> Liked By </h4>
                 <ul>
                     <c:forEach var="reaction" items="${post.reactions}">
+                        <c:if test="${reaction.avator.id==requestScope.avator.id}">
+                            <li class="d-flex align-items-center profile-active myLikeList">
 
-                        <li class="d-flex align-items-center profile-active">
+                        </c:if>
+                        <c:if test="${reaction.avator.id!=requestScope.avator.id}">
+                            <li class="d-flex align-items-center profile-active ">
+
+                        </c:if>
+
                             <!-- profile picture end -->
                             <div class="profile-thumb ">
                                 <a href="/profile?id=${reaction.avator.id}">
@@ -182,7 +190,7 @@
                     <div class="ps__thumb-y" tabindex="0" style="top: 81px; height: 269px;"></div>
                 </div>
             </div>
-            <!-- List of like list box end -->
+        <!-- List of like list box end -->
 
 
         <!-- Commant Box Start -->
@@ -211,3 +219,10 @@
     </div>
     <!-- post status end -->
 </c:forEach>
+<c:import url="partial/weather-focus.jsp" />
+<c:import url="partial/post-template.jsp" />
+
+
+
+
+

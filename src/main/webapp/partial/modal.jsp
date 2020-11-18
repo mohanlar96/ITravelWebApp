@@ -6,18 +6,16 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<!-- share content box end -->
-<%--                            <script--%>
-<%--                                    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCneh1NGoaH33EkKQ6SltmLoqNtwbLqZ7U&callback=initAutocomplete&libraries=places&v=weekly"--%>
-<%--                                    defer--%>
-<%--                            ></script>--%>
+<%--<!-- share content box end -->--%>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCneh1NGoaH33EkKQ6SltmLoqNtwbLqZ7U&callback=initAutocomplete&libraries=places&v=weekly" defer></script>
 <script src="js/geolocation.js"></script>
 <!-- Modal start -->
 <form action = "post/interact" method ="post" enctype="multipart/form-data">
     <%--                            <form action = "post/interact" method ="post" >--%>
     <input type="hidden" name="userID" value="${requestScope.avator.id}">
-    <input type="hidden" name="latitude"  value="8998.233" id="latitude">
-    <input type="hidden" name="longitude" value="239823.99" id="longitude">
+    <input type="hidden" name="latitude"  value="41.023061899999995" id="latitude">
+    <input type="hidden" name="longitude" value="-91.96650070000001" id="longitude">
+<%--        default fairfield iowa ,usa lat and long --%>
     <input type="hidden" name="functionRequest" value="POST">
 
     <div class="modal fade" id="textbox" aria-labelledby="textbox">
@@ -31,15 +29,15 @@
                 </div>
                 <div class="modal-body custom-scroll">
                                                 <span class="share-text-box">
-                                                    <textarea required name="description" class="share-field-big share-text-field custom-scroll" placeholder="Say Something">Testing Data Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy.</textarea>
+                                                    <textarea required name="description" class="share-field-big share-text-field custom-scroll" placeholder="Say Something"></textarea>
                                                 </span>
                     <span class="share-text-box">
-                                                    <textarea required name="departureAddress" id="autocompleteDep" onFocus="geolocate()"  class="share-text-field" placeholder="Depature Travel Location" spellcheck="false" >IOWA, USA</textarea>
-                                                    <grammarly-extension style="position: absolute; top: 0px; left: 0px; pointer-events: none; z-index: auto;" class="_1KJtL"></grammarly-extension>
+                                                    <input type="text" required name="departureAddress" autocomplete="on" id="autocompleteDep" onFocus="geolocate()"  class="share-text-field" placeholder="Depature Travel Location">
+<%--                                                    <grammarly-extension style="position: absolute; top: 0px; left: 0px; pointer-events: none; z-index: auto;" class="_1KJtL"></grammarly-extension>--%>
                                             </span>
                     <span class="share-text-box">
-                                                    <textarea required name="destinationAddress" id="autocompleteDest" onFocus="geolocate()"  class="share-text-field" placeholder="Depature Travel Location" spellcheck="false" >CA ,USA </textarea>
-                                                    <grammarly-extension style="position: absolute; top: 0px; left: 0px; pointer-events: none; z-index: auto;" class="_1KJtL"></grammarly-extension>
+                                                    <input type="text" required name="destinationAddress" autocomplete="on" id="autocompleteDest" onFocus="geolocate()"  class="share-text-field" placeholder="Depature Travel Location" />
+<%--                                                    <grammarly-extension style="position: absolute; top: 0px; left: 0px; pointer-events: none; z-index: auto;" class="_1KJtL"></grammarly-extension>--%>
                                             </span>
 
                     <br>
@@ -47,6 +45,11 @@
                                                     Upload Images
                                                 </span>
                     <input type = "file" name = "file" size = "10" />
+                    <br>
+                    <span class="list-title" style="padding: 10px">
+                                                    Notify to my follower
+                                                </span>
+                    <input type = "checkbox" name = "notify"  />
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="post-share-btn" data-dismiss="modal">cancel</button>

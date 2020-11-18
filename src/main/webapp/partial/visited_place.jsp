@@ -12,6 +12,7 @@
     <!-- widget single item start -->
     <div class="card widget-item">
         <h4 class="widget-title">Place You have Visited</h4>
+        <h3 class="list-subtitle" style="margin-bottom: 20px;color: #dc4734; font-size: 15px;font-weight: bold;">Click on the city for Weather Info</h3>
         <div class="widget-body">
 
             <ul class="like-page-list-wrapper">
@@ -35,7 +36,7 @@
                             <h3 class="list-title"><a href="#">${place_arr[place_length-1]}</a></h3>
                             <p class="list-subtitle"><a href="#">State : <b>${place_arr[place_length-2]}</b></a>
                             </p>
-                            <p class="list-subtitle"><a href="#">City : <b>${place_arr[place_length-3]}</b></a>
+                            <p class="list-subtitle"><a  href="#">City : <b> <u class="weather">${place_arr[place_length-3]}</u></b></a>
                             </p>
                         </div>
                     </li>
@@ -46,7 +47,7 @@
                     <div class="profile-thumb">
                         <a href="#">
                             <figure>
-                                <img src="images/icons/sad.png" alt="Location">
+                                <img src="images/icons/sad.jpg" alt="Location">
                             </figure>
                         </a>
                     </div>

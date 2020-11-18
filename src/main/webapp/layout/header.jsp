@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
 <!doctype html>
 <html class="no-js" lang="en">
 <!-- Mirrored from demo.hasthemes.com/ITravel-preview/ITravel/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 11 Nov 2020 03:42:57 GMT -->
@@ -7,14 +9,12 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>ITravel - Social Network HTML Template</title>
+    <title>ITravel - Travelling To the World</title>
     <meta name="robots" content="noindex, follow" />
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Favicon -->
     <link rel="shortcut icon" type="image/x-icon" href="images/favicon.png">
-
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 
     <!-- CSS
     ============================================ -->
@@ -38,6 +38,8 @@
     <link rel="stylesheet" href="css/plugins/lightgallery.min.css">
     <!-- Main Style CSS -->
     <link rel="stylesheet" href="css/style.css">
+
+
 </head>
 
 <body>
@@ -61,69 +63,30 @@
                                             </button>
                                         </div>
                                         <ul class="dropdown-msg-list">
+                                            <c:forEach var="notification" items="${notifications}">
+
                                             <li class="msg-list-item d-flex justify-content-between">
                                                 <!-- profile picture end -->
                                                 <div class="profile-thumb">
                                                     <figure class="profile-thumb-middle">
-                                                        <img src="images/profile/profile-small-3.jpg" alt="profile picture">
+                                                        <img src="${notification.avator.profileUrl}" alt="profile picture">
                                                     </figure>
                                                 </div>
                                                 <!-- profile picture end -->
                                                 <!-- message content start -->
                                                 <div class="msg-content notification-content">
-                                                    <a href="profile.html">Robert Faul</a>,
-                                                    <a href="profile.html">william jhon</a>
-                                                    <p>and 35 other people reacted to your photo</p>
+                                                    <a href="profile.html">${notification.avator.firstName} ${notification.avator.lastName}</a>,
+                                                    <p>${notification.message}</p>
                                                 </div>
                                                 <!-- message content end -->
                                                 <!-- message time start -->
                                                 <div class="msg-time">
-                                                    <p>25 Apr 2019</p>
+                                                    <p>${notification.datetime}</p>
                                                 </div>
                                                 <!-- message time end -->
                                             </li>
-                                            <li class="msg-list-item d-flex justify-content-between">
-                                                <!-- profile picture end -->
-                                                <div class="profile-thumb">
-                                                    <figure class="profile-thumb-middle">
-                                                        <img src="images/profile/profile-small-4.jpg" alt="profile picture">
-                                                    </figure>
-                                                </div>
-                                                <!-- profile picture end -->
-                                                <!-- message content start -->
-                                                <div class="msg-content notification-content">
-                                                    <a href="profile.html">Robert mushkil</a>,
-                                                    <a href="profile.html">Terry jhon</a>
-                                                    <p>and 20 other people reacted to your photo</p>
-                                                </div>
-                                                <!-- message content end -->
-                                                <!-- message time start -->
-                                                <div class="msg-time">
-                                                    <p>20 May 2019</p>
-                                                </div>
-                                                <!-- message time end -->
-                                            </li>
-                                            <li class="msg-list-item d-flex justify-content-between">
-                                                <!-- profile picture end -->
-                                                <div class="profile-thumb">
-                                                    <figure class="profile-thumb-middle">
-                                                        <img src="images/profile/profile-small-6.jpg" alt="profile picture">
-                                                    </figure>
-                                                </div>
-                                                <!-- profile picture end -->
-                                                <!-- message content start -->
-                                                <div class="msg-content notification-content">
-                                                    <a href="profile.html">Horijon Mbala</a>,
-                                                    <a href="profile.html">Bashu jhon</a>
-                                                    <p>and 55 other people reacted to your post</p>
-                                                </div>
-                                                <!-- message content end -->
-                                                <!-- message time start -->
-                                                <div class="msg-time">
-                                                    <p>15 Jan 2019</p>
-                                                </div>
-                                                <!-- message time end -->
-                                            </li>
+                                            </c:forEach>
+
                                         </ul>
                                         <div class="msg-dropdown-footer">
                                             <button>See all in messenger</button>
@@ -147,8 +110,8 @@
                     <div class="header-top-right d-flex align-items-center justify-content-end">
                         <!-- header top search start -->
                         <div class="header-top-search">
-                            <form class="top-search-box">
-                                <input type="text" placeholder="Search" class="top-search-field">
+                            <form  type="post" class="top-search-box" id="search">
+                                <input type="text"  placeholder="Search" class="top-search-field">
                                 <button class="top-search-btn"><i class="flaticon-search"></i></button>
                             </form>
                         </div>
@@ -158,23 +121,22 @@
                             <div class="profile-thumb-small">
                                 <a href="javascript:void(0)" class="profile-triger">
                                     <figure>
-                                        <img src="images/profile/profile-small-1.jpg" alt="profile picture">
+                                        <img src="${avator.profileUrl}" alt="profile picture">
                                     </figure>
                                 </a>
                                 <div class="profile-dropdown">
                                     <div class="profile-head">
-                                        <h5 class="name"><a href="#">Madison Howard</a></h5>
-                                        <a class="mail" href="#">mailnam@mail.com</a>
+                                        <h5 class="name"><a href="profile?id=${avator.id}">${avator.firstName} ${avator.lastName} </a></h5>
+                                        <a class="mail" href="profile?id=${avator.id}">${avator.email} </a>
                                     </div>
                                     <div class="profile-body">
                                         <ul>
-                                            <li><a href="profile.html"><i class="flaticon-user"></i>Profile</a></li>
-                                            <li><a href="#"><i class="flaticon-message"></i>Inbox</a></li>
-                                            <li><a href="#"><i class="flaticon-document"></i>Activity</a></li>
+                                            <li><a href="profile?id=${avator.id}"><i class="flaticon-user"></i>Profile</a></li>
+
                                         </ul>
                                         <ul>
-                                            <li><a href="#"><i class="flaticon-settings"></i>Setting</a></li>
-                                            <li><a href="signup.html"><i class="flaticon-unlock"></i>Sing out</a></li>
+                                            <li><a href="/editprofile?id=${avator.id}"><i class="flaticon-settings"></i>Edit Profile</a></li>
+                                            <li><a href="logout"><i class="flaticon-unlock"></i>Sign Out</a></li>
                                         </ul>
                                     </div>
                                 </div>

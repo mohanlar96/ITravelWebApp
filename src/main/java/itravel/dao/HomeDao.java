@@ -173,7 +173,7 @@ public class HomeDao {
             String sql="" +
                     "select post.destinationAddress " +
                     "from post " +
-                    "where User_id=? ";
+                    "where User_id=? order by id desc";
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1,avatorID);
             ResultSet row = ps.executeQuery();
@@ -188,6 +188,41 @@ public class HomeDao {
         }
         return visitedPlaces;
 
+    }
+
+    public static List<Notification> getNotifications(int loginUserId){
+        String sql="" +
+                "SELECT p.id, p.fname, p.lname, i.link,post.datetime FROM itraveldb.person p " +
+                "        INNER JOIN itraveldb.user u ON p.id=u.Person_id " +
+                "        INNER JOIN itraveldb.user_image ui ON u.id=ui.User_id " +
+                "        INNER JOIN itraveldb.image i ON ui.Image_id=i.id " +
+                "        INNER JOIN itraveldb.post ps ON u.id=ps.User_id " +
+                "        INNER JOIN itraveldb.follower f ON u.id=f.User_id " +
+                "        WHERE f.Follower1_id=? AND p.notified=1 AND ui.sizeimg='S' ";
+
+
+        con=DbUtil.connectDb();
+        Avator avator=null;
+        List<Notification> notifications=new ArrayList<>();
+        Notification notification=new Notification();
+        try {
+
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, loginUserId);
+            ResultSet row = ps.executeQuery();
+            while (row.next()) {
+                 avator = new Avator(row.getInt("id"), row.getString("fname"), row.getString("lname"),row.getString("link"));
+                 notification.setAvator(avator);
+                 notification.setPostDate(row.getString("datetime"));
+                 notification.setMessage("Added a post");
+                 notifications.add(notification);
+            }
+            DbUtil.close(con, ps, row);
+        }  catch (SQLException throwables) {
+        throwables.printStackTrace();
+         }
+        return notifications;
+
 
     }
 
@@ -196,7 +231,7 @@ public class HomeDao {
         HomeAvator avator=null;
         try {
             String sql="" +
-                    "SELECT user.id,user.Biography,person.fname,person.lname  " +
+                    "SELECT user.email,user.id,user.Biography,person.fname,person.lname  " +
                     "FROM  user INNER JOIN person ON user.Person_id=person.id " +
                     "WHERE  user.id=?";
             PreparedStatement ps = con.prepareStatement(sql);
@@ -206,6 +241,7 @@ public class HomeDao {
             {
                 avator =new HomeAvator(row.getInt("id"),row.getString("fname"),row.getString("lname"),null);
                 avator.setBiography(row.getString("biography"));
+                avator.setEmail(row.getString("email"));
             }
             sql="SELECT image.link, user_image.sizeimg " +
                     "FROM image INNER JOIN user_image ON image.id=user_image.Image_id WHERE " +

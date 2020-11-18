@@ -4,6 +4,15 @@ public class HomeAvator  extends Avator{
     private String banner;
     private String biography;
     private String avatorIcon;
+    private  String email;
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     public HomeAvator(int id, String firstName, String lastName, String profileUrl) {
         super(id, firstName, lastName, profileUrl);

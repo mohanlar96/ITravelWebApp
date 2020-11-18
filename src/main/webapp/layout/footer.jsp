@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <!-- Scroll to top start -->
 <div class="scroll-top not-visible">
     <i class="bi bi-finger-index"></i>
@@ -576,10 +578,14 @@
 <!-- isotope filter js -->
 <script src="js/plugins/isotope.pkgd.min.js"></script>
 <%--just  custom for posts --%>
-<script src="js/like_comment_delete_post.js"></script>
-
+<script src="js/post_action.js"></script>
+<%--infinite scroll--%>
+<script src="js/post_scroll.js"></script>
 <!-- Main JS -->
 <script src="js/main.js"></script>
+
+<c:import url="partial/post-template.jsp" />
+
 </body>
 <!-- Mirrored from demo.hasthemes.com/ITravel-preview/ITravel/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 11 Nov 2020 03:43:14 GMT -->
 
