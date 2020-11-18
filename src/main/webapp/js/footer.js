@@ -1,13 +1,11 @@
 $(document).ready(function () {
     $(".add-frnd").click(function () {
-        $userSession = $('#hidden-session-user-id').val();
         $travellerID = $(this).attr('id'); //Button ID
         $followStatus = $('#' + $travellerID).html().trim();
         //  alert($userSession+" "+$travellerID+" "+$followStatus);
         $.ajax({
             url: "FollowUnfollowServlet",
             data: {
-                "SessionUser": $userSession,
                 "TravellerID": $travellerID,
                 "FollowingStatus": $followStatus
             },
@@ -32,10 +30,9 @@ $(document).ready(function () {
     $(".footerBtn").click(function (e) {
         e.preventDefault();
         const $travelerType = $(this).attr('name').toString().trim(); // Follower or Followee
-        const $userID = $('#avatar-id-hidden').val().toString().trim();  //Comes from Footer Holding the ID of the Opened Profile
-        // alert($userID.length);
-        // if ($userID.length == 4) ; // if current avatar is null, consider the current session
-        // $userID = $('#hidden-session-user-id').val().toString().trim();
+        var $userID = $('#avatar-id-hidden').val().toString().trim();  //Comes from Footer Holding the ID of the Opened Profile
+         if ($userID.length > 3) ; // if current avatar is null, consider the current session
+         $userID = $('#hidden-session-user-id').val().toString().trim();
         $.ajax({
             type: "GET",
             url: "FooterTravelersServlet",

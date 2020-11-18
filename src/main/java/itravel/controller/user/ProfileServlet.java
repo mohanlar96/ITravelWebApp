@@ -57,14 +57,14 @@ public class ProfileServlet extends HttpServlet {
         List<String> placeVisited = new ArrayList<>();
         try {
             String filepath = "aaaaaaaaa";
-            if(sessionid!=null && sessionid.equals(userid) && userid.length()>0 && userid.chars().mapToObj(c -> (char) c).allMatch(Character::isDigit)){
+            if(sessionid!=null && userid.length()>0 && userid.chars().mapToObj(c -> (char) c).allMatch(Character::isDigit)){
                 // get whatever from db util
                 Profile profile = getProfile(userid);
 
                 // add students to the request
                 request.setAttribute("prof", profile);
                // System.out.println("Id is: " + profile.getUserId());
-                if (profile.getUserId() != null) filepath = "/profile.jsp";
+                if (profile.getUserId() != null) filepath = "profile.jsp";
 
                 posts = getProfilePosts(Integer.parseInt(userid),1); //10 posts // hershw ...
                 avator= HomeDao.getAvator(Integer.parseInt(userid));

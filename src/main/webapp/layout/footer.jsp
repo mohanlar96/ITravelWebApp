@@ -20,7 +20,7 @@
                         <div class="footer-card footer-card-override position-relative">
                             <div class="friends-search">
                                 <input type="hidden" id="hidden-session-user-id"
-                                    value="${userID}">
+                                    value="<%=session.getAttribute("userId")%>">
                                 <%--   Session needed here in the hidden-button value--%>
 
                                 <input type="hidden" id="avatar-id-hidden"

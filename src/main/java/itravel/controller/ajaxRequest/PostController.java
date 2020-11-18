@@ -21,7 +21,7 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
-@WebServlet(value = "/post")
+@WebServlet(value = "/myPost")
 @MultipartConfig
 public class PostController extends HttpServlet {
         Connection con = null;
@@ -35,7 +35,7 @@ public class PostController extends HttpServlet {
         }
 
 
-    private void post(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Connection con = DbUtil.connectDb();
 
         String description = request.getParameter("description");
@@ -43,7 +43,7 @@ public class PostController extends HttpServlet {
         String destinationAddress = request.getParameter("destinationAddress");
         Double latitude = Double.valueOf(request.getParameter("latitude"));
         Double longitude = Double.valueOf(request.getParameter("longitude"));
-        Integer userID = Integer.parseInt(request.getParameter("userID"));
+        Integer UserID = Integer.parseInt(request.getParameter("UserID"));
         String notify = request.getParameter("notify");
         Integer isNotify = (notify == "on") ? 1 : 0;
 
@@ -55,7 +55,7 @@ public class PostController extends HttpServlet {
         }
 
 
-        response.getWriter().println("Server=>" + userID + " " + description + "<br> " + latitude + " " + longitude + "  " + departureAddress + " " + destinationAddress);
+        response.getWriter().println("Server=>" + UserID + " " + description + "<br> " + latitude + " " + longitude + "  " + departureAddress + " " + destinationAddress);
 
 
         try {
@@ -75,7 +75,7 @@ public class PostController extends HttpServlet {
             state.setString(6, destinationAddress);
             state.setInt(7, unhealthy);//unhealthy
             state.setInt(8, isNotify);
-            state.setInt(9, userID);
+            state.setInt(9, UserID);
             // execute SQL statement
             int postID = 0;
             state.executeUpdate();
@@ -116,19 +116,17 @@ public class PostController extends HttpServlet {
             state.setInt(2, imagePrimaryKey);
             state.executeUpdate();
 
-
             DbUtil.close(con, state, row);
             response.getWriter().println("Successfully Added the post with images !");
-//            response.sendRedirect("/");
+            response.sendRedirect("/");
 
 
-        } catch (SQLException throwables) {
+        } catch (SQLException | IOException | ServletException throwables) {
             throwables.printStackTrace();
         }
     }
 
     private int insertAnImageIntoDbTable(String url) {
-
         try {
             String sql = "insert  into image(name,link) VALUES(?,?)";
 
@@ -150,7 +148,6 @@ public class PostController extends HttpServlet {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-
         return 0;
     }
 

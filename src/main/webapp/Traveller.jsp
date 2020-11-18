@@ -132,17 +132,12 @@
                                             </a>
                                         </div>
                                         <div class="posted-author">
-                                            <h6 class="author"><a
-                                                    href="<%=request.getContextPath()%>/profile?id=${trvlr.getUserID()}">
+                                            <h6 class="author"><a href="/profile?id=${trvlr.getUserID()}">
                                                     ${trvlr.getFirstName().toString()} ${trvlr.getLastName().toString()}
                                             </a></h6>
                                         </div>
                                         <div class="posted-author">
-<%--                                            <%--%>
-<%--                                                String buttontype = "";--%>
-<%--                                                if (profile_ID != Integer.parseInt(session.getAttribute("UserSessionID").toString()))--%>
-<%--                                                    buttontype = "disabled";--%>
-<%--                                            %>--%>
+
 <%--    ======================================================== Session Analysis Here =======================================--%>
                                             <button class="add-frnd" id="${trvlr.getUserID()}"
                                                     style="font-weight: ${myFontWeight}"  >${buttonName}</button>

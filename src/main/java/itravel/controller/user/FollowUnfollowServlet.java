@@ -15,7 +15,10 @@ import java.io.PrintWriter;
 public class FollowUnfollowServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
        // doPost(request, response);
-        int currentUser = Integer.parseInt(request.getParameter("SessionUser"));
+        Object userId = request.getSession().getAttribute("userId");
+        int currentUser = (int)userId;
+//        request.setAttribute("userID",currentLoginUserID );
+       // int currentUser = Integer.parseInt(request.getParameter("SessionUser"));
         int travellerID = Integer.parseInt(request.getParameter("TravellerID"));
         String followingStatus = request.getParameter("FollowingStatus").toString();
         // System.oxut.println(currentUser + " " + travellerID + " " + followingStatus);

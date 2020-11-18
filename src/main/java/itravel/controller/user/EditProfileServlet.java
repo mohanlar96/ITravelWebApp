@@ -33,9 +33,9 @@ public class EditProfileServlet extends HttpServlet {
         try {
 
             String filepath = "aaaaaaaaa";
-            if(sessionid!=null && sessionid.equals(userid) && userid.length()>0 && userid.chars().mapToObj(c -> (char) c).allMatch(Character::isDigit)){
+            if(sessionid!=null && sessionid.length()>0 && sessionid.chars().mapToObj(c -> (char) c).allMatch(Character::isDigit)){
                 // get whatever from db util
-                Profile profile = getProfile(userid);
+                Profile profile = getProfile(sessionid);
                 HashMap<String,List<String>> locations = getLocations();
 
                 // add profile to attributes
