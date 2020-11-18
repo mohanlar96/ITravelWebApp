@@ -21,7 +21,11 @@ public class FooterTravelersServlet extends HttpServlet {
 
         int currentUser = Integer.parseInt(request.getParameter("currentUserID"));
         String myTravellerType = request.getParameter("travellerType").trim();
-        HttpSession session=request.getSession();
+
+        Object userId = request.getSession().getAttribute("userId");
+        Integer currentLoginUserID = (int)userId;
+        request.setAttribute("userID",currentLoginUserID );
+
         int sessionUser = 2;
 //        session.setAttribute("currntUser",currentUser);
 

@@ -49,7 +49,8 @@
                 </div>
                 <div class="col-lg-2 col-md-3 d-none d-md-block">
                     <div class="profile-edit-panel">
-                        <button onclick="window.location.href='editprofile?id=2'" class="edit-btn">EDIT PROFILE</button>
+
+                        <button onclick="window.location.href='editprofile?id=${userID}'" class="edit-btn">EDIT PROFILE</button>
                         <%--    ======================================================== Session Analysis Here =======================================--%>
                     </div>
                 </div>

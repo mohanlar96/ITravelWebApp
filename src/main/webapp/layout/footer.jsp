@@ -19,17 +19,8 @@
                         <div class="footer-card footer-card-override position-relative">
                             <div class="friends-search">
                                 <input type="hidden" id="hidden-session-user-id"
-                                    value="2">
+                                    value="${userID}">
                                 <%--   Session needed here in the hidden-button value--%>
-
-<%--                                <%--%>
-<%--                                    String hiddenVal = "2";--%>
-<%--                                    if (request.getParameter("id").toString() != null && request.getParameter("id").toString() != "")--%>
-<%--                                    {--%>
-<%--                                        hiddenVal = request.getParameter("id").toString();--%>
-
-<%--                                    }--%>
-<%--                                %>--%>
 
                                 <input type="hidden" id="avatar-id-hidden"
                                        value="<%=request.getParameter("id")%>">
