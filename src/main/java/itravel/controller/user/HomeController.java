@@ -1,5 +1,7 @@
 package itravel.controller.user;
-import itravel.dao.PostDao;
+import itravel.dao.HomeDao;
+import itravel.model.HomeAvator;
+import itravel.model.Notification;
 import itravel.model.Post;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -18,9 +20,21 @@ public class HomeController extends HttpServlet {
     }
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            List<Post> posts = PostDao.getPosts(); //10 posts
+
+            Object userId = request.getSession().getAttribute("userId");
+            Integer currentLoginUserID = (int)userId;
+            // need to connect with session .
+            List<Post> posts = HomeDao.getPosts(currentLoginUserID,1); //10 posts // hershw ...
+            HomeAvator avator= HomeDao.getAvator(currentLoginUserID);
+            List<String> placeVisited=HomeDao.getVisitedPlace(currentLoginUserID);
+            List<Notification> notifications=null;
+//            =HomeDao.getNotifications(currentLoginUserID);
+            request.setAttribute("notifications",notifications );
+            request.setAttribute("avator",avator );
             request.setAttribute("posts", posts);
+            request.setAttribute("places",placeVisited);
             RequestDispatcher dispatcher = request.getRequestDispatcher("/home.jsp");
+
             dispatcher.forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();

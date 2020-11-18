@@ -1,24 +1,24 @@
 package itravel.model;
 
 public class PostReaction {
-    private User user;
+    private Avator avator;
 
-    public PostReaction(User user) {
-        this.user = user;
+    public PostReaction(Avator avator) {
+        this.avator = avator;
     }
 
-    public User getUser() {
-        return user;
+    public Avator getAvator() {
+        return avator;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setAvator(Avator avator) {
+        this.avator = avator;
     }
 
     @Override
     public String toString() {
         return "PostReaction{" +
-                "user=" + user +
+                "avator=" + avator +
                 '}';
     }
 }

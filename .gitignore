@@ -1,3 +1,5 @@
 .idea
 target
+target.*
 *.MF
+src.main.webapp.adda.*

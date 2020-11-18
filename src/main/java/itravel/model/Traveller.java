@@ -1,6 +1,6 @@
 package itravel.model;
 
-public class PeopleFollow {
+public class Traveller {
     private int userID;
     private String firstName;
     private String lastName;

@@ -1,6 +1,10 @@
 package itravel.controller.user;
 
 import itravel.dao.DbUtil;
+import itravel.dao.HomeDao;
+import itravel.model.Address;
+import itravel.model.HomeAvator;
+import itravel.model.Post;
 import itravel.model.Profile;
 import javax.annotation.Resource;
 import javax.servlet.RequestDispatcher;
@@ -14,6 +18,10 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+
+import static itravel.dao.HomeDao.postItems;
 
 @WebServlet(value = "/profile")
 public class ProfileServlet extends HttpServlet {
@@ -40,17 +48,31 @@ public class ProfileServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException{
+        Object userId = request.getSession().getAttribute("userId");
+        Integer currentLoginUserID = (int)userId;
+        String sessionid = String.valueOf(currentLoginUserID) ;//CHANGE FOR SESSION ID
         String userid = request.getParameter("id");
+        List<Post> posts = new ArrayList<>();
+        HomeAvator avator = new HomeAvator(0, "", "", "");
+        List<String> placeVisited = new ArrayList<>();
         try {
             String filepath = "aaaaaaaaa";
-            if(userid != null && userid.length()>0 && userid.chars().mapToObj(c -> (char) c).allMatch(Character::isDigit)){
+            if(sessionid!=null && sessionid.equals(userid) && userid.length()>0 && userid.chars().mapToObj(c -> (char) c).allMatch(Character::isDigit)){
                 // get whatever from db util
                 Profile profile = getProfile(userid);
 
                 // add students to the request
                 request.setAttribute("prof", profile);
-                System.out.println("Id is: " + profile.getUserId());
+               // System.out.println("Id is: " + profile.getUserId());
                 if (profile.getUserId() != null) filepath = "/profile.jsp";
+
+                posts = getProfilePosts(Integer.parseInt(userid),1); //10 posts // hershw ...
+                avator= HomeDao.getAvator(Integer.parseInt(userid));
+                placeVisited=HomeDao.getVisitedPlace(Integer.parseInt(userid));
+
+                request.setAttribute("avator",avator );
+                request.setAttribute("posts", posts);
+                request.setAttribute("places",placeVisited);
             }
             // send to JSP page (view)
             RequestDispatcher dispatcher = request.getRequestDispatcher(filepath);
@@ -77,7 +99,7 @@ public class ProfileServlet extends HttpServlet {
             myConn = DbUtil.connectDb();
 
             // create sql statement
-            String sql = "SELECT user.id, CONCAT(person.fname, ' ', person.lname) AS name, user.biography, person.job, person.cityBirth FROM person INNER JOIN user ON person.id=user.Person_id WHERE user.id="+id;
+            String sql = "SELECT * FROM profileNoPics WHERE id="+id;
             String getImgs = "SELECT image.link, user_image.sizeimg FROM image INNER JOIN user_image ON image.id=user_image.Image_id WHERE user_image.User_id="+id;
             info = myConn.createStatement();
             info2 = myConn.createStatement();
@@ -88,12 +110,27 @@ public class ProfileServlet extends HttpServlet {
 
             // process resultset
             while(myRs.next()) {
+
                 // retrieve data from result set row
                 profile.setUserId(String.valueOf(myRs.getInt("id")));
-                profile.setFullName(myRs.getString("name"));
+                profile.setEmail(myRs.getString("email"));
+                profile.setPassword(myRs.getString("password"));
                 profile.setBiography(myRs.getString("biography"));
-                profile.setJob(myRs.getString("job"));
+                profile.setFirstName(myRs.getString("fname"));
+                profile.setMidName(myRs.getString("mname"));
+                profile.setLastName(myRs.getString("lname"));
+                profile.setGender(myRs.getString("gender"));
+                profile.setDateBirth(myRs.getString("dateBirth"));
                 profile.setCityBirth(myRs.getString("cityBirth"));
+                profile.setJob(myRs.getString("job"));
+
+                profile.setAddress(new Address());
+                profile.getAddress().setStreet1(myRs.getString("street1"));
+                profile.getAddress().setStreet2(myRs.getString("street2"));
+                profile.getAddress().setZipCode(myRs.getString("zip"));
+                profile.getAddress().setCity(myRs.getString("city"));
+                profile.getAddress().setState(myRs.getString("state"));
+
                 while(rsImgs.next()){
                     switch (rsImgs.getString("sizeimg")) {
                         case "S":
@@ -122,5 +159,16 @@ public class ProfileServlet extends HttpServlet {
             DbUtil.close(myConn, info, myRs);
         }
         return profile;
+    }
+    public  static  List<Post> getProfilePosts(int UserId ,int page) throws Exception {
+        String offset=(page>1)?" offset "+(page-1)*10:"";
+        String sql = "" +
+                "SELECT post.*, person.fname, person.lname, image.link " +
+                "FROM post INNER JOIN user ON post.User_id=user.id " +
+                "INNER JOIN person ON user.Person_id=person.id " +
+                "INNER JOIN user_image ON user.id=user_image.User_id " +
+                "INNER JOIN image ON user_image.Image_id=image.id " +
+                "WHERE user_image.sizeimg='M' AND user.id="+UserId+"  order by post.datetime limit "+page*10+offset;
+        return postItems(sql);
     }
 }

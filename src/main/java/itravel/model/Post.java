@@ -1,7 +1,6 @@
 package itravel.model;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class Post {
@@ -9,22 +8,29 @@ public class Post {
     private String postDate;
     private Location location;
     private String depAddress;
-    private String desAddress;
-    private User user; // email
-    private Address address;//Country, City
+    private String desAddress; //Address // USA, iowas, USA
+    private Avator avator; // email
     private String description;
-    private List<PostImage> images =new ArrayList<PostImage>();
-    private List<Comment> comments =new ArrayList<Comment>();
-    private List<PostReaction> reactions =new ArrayList<PostReaction>();
+    private List<PostImage> images = new ArrayList<PostImage>();
+    private List<Comment> comments = new ArrayList<Comment>();
+    private List<PostReaction> reactions = new ArrayList<PostReaction>();
+    private boolean isUnhealthy;
 
-   public Post(int postID, String des,String postDate, Location loc, String depAddress, String desAddress,User user) {
+    public Post(int postID, String des, String postDate, Location loc, String depAddress, String desAddress, Avator avator) {
         this.postID = postID;
-        this.description=des;
+        this.description = des;
         this.postDate = postDate;
         this.location = loc;
         this.depAddress = depAddress;
         this.desAddress = desAddress;
-        this.user=user;
+        this.avator = avator;
+    }
+
+    public Post(int postID, String postDate, String description, Avator avator) {
+        this.postID = postID;
+        this.postDate = postDate;
+        this.description = description;
+        this.avator = avator;
     }
 
     public void setImages(List<PostImage> images) {
@@ -42,21 +48,27 @@ public class Post {
     public List<PostImage> getImages() {
         return images;
     }
+
     public void addImage(PostImage image) {
         this.images.add(image);
     }
+
     public List<PostReaction> getReactions() {
         return reactions;
     }
+
     public void addReaction(PostReaction user) {
         this.reactions.add(user);
     }
+
     public List<Comment> getComments() {
         return comments;
     }
+
     public void addComment(Comment comment) {
         this.comments.add(comment);
     }
+
     public int getPostID() {
         return postID;
     }
@@ -65,20 +77,12 @@ public class Post {
         this.postID = postID;
     }
 
-    public User getUser() {
-        return user;
+    public Avator getAvator() {
+        return avator;
     }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Address getAddress() {
-        return address;
-    }
-
-    public void setAddress(Address address) {
-        this.address = address;
+    public void setAvator(Avator avator) {
+        this.avator = avator;
     }
 
     public String getPostDate() {
@@ -120,22 +124,28 @@ public class Post {
     public void setDescription(String description) {
         this.description = description;
     }
+    public boolean isUnhealthy() {
+        return isUnhealthy;
+    }
+
+    public void setUnhealthy(boolean unhealthy) {
+        isUnhealthy = unhealthy;
+    }
 
     @Override
     public String toString() {
         return "Post{" +
-                " postID=" + postID +
-                ",description=" +description+
-                ", postDate=" + postDate +
+                "postID=" + postID +
+                ", postDate='" + postDate + '\'' +
                 ", location=" + location +
                 ", depAddress='" + depAddress + '\'' +
                 ", desAddress='" + desAddress + '\'' +
-                ", user=" + user +
-                ", address=" + address +
+                ", avator=" + avator +
+                ", description='" + description + '\'' +
                 ", images=" + images +
                 ", comments=" + comments +
                 ", reactions=" + reactions +
+                ", isUnhealthy=" + isUnhealthy +
                 '}';
     }
-
 }
