@@ -18,9 +18,9 @@ public class HomeDao {
                 "INNER JOIN person ON user.Person_id=person.id " +
                 "INNER JOIN user_image ON user.id=user_image.User_id " +
                 "INNER JOIN image ON user_image.Image_id=image.id " +
-                "WHERE user_image.sizeimg='M' order by post.datetime limit 10"; //not deepin
+                "WHERE user_image.sizeimg='M' order by post.datetime limit 10";  // this one without Followers
 
-//        String sql = "" +
+//        String sql = "" +                                                      // this one with Followers
 //                "SELECT ps.*, p.fname, p.lname, i.link " +
 //                "FROM itraveldb.post ps INNER JOIN itraveldb.user u ON ps.User_id=u.id " +
 //                "INNER JOIN itraveldb.person p ON u.Person_id=p.id " +
