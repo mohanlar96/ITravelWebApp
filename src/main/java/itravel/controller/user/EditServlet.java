@@ -67,12 +67,12 @@ public class EditServlet extends HttpServlet {
             case "user":
                 // ... , u.password=? ...
                 statement = myConn.prepareStatement("UPDATE itraveldb.user u " +
-                        "SET u.email=?, u.Biography=?, u.password=? " +
+                        "SET u.email=?, u.Biography=? " +
                         "WHERE u.id=?");
                 statement.setString(1, request.getParameter("email"));
                 statement.setString(2, request.getParameter("bio"));
-                statement.setString(3, request.getParameter("passw")); //if this uncommented, change next line to (4, ...)
-                statement.setInt(4, Integer.parseInt(request.getParameter("id")));
+                //statement.setString(3, request.getParameter("passw")); //if this uncommented, change next line to (4, ...)
+                statement.setInt(3, Integer.parseInt(request.getParameter("id")));
                 break;
             case "person":
                 statement = myConn.prepareStatement("UPDATE itraveldb.person p INNER JOIN itraveldb.user u ON p.id=u.Person_id " +
@@ -88,15 +88,16 @@ public class EditServlet extends HttpServlet {
                 statement.setInt(8, Integer.parseInt(request.getParameter("id")));
                 break;
             case "address":
-                String cityid = getCityId(myConn, request.getParameter("state"), request.getParameter("city"));
+                //String cityid = getCityId(myConn, request.getParameter("state"), request.getParameter("city"));
+                // ... , a.City_id=? ...
                 statement =  myConn.prepareStatement("UPDATE itraveldb.address a INNER JOIN itraveldb.person p ON a.id=p.Address_id INNER JOIN itraveldb.user u ON p.id=u.Person_id " +
-                        "SET a.street1=?, a.street2=?, a.zip=?, a.City_id=? " +
+                        "SET a.street1=?, a.street2=?, a.zip=? " +
                         "WHERE u.id=?");
                 statement.setString(1, request.getParameter("street1"));
                 statement.setString(2, request.getParameter("street2"));
                 statement.setString(3, request.getParameter("zip"));
-                statement.setInt(4, Integer.parseInt(cityid));
-                statement.setInt(5, Integer.parseInt(request.getParameter("id")));
+                //statement.setInt(4, Integer.parseInt(cityid)); //if this uncommented, change next line to (5, ...)
+                statement.setInt(4, Integer.parseInt(request.getParameter("id")));
                 break;
             default:
                 statement = myConn.prepareStatement("error");

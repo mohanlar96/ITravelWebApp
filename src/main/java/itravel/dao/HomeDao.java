@@ -11,28 +11,30 @@ public class HomeDao {
     static Connection  con =null;
     // scroll 10th to 20 ths
     public  static  List<Post> getPosts(int UserId ,int page) throws Exception {
-        String offset=(page>1)?" offset "+(page-1)*10:"";
+        String offset=(page>1)?" OFFSET "+(page-1)*10:"";
         String sql = "" +
-                "SELECT post.*, person.fname, person.lname, image.link " +
-                "FROM post INNER JOIN user ON post.User_id=user.id " +
-                "INNER JOIN person ON user.Person_id=person.id " +
-                "INNER JOIN user_image ON user.id=user_image.User_id " +
-                "INNER JOIN image ON user_image.Image_id=image.id " +
-                "WHERE user_image.sizeimg='M' order by post.datetime limit "+page*10+offset;
-
+                "SELECT ps.*, p.fname, p.lname, i.link \n" +
+                "FROM itraveldb.post ps INNER JOIN itraveldb.user u ON ps.User_id=u.id \n" +
+                "INNER JOIN itraveldb.person p ON u.Person_id=p.id \n" +
+                "INNER JOIN itraveldb.follower f ON u.id=f.User_id \n" +
+                "INNER JOIN itraveldb.user_image ui ON u.id=ui.User_id \n" +
+                "INNER JOIN itraveldb.image i ON ui.Image_id=i.id \n" +
+                "WHERE f.Follower1_id="+UserId+" AND ui.sizeimg='L' \n" +
+                "ORDER BY ps.datetime DESC LIMIT "+(page*10)+offset;
 
         return postItems(sql);
-
 
     }
     public static List<Post> searchPosts(int UserId ,int page ,String searchString) throws Exception {
         String sql = "" +
-                "SELECT post.*, person.fname, person.lname, image.link " +
-                "FROM post INNER JOIN user ON post.User_id=user.id " +
-                "INNER JOIN person ON user.Person_id=person.id " +
-                "INNER JOIN user_image ON user.id=user_image.User_id " +
-                "INNER JOIN image ON user_image.Image_id=image.id " +
-                "WHERE user_image.sizeimg='M' order by post.datetime limit "+page*10; //searching
+                "SELECT ps.*, p.fname, p.lname, i.link \n" +
+                "FROM itraveldb.post ps INNER JOIN itraveldb.user u ON ps.User_id=u.id \n" +
+                "INNER JOIN itraveldb.person p ON u.Person_id=p.id \n" +
+                "INNER JOIN itraveldb.follower f ON u.id=f.User_id \n" +
+                "INNER JOIN itraveldb.user_image ui ON u.id=ui.User_id \n" +
+                "INNER JOIN itraveldb.image i ON ui.Image_id=i.id \n" +
+                "WHERE ui.sizeimg='L' AND f.Follower1_id="+UserId+" AND ps.description LIKE '%"+searchString+"%' \n" +
+                "ORDER BY ps.datetime DESC LIMIT "+(page*10); //searching in ps.description using LIKE keyword
 
         return postItems(sql);
 
@@ -192,13 +194,14 @@ public class HomeDao {
 
     public static List<Notification> getNotifications(int loginUserId){
         String sql="" +
-                "SELECT p.id, p.fname, p.lname, i.link,post.datetime FROM itraveldb.person p " +
-                "        INNER JOIN itraveldb.user u ON p.id=u.Person_id " +
-                "        INNER JOIN itraveldb.user_image ui ON u.id=ui.User_id " +
-                "        INNER JOIN itraveldb.image i ON ui.Image_id=i.id " +
-                "        INNER JOIN itraveldb.post ps ON u.id=ps.User_id " +
-                "        INNER JOIN itraveldb.follower f ON u.id=f.User_id " +
-                "        WHERE f.Follower1_id=? AND p.notified=1 AND ui.sizeimg='S' ";
+                "SELECT p.id, p.fname, p.lname, i.link, ps.datetime FROM itraveldb.person p \n" +
+                "INNER JOIN itraveldb.user u ON p.id=u.Person_id \n" +
+                "INNER JOIN itraveldb.user_image ui ON u.id=ui.User_id \n" +
+                "INNER JOIN itraveldb.image i ON ui.Image_id=i.id \n" +
+                "INNER JOIN itraveldb.post ps ON u.id=ps.User_id \n" +
+                "INNER JOIN itraveldb.follower f ON u.id=f.User_id \n" +
+                "WHERE f.Follower1_id="+loginUserId+" AND ps.notified=1 AND ui.sizeimg='L' \n" +
+                "ORDER BY ps.datetime DESC";
 
 
         con=DbUtil.connectDb();
@@ -222,7 +225,6 @@ public class HomeDao {
         throwables.printStackTrace();
          }
         return notifications;
-
 
     }
 
