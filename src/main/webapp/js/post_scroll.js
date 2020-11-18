@@ -18,9 +18,8 @@ $(document).ready(function(){
 
                 console.log(data);
 
-                var template = Handlebars.compile($("#postTemplate").html());
+                generatePostFromTemplate(data,'scroll');
 
-                $(".card.post").last().after(template(data)).slideDown('slow');
 
             }).fail(function() {
                 alert( "error" );
@@ -48,8 +47,8 @@ $(document).ready(function(){
         });
     });
 
-    let generatePostFromTemplate =function(data,templateType){
-        console.log('working');
+    function generatePostFromTemplate(  data,templateType){
+
         var template = Handlebars.compile($("#postTemplate").html());
 
         Handlebars.registerHelper('fullName', function (avator) {
@@ -135,22 +134,22 @@ $(document).ready(function(){
         }else if(templateType=="scroll"){
             $(".card.post").last().after(template(data));
         }
-        // $("script[src='post_action']").remove();
-        // $("script")
+        // $.getScript("js/post_action.js");
     }
 
-    $.post("/post/interact",
-        {functionRequest:'SCROLL',
-            userID:1,
-            page:1,
-        }).done(function(response){ //list of
-        const data=JSON.parse(response);
+    // $.post("/post/interact",
+    //     {functionRequest:'SCROLL',
+    //         userID:1,
+    //         page:1,
+    //     }).done(function(response){ //list of
+    //     const data=JSON.parse(response);
+    //
+    //     generatePostFromTemplate(data,'scroll');
+    //
+    // }).fail(function() {
+    //     alert( "error" );
+    // });
 
-        generatePostFromTemplate(data,'scroll');
-
-    }).fail(function() {
-        alert( "error" );
-    });
 
 
 

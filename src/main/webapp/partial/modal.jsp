@@ -13,8 +13,8 @@
 <form action = "post" method ="post" enctype="multipart/form-data">
     <%--                            <form action = "post/interact" method ="post" >--%>
     <input type="hidden" name="userID" value="${requestScope.avator.id}">
-    <input type="hidden" name="latitude"  value="41.023061899999995" id="latitude">
-    <input type="hidden" name="longitude" value="-91.96650070000001" id="longitude">
+    <input type="hidden" name="latitude"  value="41.02" id="latitude">
+    <input type="hidden" name="longitude" value="-91.99" id="longitude">
 <%--        default fairfield iowa ,usa lat and long --%>
     <input type="hidden" name="functionRequest" value="POST">
 
@@ -44,7 +44,7 @@
                     <span class="list-title" style="padding: 10px">
                                                     Upload Images
                                                 </span>
-                    <input type = "file" name = "file" size = "10" />
+                    <input type = "file" name = "file" size = "10" multiple/>
                     <br>
                     <span class="list-title" style="padding: 10px">
                                                     Notify to my follower

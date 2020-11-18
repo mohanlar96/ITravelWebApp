@@ -100,16 +100,6 @@
 		$("#following-list").addClass('show');
 	})
 
-	$(".post-comment").on('click',function(){
-		$(this).parents(".post-content").siblings('.liked-box').slideUp();
-		$(this).parents(".post-content").siblings('.commant-box').slideToggle();
-	});
-
-	$("button.show-liked-dialog").on("click",function(){
-		$(this).parents(".post-content").siblings('.commant-box').slideUp();
-		$(this).parents(".post-content").siblings('.liked-box').slideToggle();
-
-	});
 	$(".post h4.widget-title").on("click",function(){
 		$(this).parent().slideUp();
 

@@ -29,8 +29,8 @@ function geolocate() {
                 lat: position.coords.latitude,
                 lng: position.coords.longitude,
             };
-            document.getElementById("latitude").value=position.coords.latitude;
-            document.getElementById("longitude").value=position.coords.longitude;
+            document.getElementById("latitude").value=position.coords.latitude.toFixed(2);
+            document.getElementById("longitude").value=position.coords.longitude.toFixed(2);
 
             const circle = new google.maps.Circle({
                 center: geolocation,

@@ -1,7 +1,16 @@
-function commentClick(){
-    alert("comment Click");
-}
+
 $(document).ready(function() {
+
+    $(".post-comment").on('click',function(){
+        $(this).parents(".post-content").siblings('.liked-box').slideUp();
+        $(this).parents(".post-content").siblings('.commant-box').slideToggle();
+    });
+
+    $("button.show-liked-dialog").on("click",function(){
+        $(this).parents(".post-content").siblings('.commant-box').slideUp();
+        $(this).parents(".post-content").siblings('.liked-box').slideToggle();
+
+    });
 
     $('button.click-on-like').unbind().on('click','',function(e){
         let likeBtn=$(this);
@@ -48,7 +57,7 @@ $(document).ready(function() {
                         textShow="You and "+ totoalLiked+" people liked this"
                     }
                     totoalLiked++;
-                    likeListContainer.append(likedTemplate({id:post.data("userid"),fullName:post.data("fullname"),url:post.data("avatorurl") }));
+                    likeListContainer.append(likedTemplate({id:post.data("userid"),authorName:post.data("fullname"),url:post.data("avatorurl") }));
                     likeBtn.siblings('.show-liked-dialog').children('span').text(textShow);
 
 
@@ -154,7 +163,7 @@ $(document).ready(function() {
         model.find("span.list-title , input[type='file'] , input[type='checkbox']").hide();
         model.find("[type='submit']").text("Update");
         model.find("h5.modal-title").text("Update Your Travel Info");
-
+        $('#textbox').parent("form").attr("action","post/interact");
 
         model.modal();//show dialog
 
@@ -181,6 +190,8 @@ $(document).ready(function() {
                 model.find("span.list-title , input[type='file'] , input[type='checkbox']").show();
                 model.find("[type='submit']").text("Post");
                 model.find("h5.modal-title").text("Share Your Travel Info");
+                $('#textbox').parent("form").attr("action","post");
+
 
             }).fail(function() {
                 alert( "error" );
@@ -277,9 +288,6 @@ $(document).ready(function() {
         });
 
     });
-
-
-
 
 
 });
