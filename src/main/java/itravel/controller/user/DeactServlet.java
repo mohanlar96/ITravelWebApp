@@ -18,7 +18,9 @@ public class DeactServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String sessionid = (String) request.getSession().getAttribute("userId");
+        Object currentUserId = request.getSession().getAttribute("userId");
+        Integer currentLoginUserID = (int)currentUserId;
+        String sessionid = String.valueOf(currentLoginUserID) ;//CHANGE FOR SESSION ID
         String userid = request.getParameter("id");
         int state = -1;
         String filepath = "aaaaaaaaa";

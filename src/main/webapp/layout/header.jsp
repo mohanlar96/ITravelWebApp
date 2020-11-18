@@ -53,7 +53,7 @@
                     <div class="header-top-navigation">
                         <nav>
                             <ul>
-                                <li class="active"><a href="index.html">home</a></li>
+                                <li class="active"><a href="/">home</a></li>
                                 <li class="notification-trigger"><a class="msg-trigger-btn" href="#b">notification</a>
                                     <div class="message-dropdown" id="b">
                                         <div class="dropdown-title">

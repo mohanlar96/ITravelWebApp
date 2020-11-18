@@ -26,7 +26,9 @@ public class EditProfileServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String sessionid = (String) request.getSession().getAttribute("userId"); //CHANGE FOR SESSION ID
+        Object userId = request.getSession().getAttribute("userId");
+        Integer currentLoginUserID = (int)userId;
+        String sessionid = String.valueOf(currentLoginUserID) ;//CHANGE FOR SESSION ID
         String userid = request.getParameter("id");
         try {
 
