@@ -38,7 +38,7 @@ public class PostController extends HttpServlet {
         super.init();
     }
 
-
+/*
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Connection con = DbUtil.connectDb();
 
@@ -176,5 +176,7 @@ public class PostController extends HttpServlet {
         }
         return extension;
     }
-
+*/
 }
+
+
