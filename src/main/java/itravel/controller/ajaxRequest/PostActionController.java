@@ -10,10 +10,7 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.*;
 import java.io.IOException;
 import java.sql.*;
 
@@ -47,6 +44,9 @@ public class PostActionController extends HttpServlet {
                 case "COMMENT":
                     commentPost(request, response);
                     break;
+                case "POST":
+                    post(request, response);
+                    break;
                 case "UPDATE":
                     updatePost(request, response);
                     break;
@@ -68,6 +68,163 @@ public class PostActionController extends HttpServlet {
         }
 
 
+    }
+    private void post(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        con=DbUtil.connectDb();
+        String description = request.getParameter("description");
+        Double latitude=Double.valueOf(request.getParameter("latitude"));
+        Double longitude=Double.valueOf(request.getParameter("longitude"));
+        String departureAddress=request.getParameter("departureAddress");
+        String destinationAddress=request.getParameter("destinationAddress");
+        Integer userID = Integer.parseInt(request.getParameter("userID"));
+        String notify = request.getParameter("notify");
+        Integer isNotify = (notify.equals("on")) ? 1 : 0;
+        System.out.println(notify+" is Notify" +isNotify);
+
+        response.getWriter().println("Server=>"+userID +" "+description+"<br> "+latitude +" "+longitude+"  "+departureAddress+" "+destinationAddress );
+        int unhealthy = isUnhealthy(description);
+        if (unhealthy == 1) {
+            HttpSession session = request.getSession();
+            session.setAttribute("unhealthy", "true");
+
+        }
+
+        try{
+            String sql = "insert  into post(datetime,latitude,longitude,description,departureAddress,destinationAddress,unhealthy,notified,User_id) VALUES( ? , ? , ? , ? , ? , ? , ? , ? , ? )";
+            // prepare statement
+            state = con.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
+            long time = new java.util.Date().getTime();
+            Date d= new Date(time);
+            if(Boolean.valueOf(request.getParameter("isUpdatingPost"))){
+                //this is for updating the post
+                //when user want to update the post .. I will delete the old post and will put with the same datetime
+                //that's the logic using here
+
+                d= java.sql.Date.valueOf(request.getParameter("datetime"));
+                System.out.println("updating the sql actually for post.");
+            }
+            // set params
+            ;
+            state.setDate(1,  d);
+            state.setDouble(2, latitude);
+            state.setDouble(3, longitude);
+            state.setString(4,description);
+            state.setString(5,departureAddress);
+            state.setString(6,destinationAddress);
+            state.setInt(7,unhealthy);//unhealthy
+            state.setInt(8, isNotify);
+            state.setInt(9,userID);
+            // execute SQL statement
+            int postID = 0;
+            state.executeUpdate();
+            row= state.getGeneratedKeys();
+            while (row.next() ) {
+                postID = row.getInt(1);
+            }
+            response.getWriter().println("POST ID => "+postID);
+
+            boolean isFileUploaded= ServletFileUpload.isMultipartContent(request);
+            if(!isFileUploaded){ //if no file
+                DbUtil.close(con,state,row);
+                response.getWriter().println("Successfully Added the post  without image!");
+                return ; //end
+            }
+            //file uploading start
+            String filePath = request.getContextPath()+"/images/post/";
+            int maxFileSize = 50 * 1024;
+            int maxMemSize = 4 * 1024;
+            String dbFileURL=null;
+
+            DiskFileItemFactory factory = new DiskFileItemFactory();
+            // maximum size that will be stored in memory
+            factory.setSizeThreshold(maxMemSize);
+            // Location to save data that is larger than maxMemSize.
+            factory.setRepository(new File("c:\\temp"));
+            // Create a new file upload handler
+            ServletFileUpload upload = new ServletFileUpload(factory);
+            // maximum file size to be uploaded.
+            upload.setSizeMax( maxFileSize );
+            ArrayList<Integer> imageIDList=new ArrayList<Integer>();
+            try {
+                // Parse the request to get file items.
+                List fileItems = upload.parseRequest(request);
+                System.out.println(fileItems.toString());
+                // Process the uploaded file items
+                Iterator i = fileItems.iterator();
+                while ( i.hasNext () ) {
+                    FileItem fi = (FileItem)i.next();
+                    if ( !fi.isFormField () ) {
+                        // Get the uploaded file parameters
+                        String fieldName = fi.getFieldName();
+//                        fi.setFieldName("mohanlar");
+                        String fileName = fi.getName();
+                        String contentType = fi.getContentType();
+                        boolean isInMemory = fi.isInMemory();
+                        long sizeInBytes = fi.getSize();
+                        // Write the file
+                        if( fileName.lastIndexOf("\\") >= 0 ) {
+                            dbFileURL= filePath + fileName.substring( fileName.lastIndexOf("\\")) ;
+                        } else {
+                            dbFileURL= filePath + fileName.substring(fileName.lastIndexOf("\\")+1) ;
+                        }
+                        response.getWriter().println("url =>" +dbFileURL);
+                        fi.write( new File(dbFileURL) ) ;
+                        //insert into db
+                        int imagePrimaryKey= insertAnImageIntoDbTable(dbFileURL);
+                        imageIDList.add(imagePrimaryKey);
+                    }
+                }
+            } catch(Exception ex) {
+                System.out.println(ex);
+            }
+            for(Integer img_id:imageIDList){
+                sql = "insert  into post_image VALUES(?,?)";
+                state = con.prepareStatement(sql);
+                state.setInt(1, postID);
+                state.setInt(2, img_id);
+                state.executeUpdate();
+            }
+            DbUtil.close(con,state,row);
+            response.getWriter().println("Successfully Added the post with images !");
+            response.sendRedirect("/");
+        }catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+    private int insertAnImageIntoDbTable(String url) {
+
+        try {
+            String sql = "insert  into image(name,link) VALUES(?,?)";
+
+            // prepare statement
+            state = con.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
+            // set params
+            state.setString(1, "post");
+            state.setString(2, url);
+
+            // execute SQL statement
+
+            state.executeUpdate();
+            row = state.getGeneratedKeys();
+            int imgID=0;
+            while (row.next()) {
+                imgID = row.getInt(1);
+            }
+            return imgID;
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return 0;
+    }
+    private static String getImageExtension(String fileName) {
+        String extension = "none";
+        int index = fileName.lastIndexOf(".");
+        if (index > 0) {
+            extension = fileName.substring(index + 1);
+            extension = extension.toLowerCase();
+        }
+        return extension;
     }
 
     private void toggleLike(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -162,7 +319,7 @@ public class PostActionController extends HttpServlet {
 
     }
 
-    public static int isUnhealthy(String description) {
+    private int isUnhealthy(String description) {
         List<String> theBanWords = new ArrayList<>();
         Connection myConn = null;
         Statement myStmt = null;
@@ -186,8 +343,12 @@ public class PostActionController extends HttpServlet {
                 // add it to the list of students
                 theBanWords.add(theWord);
             }
+
             for (String str : description.split(" ")) {
+                System.out.println("split words"+str);
                 if (theBanWords.contains(str)) {
+                    System.out.println("bad words true");
+
                     return 1; //if some unhealthy things
                 }
             }
@@ -333,7 +494,7 @@ public class PostActionController extends HttpServlet {
     private void scrollDown(HttpServletRequest request, HttpServletResponse response) throws Exception {
         con = DbUtil.connectDb();
         Integer page = Integer.parseInt(request.getParameter("page"));
-        Integer userID = Integer.parseInt(request.getParameter("userID"));
+        Integer userID = (int)request.getSession().getAttribute("userId"); //Integer.parseInt(request.getParameter("userID"));
 
         List<Post> postItems = HomeDao.getPosts(userID, page);
         HomeAvator avator = HomeDao.getAvator(userID);
@@ -353,7 +514,8 @@ public class PostActionController extends HttpServlet {
     private void searchPost(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         String keyword = request.getParameter("keywords");
-        Integer userID = Integer.parseInt(request.getParameter("userID"));
+        Integer userID = (int)request.getSession().getAttribute("userId");//Integer.parseInt(request.getParameter("userID"));
+
         List<Post> postItems = HomeDao.searchPosts(userID, 1, keyword); //10 posts // hershw ...
         HomeAvator avator = HomeDao.getAvator(userID);
 

@@ -18,9 +18,8 @@ $(document).ready(function(){
 
                 console.log(data);
 
-                var template = Handlebars.compile($("#postTemplate").html());
+                generatePostFromTemplate(data,'scroll');
 
-                $(".card.post").last().after(template(data)).slideDown('slow');
 
             }).fail(function() {
                 alert( "error" );
@@ -30,6 +29,7 @@ $(document).ready(function(){
     });
     $("form#search").unbind().on('submit',function(e){
         e.preventDefault();
+        console.log("searching ...");
         var userID=$(".card.post").eq(0).data("userid");
         var keywords=$(this).find('input').val();
 
@@ -37,9 +37,14 @@ $(document).ready(function(){
             {functionRequest:'SEARCH',
                 userID:userID,
                 keywords:keywords
-
             }).done(function(response){
             const data=JSON.parse(response);
+            console.log(data);
+            if(data.posts.length==0){
+                alert("no data relative with follower with this keyword=> "+keywords);
+                alert("Try with keyword  OK with user sandy grey to work this feature");
+            }
+
 
             generatePostFromTemplate(data,'search');
 
@@ -48,8 +53,8 @@ $(document).ready(function(){
         });
     });
 
-    let generatePostFromTemplate =function(data,templateType){
-        console.log('working');
+    function generatePostFromTemplate(  data,templateType){
+
         var template = Handlebars.compile($("#postTemplate").html());
 
         Handlebars.registerHelper('fullName', function (avator) {
@@ -131,26 +136,27 @@ $(document).ready(function(){
             return url.split('-')[1];
         });
         if(templateType=="search"){
+            console.log("searching is working ");
             $(".card.post").first().before(template(data));
         }else if(templateType=="scroll"){
             $(".card.post").last().after(template(data));
         }
-        // $("script[src='post_action']").remove();
-        // $("script")
+        // $.getScript("js/post_action.js");
     }
 
-    $.post("/post/interact",
-        {functionRequest:'SCROLL',
-            userID:1,
-            page:1,
-        }).done(function(response){ //list of
-        const data=JSON.parse(response);
+    // $.post("/post/interact",
+    //     {functionRequest:'SCROLL',
+    //         userID:1,
+    //         page:1,
+    //     }).done(function(response){ //list of
+    //     const data=JSON.parse(response);
+    //
+    //     generatePostFromTemplate(data,'scroll');
+    //
+    // }).fail(function() {
+    //     alert( "error" );
+    // });
 
-        generatePostFromTemplate(data,'scroll');
-
-    }).fail(function() {
-        alert( "error" );
-    });
 
 
 

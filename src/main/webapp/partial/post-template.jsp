@@ -1,5 +1,4 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<script src="js/vendor/handlebars.js"></script>
 <script id="postTemplate" type="text/x-handlebars-template">
     {{#each this.posts}}
     <!-- post status start -->
@@ -227,6 +226,7 @@
             <!-- post status end -->
     {{/each}}
 
+
 </script>
 
 <script id="commentTemplate" type="text/x-handlebars-template">
@@ -241,7 +241,9 @@
         </div>
         <!-- profile picture end -->
         <div class="posted-author">
-            <h6 class="author">{{fullName}}</h6>
+            <h6 class="author">{{authorName}}</h6>
         </div>
     </li>
 </script>
+<script src="js/vendor/handlebars.js"></script>
+
