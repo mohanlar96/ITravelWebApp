@@ -47,7 +47,7 @@
                     <div class="profile-thumb">
                         <a href="#">
                             <figure>
-                                <img src="images/icons/sad.png" alt="Location">
+                                <img src="images/icons/sad.jpg" alt="Location">
                             </figure>
                         </a>
                     </div>

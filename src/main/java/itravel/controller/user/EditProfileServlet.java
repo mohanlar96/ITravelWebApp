@@ -1,5 +1,6 @@
 package itravel.controller.user;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import itravel.dao.DbUtil;
 import itravel.model.Address;
 import itravel.model.Profile;
@@ -25,17 +26,26 @@ public class EditProfileServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Object userId = request.getSession().getAttribute("userId");
+        Integer currentLoginUserID = (int)userId;
+        String sessionid = String.valueOf(currentLoginUserID) ;//CHANGE FOR SESSION ID
         String userid = request.getParameter("id");
         try {
+
             String filepath = "aaaaaaaaa";
-            if(userid != null && userid.length()>0 && userid.chars().mapToObj(c -> (char) c).allMatch(Character::isDigit)){
+            if(sessionid!=null && sessionid.equals(userid) && userid.length()>0 && userid.chars().mapToObj(c -> (char) c).allMatch(Character::isDigit)){
                 // get whatever from db util
                 Profile profile = getProfile(userid);
-                //HashMap<String,List<String>> locations = getLocations();
+                HashMap<String,List<String>> locations = getLocations();
 
-                // add students to the request
+                // add profile to attributes
                 request.setAttribute("prof", profile);
-                //request.setAttribute("locs", locations);
+
+                //Creating the ObjectMapper object, converting the Object to JSONString
+                ObjectMapper mapper = new ObjectMapper();
+                String jsonString = mapper.writeValueAsString(locations);
+                request.setAttribute("locs", jsonString);
+
                 System.out.println("Id is: " + profile.getUserId());
                 if (profile.getUserId() != null) filepath = "/edit_profile.jsp";
             }
@@ -62,7 +72,7 @@ public class EditProfileServlet extends HttpServlet {
             // get a connection
             myConn = DbUtil.connectDb();
 
-            // create sql statement //SELECT * FROM profileNoPics WHERE id=
+            // create sql statement
             String sql = "SELECT * FROM profileNoPics WHERE id="+id;
             String getImgs = "SELECT image.link, user_image.sizeimg FROM image INNER JOIN user_image ON image.id=user_image.Image_id WHERE user_image.User_id="+id;
             info = myConn.createStatement();
@@ -77,8 +87,7 @@ public class EditProfileServlet extends HttpServlet {
                 // retrieve data from result set row
                 profile.setUserId(String.valueOf(myRs.getInt("id")));
                 profile.setEmail(myRs.getString("email"));
-                //profile.setPassword(myRs.getString("password"));
-                profile.setUsername(myRs.getString("username"));
+                profile.setPassword(myRs.getString("password"));
                 profile.setBiography(myRs.getString("biography"));
 
                 profile.setFirstName(myRs.getString("fname"));

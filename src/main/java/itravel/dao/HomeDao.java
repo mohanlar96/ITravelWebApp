@@ -231,7 +231,7 @@ public class HomeDao {
         HomeAvator avator=null;
         try {
             String sql="" +
-                    "SELECT user.id,user.Biography,person.fname,person.lname  " +
+                    "SELECT user.email,user.id,user.Biography,person.fname,person.lname  " +
                     "FROM  user INNER JOIN person ON user.Person_id=person.id " +
                     "WHERE  user.id=?";
             PreparedStatement ps = con.prepareStatement(sql);
@@ -241,6 +241,7 @@ public class HomeDao {
             {
                 avator =new HomeAvator(row.getInt("id"),row.getString("fname"),row.getString("lname"),null);
                 avator.setBiography(row.getString("biography"));
+                avator.setEmail(row.getString("email"));
             }
             sql="SELECT image.link, user_image.sizeimg " +
                     "FROM image INNER JOIN user_image ON image.id=user_image.Image_id WHERE " +

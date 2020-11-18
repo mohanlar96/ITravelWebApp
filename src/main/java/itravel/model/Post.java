@@ -14,6 +14,7 @@ public class Post {
     private List<PostImage> images = new ArrayList<PostImage>();
     private List<Comment> comments = new ArrayList<Comment>();
     private List<PostReaction> reactions = new ArrayList<PostReaction>();
+    private boolean isUnhealthy;
 
     public Post(int postID, String des, String postDate, Location loc, String depAddress, String desAddress, Avator avator) {
         this.postID = postID;
@@ -22,6 +23,13 @@ public class Post {
         this.location = loc;
         this.depAddress = depAddress;
         this.desAddress = desAddress;
+        this.avator = avator;
+    }
+
+    public Post(int postID, String postDate, String description, Avator avator) {
+        this.postID = postID;
+        this.postDate = postDate;
+        this.description = description;
         this.avator = avator;
     }
 
@@ -116,6 +124,13 @@ public class Post {
     public void setDescription(String description) {
         this.description = description;
     }
+    public boolean isUnhealthy() {
+        return isUnhealthy;
+    }
+
+    public void setUnhealthy(boolean unhealthy) {
+        isUnhealthy = unhealthy;
+    }
 
     @Override
     public String toString() {
@@ -130,6 +145,7 @@ public class Post {
                 ", images=" + images +
                 ", comments=" + comments +
                 ", reactions=" + reactions +
+                ", isUnhealthy=" + isUnhealthy +
                 '}';
     }
 }

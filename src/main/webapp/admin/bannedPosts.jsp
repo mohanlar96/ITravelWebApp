@@ -74,13 +74,13 @@
         <ul class="sidebar-menu">
           <li class="header">MAIN NAVIGATION</li>
           <li>
-            <a href="activateUsers.jsp">
-              <i class="fa fa-th"></i> <span>Deactivated Users</span> <span class="badge">5</span>
+            <a href="deactivatedUsers">
+              <i class="fa fa-th"></i> <span>Deactivated Users</span> <span class="badge" id="badgeDeactivatedUsers"></span>
             </a>
           </li>
           <li>
-            <a href="bannedPosts.jsp" class="current">
-              <i class="fa fa-th"></i> <span>Banned Posts</span> <span class="badge">2</span>
+            <a href="bannedPosts" class="current">
+              <i class="fa fa-th"></i> <span>Banned Posts</span> <span class="badge" id="badgeBannedPost">${TOTAL_POST_CNT}</span>
             </a>
           </li>
           <li>
@@ -105,26 +105,57 @@
               </div><!-- /.box-header -->
               <div class="box-body">
                 <div>
-                  <button type="button" class="btn btn-success">Allow</button>
+                  <button type="button" id="allowBtn" class="btn btn-success">Allow</button>
                 </div>
                 <table id="example2" class="table table-bordered table-hover">
                   <thead>
                     <tr>
-                      <th>#ID</th>
-                      <th>Post</th>
-                      <th>Found words</th>
+                      <th>#User ID</th>
+                      <th>Full Name</th>
+                      <th>#Post Id</th>
+                      <th>Post Content</th>
+                      <th>Date created</th>
                       <th></th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td>1</td>
-                      <td>This is not ok.</td>
-                      <td>ok</td>
-                      <td><input type="checkbox" name="name1"></td>
-                    </tr>
+                    <c:forEach var="tempPost" items="${POST_LIST}">
+                      <tr>
+                        <td> ${tempPost.avator.id} </td>
+                        <td> ${tempPost.avator.firstName} ${tempPost.avator.lastName}</td>
+                        <td> ${tempPost.postID} </td>
+                        <td> ${tempPost.description} </td>
+                        <td> ${tempPost.postDate} </td>
+                        <td><input type="checkbox" name="name1"></td>
+                      </tr>
+                    </c:forEach>
                   </tbody>
                 </table>
+                <div class="row">
+                  <div class="col-xs-6">
+                    <div id="mytable_info">
+                      <p data-page="${PAGE}" data-totalpage="${TOTAL_LENGTH}"
+                         id="myPagination">${PAGE} of ${TOTAL_LENGTH}</p>
+                    </div>
+                  </div>
+                  <div class="col-xs-6">
+                    <nav aria-label="CustomPagination">
+                      <ul class="pagination">
+                        <li class="page-item"><a class="page-link" <c:if
+                                test="${PAGE>1}"> href="bannedPosts?cmdUserServlet=LIST&page=${PAGE-1}"
+                        </c:if> >Previous</a></li>
+                        <c:forEach var="i" begin="1" end="${TOTAL_LENGTH}">
+                          <li class="page-item"><a class="page-link"
+                                                   href="bannedPosts?cmdUserServlet=LIST&page=${i}">${i}</a>
+                          </li>
+                        </c:forEach>
+                        <li class="page-item"><a class="page-link" <c:if
+                                test="${PAGE<TOTAL_LENGTH}"> href="bannedPosts?cmdUserServlet=LIST&page=${PAGE+1}"
+                        </c:if>>Next</a></li>
+                      </ul>
+                    </nav>
+                  </div>
+                </div>
               </div><!-- /.box-body -->
             </div><!-- /.box -->
           </div><!-- /.col -->
@@ -168,7 +199,8 @@
       });
     });
   </script> --%>
-
+  <script src='js/myCustomJs/myUtil.js'></script>
+  <script src='js/myCustomJs/bannedPosts.js'></script>
 </body>
 
 </html>

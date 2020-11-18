@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 import static itravel.dao.HomeDao.postItems;
@@ -47,10 +48,16 @@ public class ProfileServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException{
+        Object userId = request.getSession().getAttribute("userId");
+        Integer currentLoginUserID = (int)userId;
+        String sessionid = String.valueOf(currentLoginUserID) ;//CHANGE FOR SESSION ID
         String userid = request.getParameter("id");
+        List<Post> posts = new ArrayList<>();
+        HomeAvator avator = new HomeAvator(0, "", "", "");
+        List<String> placeVisited = new ArrayList<>();
         try {
             String filepath = "aaaaaaaaa";
-            if(userid != null && userid.length()>0 && userid.chars().mapToObj(c -> (char) c).allMatch(Character::isDigit)){
+            if(sessionid!=null && sessionid.equals(userid) && userid.length()>0 && userid.chars().mapToObj(c -> (char) c).allMatch(Character::isDigit)){
                 // get whatever from db util
                 Profile profile = getProfile(userid);
 
@@ -58,13 +65,15 @@ public class ProfileServlet extends HttpServlet {
                 request.setAttribute("prof", profile);
                // System.out.println("Id is: " + profile.getUserId());
                 if (profile.getUserId() != null) filepath = "/profile.jsp";
+
+                posts = getProfilePosts(Integer.parseInt(userid),1); //10 posts // hershw ...
+                avator= HomeDao.getAvator(Integer.parseInt(userid));
+                placeVisited=HomeDao.getVisitedPlace(Integer.parseInt(userid));
+
+                request.setAttribute("avator",avator );
+                request.setAttribute("posts", posts);
+                request.setAttribute("places",placeVisited);
             }
-            List<Post> posts = getProfilePosts(Integer.parseInt(userid),1); //10 posts // hershw ...
-            HomeAvator avator= HomeDao.getAvator(Integer.parseInt(userid));
-            List<String> placeVisited=HomeDao.getVisitedPlace(Integer.parseInt(userid));
-            request.setAttribute("avator",avator );
-            request.setAttribute("posts", posts);
-            request.setAttribute("places",placeVisited);
             // send to JSP page (view)
             RequestDispatcher dispatcher = request.getRequestDispatcher(filepath);
             dispatcher.forward(request, response);
@@ -105,10 +114,8 @@ public class ProfileServlet extends HttpServlet {
                 // retrieve data from result set row
                 profile.setUserId(String.valueOf(myRs.getInt("id")));
                 profile.setEmail(myRs.getString("email"));
-                //profile.setPassword(myRs.getString("password"));
-                //profile.setUsername(myRs.getString("username"));
+                profile.setPassword(myRs.getString("password"));
                 profile.setBiography(myRs.getString("biography"));
-
                 profile.setFirstName(myRs.getString("fname"));
                 profile.setMidName(myRs.getString("mname"));
                 profile.setLastName(myRs.getString("lname"));
