@@ -16,7 +16,8 @@
                     <div class="col-6">
                 </c:if>
                 <figure class="post-thumb img-popup">
-                    <a href="${img.url}">
+                    <c:set var="imgBig" value="${fn:split(img.url,'-')[1]}"/>
+                    <a href="images/post/post-large-${imgBig}">
                         <img src="${img.url}" alt="post image">
                     </a>
                 </figure>
@@ -27,4 +28,3 @@
         </div>
     </div>
 </c:if>
-<script src="/js/like_comment_delete_post.js"></script>

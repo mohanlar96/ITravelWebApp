@@ -80,6 +80,7 @@ b {
 
 figure {
   margin: 0;
+  width: 100%;
 }
 
 img {
@@ -1209,7 +1210,7 @@ textarea:focus {
 }
 
 .page-title {
-  font-size: 18px;
+  font-size: 14px;
   font-weight: 700;
   color: #333333;
   text-transform: capitalize;
@@ -1217,7 +1218,7 @@ textarea:focus {
 
 @media only screen and (max-width: 575.98px) {
   .page-title {
-    font-size: 15px;
+    font-size: 14px;
   }
 }
 
@@ -1705,12 +1706,12 @@ textarea:focus {
 }
 
 @media only screen and (max-width: 479.98px) {
-  .post-meta .post-meta-like span {
+  .show-liked-dialog span {
     display: none;
   }
 }
 
-.post-meta .post-meta-like strong {
+.show-liked-dialog strong {
   display: none;
   font-size: 14px;
   font-weight: 400;
@@ -1719,7 +1720,7 @@ textarea:focus {
 }
 
 @media only screen and (max-width: 479.98px) {
-  .post-meta .post-meta-like strong {
+  .show-liked-dialog strong {
     display: inline-block;
   }
 }
@@ -2191,6 +2192,7 @@ textarea:focus {
   position: relative;
 }
 
+
 .like-button .heart-color {
   top: 50%;
   left: 0;
@@ -2204,14 +2206,41 @@ textarea:focus {
   -o-transition: 0.4s;
   transition: 0.4s;
 }
-.liked{
+.liked , .like-status{
   display: inline-block!important;
 }
+.post-meta button.show-liked-dialog{
+  font-size: 16px !important;
+  margin-left: 0;
+}
 
-/*.like-button:hover .heart, .like-button.active .heart {*/
-/*  opacity: 0;*/
-/*  visibility: hidden;*/
-/*}*/
+#map {
+  height: 100%;
+}
+#controls {
+  position: relative;
+  width: 480px;
+}
+.deletecomment{
+  padding-left: 15px;
+  color: #d75348;
+  font-size: 13px !important;
+  font-weight: normal;
+  display: inline-block;
+  cursor: pointer;
+
+}
+.post-desc u{
+  color: #d75348;
+  cursor: pointer;
+
+}
+.pac-container, .pac-item {
+  width: inherit !important;
+  z-index: 10000;
+}
+
+
 
 /*.like-button:hover .heart-color, .like-button.active .heart-color {*/
 /*  opacity: 1;*/

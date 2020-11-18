@@ -1,8 +1,5 @@
 package itravel.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Avator {
     private int id;
     private String firstName;
@@ -14,6 +11,12 @@ public class Avator {
         this.firstName =firstName;
         this.lastName =lastName;
         this.profileUrl=profileUrl;
+    }
+
+    public Avator(int id, String firstName, String lastName) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
     }
 
     public int getId() {

@@ -5,7 +5,6 @@
     <p style="font-size:120px;">404</p>
     <div style="font-size:30px;">
         <p style="color:#dc4734; font-weight:500;">Ooops! It looks like you traveled too far...</p>
-        <p><a href="home.jsp">Go to Homepage</a></p>
     </div>
 </div>
 
