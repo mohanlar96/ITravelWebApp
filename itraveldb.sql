@@ -1,10 +1,10 @@
 CREATE DATABASE  IF NOT EXISTS `itraveldb` /*!40100 DEFAULT CHARACTER SET utf8 */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE `itraveldb`;
--- MySQL dump 10.13  Distrib 8.0.22, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.21, for Linux (x86_64)
 --
 -- Host: localhost    Database: itraveldb
 -- ------------------------------------------------------
--- Server version	8.0.22
+-- Server version	8.0.21
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -470,7 +470,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'mary@example.com','EA8182F5B9B79598B79A5DEB81932488','empty biography',0,2),(2,'jane@example.com','EA8182F5B9B79598B79A5DEB81932488','empty biography',0,3),(3,'will@example.com','EA8182F5B9B79598B79A5DEB81932488','empty biography',0,5),(4,'sandy@example.comm','EA8182F5B9B79598B79A5DEB81932488','empty biography',0,6),(5,'chris@example.com','EA8182F5B9B79598B79A5DEB81932488','empty biography',0,7),(6,'amy@example.com','EA8182F5B9B79598B79A5DEB81932488','empty biography',0,8),(7,'robot@example.com','EA8182F5B9B79598B79A5DEB81932488','empty biography',0,4),(8,'john@example.com','EA8182F5B9B79598B79A5DEB81932488','empty biography',0,1),(9,'mohan.lar96@gmail.com','EA8182F5B9B79598B79A5DEB81932488','I am very happy person .',0,15),(10,'mohan.lar996@gmail.com','EA8182F5B9B79598B79A5DEB81932488',NULL,0,16),(11,'welcom@example.com','EA8182F5B9B79598B79A5DEB81932488',NULL,0,17),(12,'welcompedro@gmail.com','EA8182F5B9B79598B79A5DEB81932488',NULL,0,18),(13,'tina@miu.com','0A9725E4FD8D3B0B72DCFC4C7E1D0133',NULL,0,19),(14,'random@user.com','EA8182F5B9B79598B79A5DEB81932488',NULL,0,20);
+INSERT INTO `user` VALUES (1,'mary@example.com','61BD60C60D9FB60CC8FC7767669D40A1','empty biography',0,2),(2,'jane@example.com','61BD60C60D9FB60CC8FC7767669D40A1','empty biography',0,3),(3,'will@example.com','61BD60C60D9FB60CC8FC7767669D40A1','empty biography',0,5),(4,'sandy@example.comm','61BD60C60D9FB60CC8FC7767669D40A1','empty biography',0,6),(5,'chris@example.com','61BD60C60D9FB60CC8FC7767669D40A1','empty biography',0,7),(6,'amy@example.com','61BD60C60D9FB60CC8FC7767669D40A1','empty biography',0,8),(7,'robot@example.com','61BD60C60D9FB60CC8FC7767669D40A1','empty biography',0,4),(8,'john@example.com','61BD60C60D9FB60CC8FC7767669D40A1','empty biography',0,1),(9,'mohan.lar96@gmail.com','61BD60C60D9FB60CC8FC7767669D40A1','I am very happy person .',0,15),(10,'mohan.lar996@gmail.com','61BD60C60D9FB60CC8FC7767669D40A1',NULL,0,16),(11,'welcom@example.com','61BD60C60D9FB60CC8FC7767669D40A1',NULL,0,17),(12,'welcompedro@gmail.com','61BD60C60D9FB60CC8FC7767669D40A1',NULL,0,18),(13,'tina@miu.com','61BD60C60D9FB60CC8FC7767669D40A1',NULL,0,19),(14,'random@user.com','61BD60C60D9FB60CC8FC7767669D40A1',NULL,0,20);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -530,4 +530,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-11-18 17:07:11
+-- Dump completed on 2020-11-19  0:13:51
