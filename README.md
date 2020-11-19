@@ -10,3 +10,14 @@
 
 5.  => Enjoy the Project !
 
+sample users with password("Abc123") for testing
+  mary@example.com
+  random@user.com
+
+Can use sign up page for creating new user. (login/signup pages located together.)
+
+admin URL => http://localhost:8080/admin
+username: admin
+password: 123
+
+
