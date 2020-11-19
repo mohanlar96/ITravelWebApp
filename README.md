@@ -10,9 +10,7 @@
 
 5.  => Enjoy the Project !
 
-sample users with password("Abc123") for testing
-  mary@example.com
-  random@user.com
+sample users with password("Abc123") for testing. E.g: mary@example.com, random@user.com
 
 Can use sign up page for creating new user. (login/signup pages located together.)
 
