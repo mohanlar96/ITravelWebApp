@@ -55,7 +55,9 @@
                         <nav>
                             <ul>
                                 <li class="active"><a href="/">home</a></li>
+                                <li ><a href="/allTraveller?id=${avator.id}">traveller</a></li>
                                 <li class="notification-trigger"><a class="msg-trigger-btn" href="#b">notification</a>
+
                                     <div class="message-dropdown" id="b">
                                         <div class="dropdown-title">
                                             <p class="recent-msg">Notification</p>
