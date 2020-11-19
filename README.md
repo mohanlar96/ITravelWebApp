@@ -1,5 +1,7 @@
 # ITravelWebApp
 
+In order to run this project. You will need intellij, mysql database which runs on port 3306.
+
 1.  => Clone the project.
 
 2.  => Run the create-user.sql file in your database . It should create user="fullstack" with password="fullstack"; 
